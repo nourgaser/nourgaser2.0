@@ -1,0 +1,18 @@
+{
+  "title": "Ode to Rukk Kingdom (ORK)",
+  "slug": "ode-to-rukk-kingdom",
+  "summary": "A 2D PvP strategy game.",
+  "description": "A world where different Ork tribes compete for the establishment of the highly awaited Rukk kingdom. Choose a tribe and lead them to victory.",
+  "note": "This this my latest project, and it's a work in progress. Mostly there's nothing to see here besides the game design notes.",
+  "live_url": "https://ork.nourgaser.com",
+  "src_url": "https://github.com/nourgaser/Ode-to-Rukk-Kingdom",
+  "design_url": "https://nourgaser.notion.site/Ode-to-Rukk-Kingdom-4e86e0d171314a1cbf0c1c7cef241d2f?pvs=4",
+  "tags": ["unity", "2d", "pvp", "strategy", "game", "ork", "c#", "fantasy"],
+  "media": [
+    {
+      "path": "/public/data/ork/media/ork.mp4",
+      "isVideo": true,
+      "alt": "Keyboard & mouse grid navigation with control hijacking."
+    }
+  ]
+}

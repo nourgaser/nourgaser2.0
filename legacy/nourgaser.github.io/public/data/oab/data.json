@@ -1,0 +1,18 @@
+{
+  "title": "Open Amazing Brick",
+  "slug": "open-amazing-brick",
+  "summary": "Casual mobile game.",
+  "description": "",
+  "note": "This is an unmonetized clone of the popular mobile game Amazing Brick. I made it early on to learn Unity and C#.",
+  "live_url": "https://oab.nourgaser.com",
+  "src_url": "https://github.com/nourgaser/Open-Amazing-Brick",
+  "tags": ["unity", "gamedev", "mobile", "casual"],
+  "media": [
+    {
+      "path": "/public/data/oab/media/image1.png"
+    },
+    {
+      "path": "/public/data/oab/media/image2.png"
+    }
+  ]
+}

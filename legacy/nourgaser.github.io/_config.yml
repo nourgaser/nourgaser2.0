@@ -1,0 +1,9 @@
+theme: jekyll-theme-hacker
+
+exclude:
+  - src
+  - .gitignore
+  - README.md
+  - CNAME
+  - package.json
+  - pnpm-lock.yaml

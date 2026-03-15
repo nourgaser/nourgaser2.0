@@ -1,0 +1,132 @@
+/*
+  Theme system for nourgaser.com
+  Source of truth: Figma design
+  https://www.figma.com/design/YYUSem7sKafNpikrZdCth9/nourgaser.com
+
+  Applied via data-theme attribute on <html>:
+    <html data-theme="default">
+    <html data-theme="vgcolors">
+    <html data-theme="ubuntu">
+    <html data-theme="fedora">
+*/
+
+/* ------------------------------------------------------------------ */
+/* Default theme — warm amber terminal, dark charcoal backgrounds      */
+/* Confirmed from Figma Desktop-1 frame                                */
+/* ------------------------------------------------------------------ */
+:root,
+[data-theme="default"] {
+  /* Backgrounds */
+  --bg-page:                #151515;
+  --bg-nav:                 #000000;
+  --bg-terminal:            #1e1e1e;
+  --bg-terminal-header:     #292929;
+  --bg-terminal-statusbar:  #292929;
+  --bg-button:              #343434;
+
+  /* Borders */
+  --border-button:          #1b1b1b;
+  --border-terminal:        transparent;
+
+  /* Text */
+  --text-primary:           #ffffff;
+  --text-accent:            #fcdeb6;  /* warm amber — primary accent color */
+  --text-accent-2:          #fcdeb6;
+  --text-dimmed:            #464646;
+
+  /* Shadows */
+  --shadow-terminal:        0px 0px 15px 5px rgba(0, 0, 0, 0.25);
+
+  /* Glow effects */
+  --glow-accent:            none;
+  --glow-focus:             none;
+}
+
+/* ------------------------------------------------------------------ */
+/* vgcolors theme — neon cyan + purple terminal                        */
+/* Confirmed from Figma Desktop-2 frame                                */
+/* ------------------------------------------------------------------ */
+[data-theme="vgcolors"] {
+  /* Backgrounds */
+  --bg-page:                #0a0b14;
+  --bg-nav:                 #000000;
+  --bg-terminal:            #1e1e1e;
+  --bg-terminal-header:     #292929;
+  --bg-terminal-statusbar:  #292929;
+  --bg-button:              #343434;
+
+  /* Borders */
+  --border-button:          #1b1b1b;
+  --border-terminal:        color-mix(in srgb, #58e1ff 30%, transparent);
+
+  /* Text */
+  --text-primary:           #ffffff;
+  --text-accent:            #58e1ff;  /* cyan */
+  --text-accent-2:          #b06cff;  /* purple */
+  --text-dimmed:            #464646;
+
+  /* Shadows */
+  --shadow-terminal:        0px 0px 15px 5px rgba(0, 0, 0, 0.25);
+
+  /* Glow effects */
+  --glow-accent:            0 0 12px color-mix(in srgb, #58e1ff 50%, transparent);
+  --glow-focus:             0 0 24px color-mix(in srgb, #58e1ff 45%, transparent);
+}
+
+/* ------------------------------------------------------------------ */
+/* ubuntu theme — ubuntu orange accent                                 */
+/* Reference: docs/design/theme/ubuntu.png                            */
+/* ------------------------------------------------------------------ */
+[data-theme="ubuntu"] {
+  --bg-page:                #1a0f0a;
+  --bg-nav:                 #000000;
+  --bg-terminal:            #1e1e1e;
+  --bg-terminal-header:     #292929;
+  --bg-terminal-statusbar:  #292929;
+  --bg-button:              #343434;
+
+  --border-button:          #1b1b1b;
+  --border-terminal:        color-mix(in srgb, #e95420 30%, transparent);
+
+  --text-primary:           #ffffff;
+  --text-accent:            #e95420;  /* ubuntu orange */
+  --text-accent-2:          #f4a261;
+  --text-dimmed:            #464646;
+
+  --shadow-terminal:        0px 0px 15px 5px rgba(0, 0, 0, 0.25);
+  --glow-accent:            0 0 12px color-mix(in srgb, #e95420 50%, transparent);
+  --glow-focus:             0 0 24px color-mix(in srgb, #e95420 45%, transparent);
+}
+
+/* ------------------------------------------------------------------ */
+/* fedora theme — fedora blue accent                                   */
+/* Reference: docs/design/theme/fedora.png                            */
+/* ------------------------------------------------------------------ */
+[data-theme="fedora"] {
+  --bg-page:                #0a0e1a;
+  --bg-nav:                 #000000;
+  --bg-terminal:            #1e1e1e;
+  --bg-terminal-header:     #292929;
+  --bg-terminal-statusbar:  #292929;
+  --bg-button:              #343434;
+
+  --border-button:          #1b1b1b;
+  --border-terminal:        color-mix(in srgb, #3c6eb4 30%, transparent);
+
+  --text-primary:           #ffffff;
+  --text-accent:            #3c6eb4;  /* fedora blue */
+  --text-accent-2:          #74a7e0;
+  --text-dimmed:            #464646;
+
+  --shadow-terminal:        0px 0px 15px 5px rgba(0, 0, 0, 0.25);
+  --glow-accent:            0 0 12px color-mix(in srgb, #3c6eb4 50%, transparent);
+  --glow-focus:             0 0 24px color-mix(in srgb, #3c6eb4 45%, transparent);
+}
+
+/* ------------------------------------------------------------------ */
+/* ngxos power state — CSS-driven activation effects                   */
+/* ------------------------------------------------------------------ */
+[data-ngxos="on"] [data-ngx-focusable="true"] {
+  outline: 1px solid color-mix(in srgb, var(--text-accent) 60%, transparent);
+  box-shadow: var(--glow-focus, none);
+}

@@ -1,0 +1,58 @@
+:root {
+  /* --- Spacing scale (4px base) --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+
+  /* --- Border radius --- */
+  --radius-sm: 5px;   /* buttons, small controls */
+  --radius-md: 10px;  /* terminal window corners */
+  --radius-lg: 16px;  /* large panels, cards */
+
+  /* --- Borders --- */
+  --border-width: 1px;
+
+  /* --- Typography --- */
+  --font-mono: 'Ubuntu Mono', 'Courier New', monospace;
+  --font-sans: system-ui, sans-serif;
+
+  --text-xs:   12px;
+  --text-sm:   14px;
+  --text-base: 16px;  /* terminal body text - from Figma */
+  --text-lg:   20px;
+  --text-xl:   24px;
+  --text-2xl:  32px;
+  --text-3xl:  48px;
+
+  --leading-tight:  1.15;
+  --leading-base:   1.5;
+  --leading-loose:  1.75;
+
+  /* --- Animation durations --- */
+  --duration-fast:   100ms;
+  --duration-base:   200ms;
+  --duration-slow:   400ms;
+  --duration-xslow:  800ms;
+  --ease-default:    ease-in-out;
+
+  /* --- Z-index layers --- */
+  --z-page:      0;
+  --z-nav:       100;
+  --z-terminal:  200;
+  --z-overlay:   300;
+  --z-top:       400;
+
+  /* --- Component dimensions (from Figma) --- */
+  --nav-height:              100px;
+  --terminal-width:          658px;
+  --terminal-height:         459px;
+  --terminal-header-height:  49px;
+}

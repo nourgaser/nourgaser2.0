@@ -1,20 +1,9 @@
 ---
-const title = 'About';
+import MainLayout from '../layouts/MainLayout.astro';
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title} | nourgaser.com</title>
-  </head>
-  <body>
-    <main>
-      <h1>{title}</h1>
-      <p>Page under construction.</p>
-    </main>
-  </body>
-</html>
+<MainLayout title="About">
+  <main data-ngx-section="about" data-ngx-label="About Me" data-ngx-focusable="true" data-ngx-route="/about">
+    <h1>About</h1>
+  </main>
+</MainLayout>

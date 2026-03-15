@@ -44,8 +44,8 @@
   /* Portfolio showcase */
   --portfolio-gallery-bg:         #151714;
   --portfolio-gallery-border:     #343434;
-  --portfolio-gallery-tab-active: #2f5eec;
-  --portfolio-gallery-tab-muted:  #4c6a8f;
+  --portfolio-gallery-tab-active: #292929;
+  --portfolio-gallery-tab-muted:  #1e1e1e;
 
   /* Shadows */
   --shadow-terminal:        0px 0px 15px 5px rgba(0, 0, 0, 0.25);

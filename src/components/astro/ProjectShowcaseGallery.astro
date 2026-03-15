@@ -1,0 +1,315 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+type ProjectMediaItem = CollectionEntry<'projects'>['data']['media'][number];
+type ProjectLinks = CollectionEntry<'projects'>['data']['links'];
+
+interface Props {
+  title: string;
+  media: ProjectMediaItem[];
+  tags: string[];
+  links?: ProjectLinks;
+  previousTitle?: string;
+  previousSlug?: string;
+  nextTitle?: string;
+  nextSlug?: string;
+}
+
+const {
+  title,
+  media,
+  tags,
+  links,
+  previousTitle,
+  previousSlug,
+  nextTitle,
+  nextSlug,
+} = Astro.props;
+
+const previewMedia = media.slice(0, 4);
+const leadMedia = media[0];
+const sourceLinks = [links?.source].filter((value): value is string => Boolean(value));
+const liveLinks = [links?.live].filter((value): value is string => Boolean(value));
+---
+
+<section class="project-showcase" data-ngx-section="portfolio-showcase" data-ngx-label="Project Showcase">
+  <div class="showcase-tabs" aria-label="Related project tabs">
+    {previousSlug
+      ? <a href={`/portfolio/${previousSlug}/`} class="showcase-tab showcase-tab--muted showcase-tab--prev"><span class="showcase-tab-arrow" aria-hidden="true">‹</span><span class="showcase-tab-label">{previousTitle}</span></a>
+      : <span class="showcase-tab showcase-tab--muted showcase-tab--disabled showcase-tab--prev"><span class="showcase-tab-arrow" aria-hidden="true">‹</span><span class="showcase-tab-label">{previousTitle ?? 'First project'}</span></span>
+    }
+    <span class="showcase-tab showcase-tab--active">{title}</span>
+    {nextSlug
+      ? <a href={`/portfolio/${nextSlug}/`} class="showcase-tab showcase-tab--muted showcase-tab--next"><span class="showcase-tab-label">{nextTitle}</span><span class="showcase-tab-arrow" aria-hidden="true">&#8250;</span></a>
+      : <span class="showcase-tab showcase-tab--muted showcase-tab--disabled showcase-tab--next"><span class="showcase-tab-label">{nextTitle ?? 'Last project'}</span><span class="showcase-tab-arrow" aria-hidden="true">&#8250;</span></span>
+    }
+  </div>
+
+  <div class="showcase-shell">
+    {
+      leadMedia && (
+        <figure class="showcase-hero">
+          {leadMedia.isVideo ? (
+            <video controls preload="metadata" playsinline>
+              <source src={leadMedia.path} type="video/mp4" />
+            </video>
+          ) : (
+            <img src={leadMedia.path} alt={leadMedia.alt ?? `${title} preview`} loading="eager" />
+          )}
+        </figure>
+      )
+    }
+
+    {
+      previewMedia.length > 1 && (
+        <ul class="showcase-strip" aria-label={`${title} gallery previews`}>
+          {previewMedia.map((item, index) => (
+            <li>
+              {item.isVideo ? (
+                <video preload="metadata" playsinline muted>
+                  <source src={item.path} type="video/mp4" />
+                </video>
+              ) : (
+                <img src={item.path} alt={item.alt ?? `${title} preview ${index + 1}`} loading="lazy" />
+              )}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    <div class="showcase-meta">
+      <section class="showcase-meta-block" aria-label="Tech stack">
+        <h2>Tech stack</h2>
+        <ul>
+          {tags.map((tag) => <li>{tag}</li>)}
+        </ul>
+      </section>
+
+      <section class="showcase-meta-block" aria-label="Project links">
+        <h2>Source code</h2>
+        {
+          sourceLinks.length > 0
+            ? sourceLinks.map((url) => (
+              <p>
+                <a href={url} target="_blank" rel="noreferrer">{url}</a>
+              </p>
+            ))
+            : <p>Private repository.</p>
+        }
+
+        <h2 class="showcase-live-heading">Live demo</h2>
+        {
+          liveLinks.length > 0
+            ? liveLinks.map((url) => (
+              <p>
+                <a href={url} target="_blank" rel="noreferrer">{url}</a>
+              </p>
+            ))
+            : <p>No public demo.</p>
+        }
+      </section>
+    </div>
+  </div>
+</section>
+
+<style>
+  .project-showcase {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .showcase-tabs {
+    display: grid;
+    grid-template-columns: 1fr minmax(280px, 2fr) 1fr;
+    border: 2px solid var(--portfolio-gallery-border);
+    background: color-mix(in srgb, var(--bg-nav) 90%, transparent);
+  }
+
+  .showcase-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-base);
+    line-height: 1.2;
+    text-align: center;
+    border-right: 2px solid var(--portfolio-gallery-border);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .showcase-tab-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+
+  .showcase-tab-arrow {
+    flex-shrink: 0;
+    font-size: 1.25em;
+    line-height: 1;
+    opacity: 0.6;
+  }
+
+  .showcase-tab--prev {
+    justify-content: flex-start;
+  }
+
+  .showcase-tab--next {
+    justify-content: flex-end;
+  }
+
+  .showcase-tab:last-child {
+    border-right: 0;
+  }
+
+  .showcase-tab--active {
+    background: var(--portfolio-gallery-tab-active);
+    color: var(--text-primary);
+  }
+
+  .showcase-tab--muted {
+    background: var(--portfolio-gallery-tab-muted);
+    color: var(--text-primary);
+    opacity: 0.76;
+    text-decoration: none;
+    transition: opacity 120ms ease;
+  }
+
+  a.showcase-tab--muted:hover,
+  a.showcase-tab--muted:focus-visible {
+    opacity: 1;
+    text-decoration: none;
+  }
+
+  .showcase-tab--disabled {
+    cursor: default;
+    opacity: 0.38;
+  }
+
+  .showcase-shell {
+    background: var(--portfolio-gallery-bg);
+    border: 2px solid var(--portfolio-gallery-border);
+  }
+
+  .showcase-hero {
+    margin: 0;
+    border-bottom: 2px solid var(--portfolio-gallery-border);
+    background: color-mix(in srgb, var(--bg-nav) 86%, transparent);
+  }
+
+  .showcase-hero img,
+  .showcase-hero video {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 240px;
+    max-height: 660px;
+    object-fit: cover;
+  }
+
+  .showcase-strip {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-4);
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    border-bottom: 2px solid var(--portfolio-gallery-border);
+  }
+
+  .showcase-strip li {
+    border: 1px solid var(--portfolio-gallery-border);
+    background: color-mix(in srgb, var(--bg-nav) 82%, transparent);
+    min-height: 88px;
+  }
+
+  .showcase-strip img,
+  .showcase-strip video {
+    width: 100%;
+    height: 100%;
+    min-height: 88px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .showcase-meta {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(240px, 1fr);
+    background: color-mix(in srgb, var(--bg-nav) 90%, transparent);
+  }
+
+  .showcase-meta-block {
+    padding: var(--space-4) var(--space-5) var(--space-5);
+    border-right: 2px solid var(--portfolio-gallery-border);
+  }
+
+  .showcase-meta-block:last-child {
+    border-right: 0;
+  }
+
+  .showcase-meta-block h2 {
+    margin: 0 0 var(--space-3);
+    font-size: clamp(var(--text-xl), 2.2vw, var(--text-2xl));
+    line-height: 1.2;
+  }
+
+  .showcase-meta-block ul {
+    margin: 0;
+    padding-left: var(--space-5);
+    display: grid;
+    gap: var(--space-2);
+    font-size: var(--text-base);
+  }
+
+  .showcase-meta-block p {
+    margin: 0;
+    font-size: var(--text-base);
+  }
+
+  .showcase-meta-block p + p {
+    margin-top: var(--space-2);
+  }
+
+  .showcase-meta-block a {
+    color: var(--text-primary);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.12em;
+    word-break: break-word;
+  }
+
+  .showcase-live-heading {
+    margin-top: var(--space-5);
+  }
+
+  @media (max-width: 860px) {
+    .showcase-tabs {
+      grid-template-columns: 1fr;
+    }
+
+    .showcase-tab {
+      border-right: 0;
+      border-bottom: 2px solid var(--portfolio-gallery-border);
+    }
+
+    .showcase-tab:last-child {
+      border-bottom: 0;
+    }
+
+    .showcase-meta {
+      grid-template-columns: 1fr;
+    }
+
+    .showcase-meta-block {
+      border-right: 0;
+      border-bottom: 2px solid var(--portfolio-gallery-border);
+    }
+
+    .showcase-meta-block:last-child {
+      border-bottom: 0;
+    }
+  }
+</style>

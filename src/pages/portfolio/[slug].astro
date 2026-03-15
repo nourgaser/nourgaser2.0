@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import PageHero from '../../components/astro/PageHero.astro';
+import ProjectShowcaseGallery from '../../components/astro/ProjectShowcaseGallery.astro';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -14,6 +15,23 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
+
+const orderedProjects = (await getCollection('projects')).sort((left, right) => {
+  const leftOrder = left.data.order ?? Number.MAX_SAFE_INTEGER;
+  const rightOrder = right.data.order ?? Number.MAX_SAFE_INTEGER;
+
+  if (leftOrder !== rightOrder) {
+    return leftOrder - rightOrder;
+  }
+
+  return left.data.title.localeCompare(right.data.title);
+});
+
+const projectIndex = orderedProjects.findIndex((entry) => entry.id === project.id);
+const previousProject = projectIndex > 0 ? orderedProjects[projectIndex - 1] : undefined;
+const nextProject = projectIndex >= 0 && projectIndex < orderedProjects.length - 1
+  ? orderedProjects[projectIndex + 1]
+  : undefined;
 ---
 
 <MainLayout title={project.data.title} description={project.data.description ?? project.data.summary}>
@@ -25,44 +43,35 @@ const { Content } = await render(project);
       image={project.data.coverImage ?? '/hero/space3.png'}
       sectionId="project-hero"
       sectionLabel="Project Hero"
-      ctaHref="#project-links"
-      ctaLabel="Jump to links"
+      ctaHref="#project-showcase"
+      ctaLabel="Jump to showcase"
     />
 
     <article class="project-shell">
-      <header class="project-header">
-        {project.data.note && <p class="project-note">{project.data.note}</p>}
-
-        <ul class="project-tags" aria-label={`${project.data.title} tags`}>
-          {project.data.tags.map((tag) => <li>{tag}</li>)}
-        </ul>
-
+      <header class="project-header" data-ngx-section="portfolio-header" data-ngx-label="Project Intro">
         <nav id="project-links" class="project-links" aria-label={`${project.data.title} project links`}>
           <a href="/portfolio/">Back to portfolio</a>
-          {project.data.links?.live && <a href={project.data.links.live} target="_blank" rel="noreferrer">Live</a>}
-          {project.data.links?.source && <a href={project.data.links.source} target="_blank" rel="noreferrer">Source</a>}
-          {project.data.links?.design && <a href={project.data.links.design} target="_blank" rel="noreferrer">Notes</a>}
         </nav>
+
+        {project.data.note && <p class="project-note">{project.data.note}</p>}
       </header>
 
-      {project.data.media.length > 0 && (
-        <section class="project-media" data-ngx-section="portfolio-media" data-ngx-label="Project Media">
-          {
-            project.data.media.map((item) => (
-              <figure class="project-media-item">
-                {item.isVideo ? (
-                  <video controls preload="metadata" playsinline>
-                    <source src={item.path} type="video/mp4" />
-                  </video>
-                ) : (
-                  <img src={item.path} alt={item.alt ?? project.data.title} loading="lazy" />
-                )}
-                {item.alt && <figcaption>{item.alt}</figcaption>}
-              </figure>
-            ))
-          }
-        </section>
-      )}
+      {
+        project.data.media.length > 0 && (
+          <section id="project-showcase">
+            <ProjectShowcaseGallery
+              title={project.data.title}
+              media={project.data.media}
+              tags={project.data.tags}
+              links={project.data.links}
+              previousTitle={previousProject?.data.title}
+              previousSlug={previousProject?.id}
+              nextTitle={nextProject?.data.title}
+              nextSlug={nextProject?.id}
+            />
+          </section>
+        )
+      }
 
       <section class="project-content" data-ngx-section="portfolio-content" data-ngx-label="Project Content">
         <Content />
@@ -74,12 +83,14 @@ const { Content } = await render(project);
 <style>
   .project-page {
     background: #03070f;
-    padding-bottom: var(--space-14);
+    padding-bottom: var(--space-12);
   }
 
   .project-shell {
     width: var(--content-shell-width-desktop);
     margin: var(--space-8) auto;
+    display: grid;
+    gap: var(--space-6);
   }
 
   .project-header {
@@ -88,35 +99,12 @@ const { Content } = await render(project);
     padding: var(--space-5);
     display: grid;
     gap: var(--space-3);
-    margin-bottom: var(--space-8);
   }
 
-  .project-note {
-    margin: 0;
-    max-width: 72ch;
-  }
-
-  .project-note {
-    color: color-mix(in srgb, var(--text-primary) 76%, transparent);
-  }
-
-  .project-tags,
   .project-links {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
-  }
-
-  .project-tags {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .project-tags li {
-    padding: var(--space-1) var(--space-3);
-    border: 1px solid color-mix(in srgb, var(--text-accent) 40%, transparent);
-    font-size: var(--text-sm);
   }
 
   .project-links a {
@@ -124,31 +112,10 @@ const { Content } = await render(project);
     text-decoration: none;
   }
 
-  .project-media {
-    display: grid;
-    gap: var(--space-6);
-    margin-bottom: var(--space-10);
-  }
-
-  .project-media-item {
+  .project-note {
     margin: 0;
-    background: var(--surface-panel);
-    border: 1px solid var(--border-muted-strong);
-    overflow: hidden;
-  }
-
-  .project-media-item img,
-  .project-media-item video {
-    display: block;
-    width: 100%;
-    height: auto;
-    background: #000;
-  }
-
-  .project-media-item figcaption {
-    padding: var(--space-4);
-    color: color-mix(in srgb, var(--text-primary) 86%, transparent);
-    font-size: var(--text-sm);
+    max-width: 72ch;
+    color: color-mix(in srgb, var(--text-primary) 76%, transparent);
   }
 
   .project-content {
@@ -169,6 +136,7 @@ const { Content } = await render(project);
     .project-shell {
       width: var(--content-shell-width-mobile);
       margin-top: var(--content-shell-margin-top-mobile);
+      gap: var(--space-5);
     }
   }
 </style>

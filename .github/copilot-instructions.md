@@ -106,20 +106,51 @@ Do not create CMS integrations or database dependencies.
 
 ## Design Source of Truth
 
+> **MANDATORY**: Before implementing or modifying any visual element, layout, color, spacing, typography, or component appearance, AI agents **must** consult the design sources below. Do not guess, invent, or normalize visual decisions.
+
 The design is defined in the **Figma project**.
 
-Primary source:
+### Required Workflow for Visual Work
 
-* Figma design via MCP access
+1. **Open the Figma file via MCP** (`mcp_com_figma_mcp_get_design_context` or `mcp_com_figma_mcp_get_screenshot`) and inspect the relevant frame/component.
+2. If MCP is unavailable, **check `docs/design/`** for committed screenshots and references.
+3. Only proceed with implementation once you have confirmed the visual intent from those sources.
+4. If neither source is accessible, **stop and ask the user** rather than guessing.
 
-> Design file: <https://www.figma.com/design/YYUSem7sKafNpikrZdCth9/nourgaser.com?t=EQzNu3XrrNRlZfL0-0>
+### Figma File
 
-Fallback sources:
+> <https://www.figma.com/design/YYUSem7sKafNpikrZdCth9/nourgaser.com?t=EQzNu3XrrNRlZfL0-0>
 
-* screenshots committed in the repository
-* design references in `/docs/design/`
+### Fallback
 
-AI agents must **respect the visual intent of the design**.
+* `docs/design/pages/` — page-level screenshots
+* `docs/design/theme/` — theme/color references
+* `docs/design/terminals/` — terminal UI references
+* `docs/design/font/` — typography references
+* `docs/design/logo/` — logo and branding
+
+---
+
+## Legacy Site Reference
+
+The old website lives at `legacy/nourgaser.github.io/` and is the **primary source of truth for content** — projects, skills, and portfolio entries.
+
+AI agents must consult this before writing any content:
+
+* `legacy/nourgaser.github.io/public/data/dirs.json` — index of all portfolio projects
+* `legacy/nourgaser.github.io/public/data/<slug>/data.json` — per-project metadata (title, description, tags, URLs, media)
+* `legacy/nourgaser.github.io/public/data/<slug>/media/` — screenshots and videos for each project
+* `legacy/nourgaser.github.io/index.html` — full original page structure and existing copy
+
+When porting content to the new site:
+
+* Use the legacy `data.json` files as the source for MDX frontmatter (title, description, tags, stack, links).
+* Do **not** invent, fabricate, or assume skills/projects that are not present in the legacy data.
+* Preserve the original project descriptions and notes faithfully; expand only when explicitly asked.
+
+The legacy site is a **reference only** — do not copy its code, dependencies, or structure.
+
+---
 
 The project intentionally uses:
 
@@ -128,9 +159,7 @@ The project intentionally uses:
 * stylized typography
 * experimental UI elements
 
-The goal is **expressive and artistic design**, not corporate UI conformity.
-
-Do not attempt to normalize or standardize the design.
+The goal is **pixel-faithful reproduction** of the Figma design. Do not normalize, simplify, or sanitize it.
 
 ---
 

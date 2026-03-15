@@ -12,9 +12,53 @@ const projects = (await getCollection('projects')).sort((left, right) => {
 
   return left.data.title.localeCompare(right.data.title);
 });
+
+const categoryOrder = [
+  'professional-platforms',
+  'mapping-gis-3d',
+  'web-platforms',
+  'games',
+  'experiments',
+] as const;
+
+const categoryLabels: Record<(typeof categoryOrder)[number], { title: string; description: string }> = {
+  'professional-platforms': {
+    title: 'Professional Platforms',
+    description: 'Client-facing systems, multi-service platforms, and architecture-heavy product delivery.',
+  },
+  'mapping-gis-3d': {
+    title: 'Mapping, GIS & 3D',
+    description: 'Indoor map services, 3D SDK work, geospatial data flows, and navigation tooling.',
+  },
+  'web-platforms': {
+    title: 'Web Platforms & Tools',
+    description: 'Productivity, education, and knowledge-oriented software projects.',
+  },
+  games: {
+    title: 'Games',
+    description: 'Playable systems, mechanics R&D, and game design experiments.',
+  },
+  experiments: {
+    title: 'Experiments',
+    description: 'Focused technical studies and smaller exploratory implementations.',
+  },
+};
+
+const groupedProjects = categoryOrder
+  .map((category) => ({
+    category,
+    projects: projects.filter((project) => project.data.category === category),
+  }))
+  .filter((entry) => entry.projects.length > 0);
+
+const majorProjects = projects.filter(
+  (project) =>
+    project.data.featured &&
+    (project.data.category === 'professional-platforms' || project.data.category === 'mapping-gis-3d')
+);
 ---
 
-<MainLayout title="Portfolio" description="Projects, experiments, and game development work by Nour Gaser.">
+<MainLayout title="Portfolio" description="Categorized portfolio across client platforms, mapping systems, web products, games, and technical experiments by Nour Gaser.">
   <main data-ngx-section="portfolio" data-ngx-label="Portfolio" data-ngx-focusable="true" data-ngx-route="/portfolio">
     <section class="portfolio-page portfolio-hero" aria-labelledby="portfolio-heading">
       <p class="portfolio-kicker">Selected work</p>
@@ -25,51 +69,117 @@ const projects = (await getCollection('projects')).sort((left, right) => {
       </p>
     </section>
 
-    <section class="portfolio-page portfolio-grid" data-ngx-section="portfolio-list" data-ngx-label="Portfolio List">
-      {
-        projects.map((project) => (
-          <article class="portfolio-card">
-            {project.data.coverImage && (
-              <a href={`/portfolio/${project.id}/`} class="portfolio-card-media">
-                <img src={project.data.coverImage} alt={project.data.title} loading="lazy" />
-              </a>
-            )}
+    {
+      majorProjects.length > 0 && (
+        <section class="portfolio-page portfolio-major" data-ngx-section="major-projects" data-ngx-label="Major Projects">
+          <h2>Major Projects</h2>
+          <p class="portfolio-category-intro">
+            Featured large-scope projects spanning consultancy delivery, map platforms, and architecture-led execution.
+          </p>
 
-            <div class="portfolio-card-body">
-              <div class="portfolio-card-meta">
-                <p class="portfolio-status">{project.data.status}</p>
-                {project.data.featured && <p class="portfolio-featured">featured</p>}
-              </div>
-
-              <h2>
-                <a href={`/portfolio/${project.id}/`}>{project.data.title}</a>
-              </h2>
-
-              <p>{project.data.summary}</p>
-
-              {project.data.note && <p class="portfolio-note">{project.data.note}</p>}
-
-              <ul class="portfolio-tags" aria-label={`${project.data.title} tags`}>
-                {project.data.tags.map((tag) => <li>{tag}</li>)}
-              </ul>
-
-              <div class="portfolio-links" aria-label={`${project.data.title} links`}>
-                <a href={`/portfolio/${project.id}/`}>Open</a>
-                {project.data.links?.live && (
-                  <a href={project.data.links.live} target="_blank" rel="noreferrer">Live</a>
+          <div class="portfolio-grid">
+            {majorProjects.map((project) => (
+              <article class="portfolio-card">
+                {project.data.coverImage && (
+                  <a href={`/portfolio/${project.id}/`} class="portfolio-card-media">
+                    <img src={project.data.coverImage} alt={project.data.title} loading="lazy" />
+                  </a>
                 )}
-                {project.data.links?.source && (
-                  <a href={project.data.links.source} target="_blank" rel="noreferrer">Source</a>
+
+                <div class="portfolio-card-body">
+                  <div class="portfolio-card-meta">
+                    <p class="portfolio-status">{project.data.status}</p>
+                    <p class="portfolio-featured">featured</p>
+                  </div>
+
+                  <h3>
+                    <a href={`/portfolio/${project.id}/`}>{project.data.title}</a>
+                  </h3>
+
+                  <p>{project.data.summary}</p>
+
+                  {project.data.note && <p class="portfolio-note">{project.data.note}</p>}
+
+                  <ul class="portfolio-tags" aria-label={`${project.data.title} tags`}>
+                    {project.data.tags.map((tag) => <li>{tag}</li>)}
+                  </ul>
+
+                  <div class="portfolio-links" aria-label={`${project.data.title} links`}>
+                    <a href={`/portfolio/${project.id}/`}>Open</a>
+                    {project.data.links?.live && (
+                      <a href={project.data.links.live} target="_blank" rel="noreferrer">Live</a>
+                    )}
+                    {project.data.links?.source && (
+                      <a href={project.data.links.source} target="_blank" rel="noreferrer">Source</a>
+                    )}
+                    {project.data.links?.design && (
+                      <a href={project.data.links.design} target="_blank" rel="noreferrer">Notes</a>
+                    )}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      groupedProjects.map((entry) => (
+        <section
+          class="portfolio-page portfolio-category"
+          data-ngx-section={`portfolio-${entry.category}`}
+          data-ngx-label={categoryLabels[entry.category].title}
+        >
+          <h2>{categoryLabels[entry.category].title}</h2>
+          <p class="portfolio-category-intro">{categoryLabels[entry.category].description}</p>
+
+          <div class="portfolio-grid">
+            {entry.projects.map((project) => (
+              <article class="portfolio-card">
+                {project.data.coverImage && (
+                  <a href={`/portfolio/${project.id}/`} class="portfolio-card-media">
+                    <img src={project.data.coverImage} alt={project.data.title} loading="lazy" />
+                  </a>
                 )}
-                {project.data.links?.design && (
-                  <a href={project.data.links.design} target="_blank" rel="noreferrer">Notes</a>
-                )}
-              </div>
-            </div>
-          </article>
-        ))
-      }
-    </section>
+
+                <div class="portfolio-card-body">
+                  <div class="portfolio-card-meta">
+                    <p class="portfolio-status">{project.data.status}</p>
+                    {project.data.featured && <p class="portfolio-featured">featured</p>}
+                  </div>
+
+                  <h3>
+                    <a href={`/portfolio/${project.id}/`}>{project.data.title}</a>
+                  </h3>
+
+                  <p>{project.data.summary}</p>
+
+                  {project.data.note && <p class="portfolio-note">{project.data.note}</p>}
+
+                  <ul class="portfolio-tags" aria-label={`${project.data.title} tags`}>
+                    {project.data.tags.map((tag) => <li>{tag}</li>)}
+                  </ul>
+
+                  <div class="portfolio-links" aria-label={`${project.data.title} links`}>
+                    <a href={`/portfolio/${project.id}/`}>Open</a>
+                    {project.data.links?.live && (
+                      <a href={project.data.links.live} target="_blank" rel="noreferrer">Live</a>
+                    )}
+                    {project.data.links?.source && (
+                      <a href={project.data.links.source} target="_blank" rel="noreferrer">Source</a>
+                    )}
+                    {project.data.links?.design && (
+                      <a href={project.data.links.design} target="_blank" rel="noreferrer">Notes</a>
+                    )}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))
+    }
   </main>
 </MainLayout>
 
@@ -103,11 +213,27 @@ const projects = (await getCollection('projects')).sort((left, right) => {
     color: color-mix(in srgb, var(--text-primary) 86%, transparent);
   }
 
+  .portfolio-major,
+  .portfolio-category {
+    padding-bottom: var(--space-10);
+  }
+
+  .portfolio-category h2,
+  .portfolio-major h2 {
+    margin: 0;
+    font-size: clamp(var(--text-2xl), 3vw, 2.25rem);
+  }
+
+  .portfolio-category-intro {
+    margin: var(--space-3) 0 var(--space-6);
+    max-width: 70ch;
+    color: color-mix(in srgb, var(--text-primary) 84%, transparent);
+  }
+
   .portfolio-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--space-8);
-    padding-bottom: var(--space-16);
   }
 
   .portfolio-card {
@@ -143,12 +269,12 @@ const projects = (await getCollection('projects')).sort((left, right) => {
     gap: var(--space-3);
   }
 
-  .portfolio-card-body h2 {
+  .portfolio-card-body h3 {
     margin: var(--space-4) 0 var(--space-3);
     font-size: var(--text-xl);
   }
 
-  .portfolio-card-body h2 a {
+  .portfolio-card-body h3 a {
     color: var(--text-primary);
     text-decoration: none;
   }

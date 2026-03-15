@@ -37,6 +37,7 @@ import { skillCategories } from '../data/skills';
         {
           featuredProfessionalWork.map((item) => (
             <article class="business-card">
+              {item.category && <p class="business-meta">{item.category}</p>}
               <h3>{item.title}</h3>
               <p>{item.description}</p>
               {item.url && (

@@ -21,14 +21,15 @@ export type EducationEntry = {
 export type FeaturedWork = {
   title: string;
   description: string;
+  category?: string;
   url?: string;
 };
 
 export const professionalSummary = {
   headline: 'Software Engineer | MSc Student',
   blurb:
-    'Software engineer with a systems-first mindset across software architecture, cloud infrastructure, and cross-platform product delivery. Co-founder of ANY Solutions, currently pursuing an MSc in Computer Science and serving as a Teaching Assistant at GIU.',
-  businessName: 'ANY Solutions',
+    'Software engineer with a systems-first mindset across architecture, product platforms, and geospatial/3D map systems. Co-founder of an independent consultancy, currently pursuing an MSc in Computer Science and serving as a Teaching Assistant.',
+  businessName: 'Independent Technical Consultancy',
   businessDescription:
     'Egypt-based software house co-founded to provide end-to-end technical consultancy and development, delivering holistic A-Z solutions for business clients.',
 };
@@ -37,12 +38,17 @@ export const coreExpertise: ExpertiseArea[] = [
   {
     title: 'Infrastructure & Architecture',
     description:
-      'Designing resilient cloud environments, network configurations, and automated containerization strategies.',
+      'Designing resilient cloud environments, network configurations, containerized deployments, and production-ready service boundaries.',
   },
   {
-    title: 'Cross-Platform Engineering',
+    title: 'Platform Engineering',
     description:
-      'Building full software ecosystems across web, mobile, and desktop, from database architecture to user experience.',
+      'Building full software ecosystems across backend APIs, admin tooling, customer surfaces, and supporting data layers.',
+  },
+  {
+    title: 'Geospatial & 3D Systems',
+    description:
+      'Developing map-centric systems, indoor navigation workflows, and reusable 3D SDK capabilities for production applications.',
   },
   {
     title: 'Systems & Workflow Optimization',
@@ -54,51 +60,51 @@ export const coreExpertise: ExpertiseArea[] = [
 export const experience: ExperienceEntry[] = [
   {
     role: 'Teaching Assistant',
-    organization: 'German International University (GIU)',
+    organization: 'University Computer Science Department',
     period: 'Sep 2025 - Present',
     location: 'Cairo, Egypt (On-site)',
   },
   {
     role: 'Co-Founder',
-    organization: 'ANY Solutions',
+    organization: 'Independent Technical Consultancy',
     period: 'Mar 2024 - Present',
   },
   {
     role: 'Software Engineer',
-    organization: 'Hoopoe Digital',
+    organization: 'Digital Product Company',
     period: 'Jan 2025 - Aug 2025',
   },
   {
     role: 'Software Engineer',
-    organization: 'Genesis Creations S.A.E',
+    organization: 'Enterprise Commerce Engineering Team',
     period: 'Oct 2024 - Jan 2025',
   },
   {
     role: 'Software Engineer',
-    organization: 'Hoopoe Digital',
+    organization: 'Digital Product Company',
     period: 'Nov 2023 - Oct 2024',
   },
   {
     role: 'Software Support Engineer',
-    organization: 'Bosta',
+    organization: 'Logistics Technology Company',
     period: 'Sep 2023 - Nov 2023',
     location: 'Cairo, Egypt (Hybrid)',
   },
   {
     role: 'Software Engineering Trainee',
-    organization: 'Manara',
+    organization: 'Engineering Training Program',
     period: 'May 2023 - Jul 2023',
     notes:
       'Self-paced interview-preparation training focused on algorithms, clean code, debugging, communication, and mentorship.',
   },
   {
     role: 'Software Programming Instructor',
-    organization: 'iSchool',
+    organization: 'STEM Education Platform',
     period: 'May 2023 - Jun 2023',
   },
   {
     role: 'Software Development Intern',
-    organization: 'Hoopoe Digital',
+    organization: 'Digital Product Company',
     period: 'Jul 2022 - Sep 2022',
   },
 ];
@@ -119,26 +125,38 @@ export const education: EducationEntry[] = [
 
 export const featuredProfessionalWork: FeaturedWork[] = [
   {
-    title: 'ANY Solutions Technical Consultancy',
-    description: 'End-to-end technical consultancy and custom software delivery for business clients.',
+    title: 'Commerce Migration Ecosystem',
+    category: 'Professional Platform',
+    description:
+      'Commerce-focused migration and synchronization pipelines, product/catalog normalization, and operational job tooling at scale.',
   },
   {
-    title: 'Simpleskill',
-    description: 'Self-learning platform for productivists with free time (Django).',
+    title: 'Travel Platform Suite',
+    category: 'Professional Platform',
+    description:
+      'Multi-repo travel platform spanning API architecture, tenant bootstrap flows, and operator-facing admin surfaces on Bun-based workflows.',
   },
   {
-    title: 'Charged Learning',
-    description: 'Puzzle video game designed to gamify learning electric circuits.',
-    url: 'https://cl.nourgaser.com',
+    title: 'Map Core SDK + 3D Map Platform',
+    category: 'Mapping / GIS / 3D',
+    description:
+      'Reusable Three.js map SDK and indoor mapping backend/editor stack with GeoJSON, style/group systems, and 3D model support.',
   },
   {
-    title: 'nourgaser.com / ngxos',
-    description: 'Personal portfolio and custom site engine with terminal-inspired interaction.',
-    url: 'https://nourgaser.com/',
+    title: 'Healthcare Platform',
+    category: 'Professional Platform',
+    description:
+      'Healthcare-domain engineering delivered with confidentiality constraints, focused on maintainable architecture and operational robustness.',
+  },
+  {
+    title: 'Technical Consultancy Practice',
+    category: 'Consultancy',
+    description: 'End-to-end technical consultancy and custom software delivery for business clients across multiple domains.',
   },
 ];
 
 export const currentProjectNotes: string[] = [
-  'Skill-list generator app using machine learning and online VCS hosting APIs.',
-  'Turn-based fighting game blending XCOM-style RNG, MOBA-like character systems, and card-collection loops.',
+  'Expanding categorized portfolio coverage for client platforms, mapping systems, and architecture-heavy engagements.',
+  'Iterating on map-centric tooling and reusable geospatial workflows across backend and SDK boundaries.',
+  'Continuing parallel R&D in learning/productivity tooling and game systems as long-term personal tracks.',
 ];

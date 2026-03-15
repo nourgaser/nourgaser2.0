@@ -12,6 +12,86 @@
     return event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0;
   }
 
+  function getMediaElement(container: ParentNode) {
+    const media = container.querySelector('img, video');
+
+    return media instanceof HTMLImageElement || media instanceof HTMLVideoElement ? media : null;
+  }
+
+  function prepareAsMainMedia(media: HTMLImageElement | HTMLVideoElement) {
+    if (media instanceof HTMLVideoElement) {
+      media.setAttribute('controls', '');
+      media.removeAttribute('muted');
+      media.preload = 'metadata';
+      media.pause();
+      return;
+    }
+
+    media.loading = 'eager';
+  }
+
+  function getMediaKey(media: HTMLImageElement | HTMLVideoElement) {
+    if (media instanceof HTMLImageElement) {
+      return `image:${media.currentSrc || media.getAttribute('src') || ''}`;
+    }
+
+    const source = media.querySelector('source');
+    const sourcePath = source instanceof HTMLSourceElement
+      ? source.getAttribute('src') || ''
+      : media.currentSrc || '';
+
+    return `video:${sourcePath}`;
+  }
+
+  function setSelectedThumb(showcase: HTMLElement, selectedButton: HTMLButtonElement) {
+    const thumbButtons = Array.from(
+      showcase.querySelectorAll('button[data-gallery-thumb="true"]')
+    ).filter((item): item is HTMLButtonElement => item instanceof HTMLButtonElement);
+
+    thumbButtons.forEach((button) => {
+      const isSelected = button === selectedButton;
+      button.classList.toggle('showcase-thumb-button--selected', isSelected);
+      button.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+    });
+  }
+
+  function selectGalleryMedia(thumbButton: HTMLButtonElement) {
+    const showcase = thumbButton.closest('.project-showcase');
+
+    if (!(showcase instanceof HTMLElement)) {
+      return;
+    }
+
+    const mainContainer = showcase.querySelector('[data-gallery-main]');
+
+    if (!(mainContainer instanceof HTMLElement)) {
+      return;
+    }
+
+    const thumbMedia = getMediaElement(thumbButton);
+    const mainMedia = getMediaElement(mainContainer);
+
+    if (!thumbMedia || !mainMedia) {
+      return;
+    }
+
+    const nextMainMedia = thumbMedia.cloneNode(true);
+
+    if (!(nextMainMedia instanceof HTMLImageElement || nextMainMedia instanceof HTMLVideoElement)) {
+      return;
+    }
+
+    if (getMediaKey(mainMedia) === getMediaKey(thumbMedia)) {
+      setSelectedThumb(showcase, thumbButton);
+      return;
+    }
+
+    prepareAsMainMedia(nextMainMedia);
+
+    mainMedia.replaceWith(nextMainMedia);
+    setSelectedThumb(showcase, thumbButton);
+  }
+
   function applyRootAttributes(currentRoot: HTMLElement, nextRoot: HTMLElement) {
     const nextAttributeNames = new Set(Array.from(nextRoot.attributes).map((attribute) => attribute.name));
 
@@ -130,6 +210,14 @@
       const target = event.target;
 
       if (!(target instanceof Element)) {
+        return;
+      }
+
+      const galleryThumb = target.closest('button[data-gallery-thumb="true"]');
+
+      if (galleryThumb instanceof HTMLButtonElement) {
+        event.preventDefault();
+        selectGalleryMedia(galleryThumb);
         return;
       }
 

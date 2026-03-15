@@ -26,7 +26,7 @@ const {
   nextSlug,
 } = Astro.props;
 
-const previewMedia = media.slice(0, 4);
+const previewMedia = media;
 const leadMedia = media[0];
 const sourceLinks = [links?.source].filter((value): value is string => Boolean(value));
 const liveLinks = [links?.live].filter((value): value is string => Boolean(value));
@@ -48,7 +48,7 @@ const liveLinks = [links?.live].filter((value): value is string => Boolean(value
   <div class="showcase-shell">
     {
       leadMedia && (
-        <figure class="showcase-hero">
+        <figure class="showcase-hero" data-gallery-main>
           {leadMedia.isVideo ? (
             <video controls preload="metadata" playsinline>
               <source src={leadMedia.path} type="video/mp4" />
@@ -61,17 +61,26 @@ const liveLinks = [links?.live].filter((value): value is string => Boolean(value
     }
 
     {
-      previewMedia.length > 1 && (
+      previewMedia.length > 0 && (
         <ul class="showcase-strip" aria-label={`${title} gallery previews`}>
           {previewMedia.map((item, index) => (
-            <li>
-              {item.isVideo ? (
-                <video preload="metadata" playsinline muted>
-                  <source src={item.path} type="video/mp4" />
-                </video>
-              ) : (
-                <img src={item.path} alt={item.alt ?? `${title} preview ${index + 1}`} loading="lazy" />
-              )}
+            <li class="showcase-thumb-item">
+              <button
+                type="button"
+                class:list={['showcase-thumb-button', { 'showcase-thumb-button--selected': index === 0 }]}
+                data-gallery-thumb="true"
+                aria-pressed={index === 0 ? 'true' : 'false'}
+                aria-label={`Set preview ${index + 1} as main media`}
+              >
+                {item.isVideo ? (
+                  <video preload="metadata" playsinline muted>
+                    <source src={item.path} type="video/mp4" />
+                  </video>
+                ) : (
+                  <img src={item.path} alt={item.alt ?? `${title} preview ${index + 1}`} loading="lazy" />
+                )}
+                <span class="showcase-thumb-tag">{item.isVideo ? 'video' : 'image'}</span>
+              </button>
             </li>
           ))}
         </ul>
@@ -226,17 +235,59 @@ const liveLinks = [links?.live].filter((value): value is string => Boolean(value
     border-bottom: 2px solid var(--portfolio-gallery-border);
   }
 
-  .showcase-strip li {
+  .showcase-thumb-item {
     border: 1px solid var(--portfolio-gallery-border);
     background: color-mix(in srgb, var(--bg-nav) 82%, transparent);
-    min-height: 88px;
+  }
+
+  .showcase-thumb-button {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    opacity: 0.36;
+    filter: saturate(0.72) brightness(0.78);
+    transition: opacity 120ms ease, filter 120ms ease, box-shadow 120ms ease;
+  }
+
+  .showcase-thumb-button:focus-visible {
+    outline: 1px solid var(--text-accent);
+    outline-offset: -1px;
+  }
+
+  .showcase-thumb-button:hover {
+    opacity: 0.65;
+    filter: saturate(0.88) brightness(0.9);
+  }
+
+  .showcase-thumb-button--selected {
+    opacity: 1;
+    filter: none;
+    box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--text-accent) 70%, transparent);
+  }
+
+  .showcase-thumb-tag {
+    position: absolute;
+    right: var(--space-1);
+    bottom: var(--space-1);
+    display: inline-block;
+    padding: 2px 6px;
+    border: 1px solid var(--portfolio-gallery-border);
+    background: color-mix(in srgb, var(--bg-nav) 84%, transparent);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: color-mix(in srgb, var(--text-primary) 88%, transparent);
+    pointer-events: none;
   }
 
   .showcase-strip img,
   .showcase-strip video {
     width: 100%;
     height: 100%;
-    min-height: 88px;
     object-fit: cover;
     display: block;
   }

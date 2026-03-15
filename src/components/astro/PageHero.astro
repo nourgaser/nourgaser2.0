@@ -76,6 +76,9 @@ const shouldRenderCta = Boolean(ctaHref && ctaLabel);
     border-top: 1px solid var(--hero-strip-border);
     border-bottom: 1px solid var(--hero-strip-border);
     pointer-events: none;
+    
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
   }
 
   .page-hero-copy {

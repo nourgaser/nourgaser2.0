@@ -4,6 +4,7 @@ import MainLayout from '../../layouts/MainLayout.astro';
 import PageHero from '../../components/astro/PageHero.astro';
 import ProjectShowcaseGallery from '../../components/astro/ProjectShowcaseGallery.astro';
 import ProjectNav from '../../components/astro/ProjectNav.astro';
+import PortfolioProjectEnhancer from '../../components/svelte/PortfolioProjectEnhancer.svelte';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -66,7 +67,7 @@ const navGroups = categoryOrder
 ---
 
 <MainLayout title={project.data.title} description={project.data.description ?? project.data.summary}>
-  <main class="project-page" data-ngx-section="portfolio-detail" data-ngx-label={project.data.title} data-ngx-focusable="true" data-ngx-route={`/portfolio/${project.id}`}>
+  <main class="project-page" data-project-page="true" data-ngx-section="portfolio-detail" data-ngx-label={project.data.title} data-ngx-focusable="true" data-ngx-route={`/portfolio/${project.id}`}>
     <PageHero
       kicker={project.data.status}
       title={project.data.title}
@@ -118,6 +119,8 @@ const navGroups = categoryOrder
       </div>
     </article>
   </main>
+
+  <PortfolioProjectEnhancer client:idle rootSelector='main[data-project-page="true"]' />
 </MainLayout>
 
 <style>
@@ -148,6 +151,10 @@ const navGroups = categoryOrder
     display: grid;
     gap: var(--space-6);
     min-width: 0;
+  }
+
+  #project-showcase {
+    scroll-margin-top: calc(var(--nav-height) + var(--space-8));
   }
 
   .project-header {

@@ -35,12 +35,12 @@ const liveLinks = [links?.live].filter((value): value is string => Boolean(value
 <section class="project-showcase" data-ngx-section="portfolio-showcase" data-ngx-label="Project Showcase">
   <div class="showcase-tabs" aria-label="Related project tabs">
     {previousSlug
-      ? <a href={`/portfolio/${previousSlug}/`} class="showcase-tab showcase-tab--muted showcase-tab--prev"><span class="showcase-tab-arrow" aria-hidden="true">‹</span><span class="showcase-tab-label">{previousTitle}</span></a>
+      ? <a href={`/portfolio/${previousSlug}/#project-showcase`} data-project-switch="true" class="showcase-tab showcase-tab--muted showcase-tab--prev"><span class="showcase-tab-arrow" aria-hidden="true">‹</span><span class="showcase-tab-label">{previousTitle}</span></a>
       : <span class="showcase-tab showcase-tab--muted showcase-tab--disabled showcase-tab--prev"><span class="showcase-tab-arrow" aria-hidden="true">‹</span><span class="showcase-tab-label">{previousTitle ?? 'First project'}</span></span>
     }
     <span class="showcase-tab showcase-tab--active">{title}</span>
     {nextSlug
-      ? <a href={`/portfolio/${nextSlug}/`} class="showcase-tab showcase-tab--muted showcase-tab--next"><span class="showcase-tab-label">{nextTitle}</span><span class="showcase-tab-arrow" aria-hidden="true">&#8250;</span></a>
+      ? <a href={`/portfolio/${nextSlug}/#project-showcase`} data-project-switch="true" class="showcase-tab showcase-tab--muted showcase-tab--next"><span class="showcase-tab-label">{nextTitle}</span><span class="showcase-tab-arrow" aria-hidden="true">&#8250;</span></a>
       : <span class="showcase-tab showcase-tab--muted showcase-tab--disabled showcase-tab--next"><span class="showcase-tab-label">{nextTitle ?? 'Last project'}</span><span class="showcase-tab-arrow" aria-hidden="true">&#8250;</span></span>
     }
   </div>
@@ -183,6 +183,11 @@ const liveLinks = [links?.live].filter((value): value is string => Boolean(value
   a.showcase-tab--muted:focus-visible {
     opacity: 1;
     text-decoration: none;
+  }
+
+  :global(main[data-project-loading="true"]) a.showcase-tab[data-project-switch="true"] {
+    pointer-events: none;
+    opacity: 0.42;
   }
 
   .showcase-tab--disabled {

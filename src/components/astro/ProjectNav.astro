@@ -34,7 +34,8 @@ const { currentSlug, groups } = Astro.props;
             {group.projects.map((entry) => (
               <li>
                 <a
-                  href={`/portfolio/${entry.id}/`}
+                  href={`/portfolio/${entry.id}/#project-showcase`}
+                  data-project-switch="true"
                   class:list={['project-nav-item', { 'project-nav-item--active': entry.id === currentSlug }]}
                   aria-current={entry.id === currentSlug ? 'page' : undefined}
                 >
@@ -57,7 +58,8 @@ const { currentSlug, groups } = Astro.props;
           {group.projects.map((entry) => (
             <li>
               <a
-                href={`/portfolio/${entry.id}/`}
+                href={`/portfolio/${entry.id}/#project-showcase`}
+                data-project-switch="true"
                 class:list={['project-nav-item', { 'project-nav-item--active': entry.id === currentSlug }]}
                 aria-current={entry.id === currentSlug ? 'page' : undefined}
                 tabindex="-1"
@@ -129,6 +131,11 @@ const { currentSlug, groups } = Astro.props;
     color: var(--text-primary);
     border-left-color: var(--text-accent);
     background: color-mix(in srgb, var(--bg-terminal-header) 64%, transparent);
+  }
+
+  :global(main[data-project-loading="true"]) .project-nav-item[data-project-switch="true"] {
+    pointer-events: none;
+    opacity: 0.42;
   }
 
   /* ── Mobile: <details> collapsible ──────────────────────────── */

@@ -1,20 +1,27 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import PageHero from '../components/astro/PageHero.astro';
 ---
 
 <MainLayout title="Resume" description="Latest resume for Nour Gaser Algendi.">
-  <main data-ngx-section="resume" data-ngx-label="Resume" data-ngx-focusable="true" data-ngx-route="/resume">
-    <section class="resume-page resume-hero" aria-labelledby="resume-heading">
-      <p class="resume-kicker">Professional document</p>
-      <h1 id="resume-heading">Resume</h1>
-      <p>Download or preview the latest resume.</p>
+  <main class="resume-page" data-ngx-section="resume" data-ngx-label="Resume" data-ngx-focusable="true" data-ngx-route="/resume">
+    <PageHero
+      kicker="Professional document"
+      title="Resume"
+      description="Download or preview the latest resume."
+      image="/hero/galaxy.png"
+      sectionId="resume-hero"
+      sectionLabel="Resume Hero"
+    />
+
+    <section class="resume-shell" data-ngx-section="resume-links" data-ngx-label="Resume Links">
       <p class="resume-actions">
         <a href="/resume-nour-gaser-jan-2026.pdf" download>Download PDF</a>
         <a href="/business">Go to business profile</a>
       </p>
     </section>
 
-    <section class="resume-page resume-preview" data-ngx-section="resume-preview" data-ngx-label="Resume Preview">
+    <section class="resume-shell resume-preview" data-ngx-section="resume-preview" data-ngx-label="Resume Preview">
       <iframe src="/resume-nour-gaser-jan-2026.pdf" title="Resume PDF preview"></iframe>
     </section>
   </main>
@@ -22,28 +29,13 @@ import MainLayout from '../layouts/MainLayout.astro';
 
 <style>
   .resume-page {
-    width: min(1120px, calc(100% - (var(--space-10) * 2)));
-    margin: 0 auto;
+    background: #03070f;
+    padding-bottom: var(--space-14);
   }
 
-  .resume-hero {
-    padding: var(--space-16) 0 var(--space-8);
-    display: grid;
-    gap: var(--space-4);
-  }
-
-  .resume-kicker {
-    color: var(--text-accent);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: var(--text-sm);
-    margin: 0;
-  }
-
-  .resume-hero h1 {
-    margin: 0;
-    font-size: clamp(var(--text-2xl), 6vw, 4rem);
-    line-height: var(--leading-tight);
+  .resume-shell {
+    width: min(1240px, calc(100% - (var(--space-8) * 2)));
+    margin: var(--space-8) auto 0;
   }
 
   .resume-actions {
@@ -51,6 +43,9 @@ import MainLayout from '../layouts/MainLayout.astro';
     flex-wrap: wrap;
     gap: var(--space-3);
     margin: 0;
+    background: rgba(8, 12, 22, 0.72);
+    border: 1px solid rgba(100, 157, 226, 0.6);
+    padding: var(--space-4);
   }
 
   .resume-actions a {
@@ -60,25 +55,21 @@ import MainLayout from '../layouts/MainLayout.astro';
     padding: var(--space-2) var(--space-4);
   }
 
-  .resume-preview {
-    padding-bottom: var(--space-16);
-  }
-
   .resume-preview iframe {
     width: 100%;
     min-height: 72vh;
-    border: 1px solid color-mix(in srgb, var(--text-accent) 20%, transparent);
-    border-radius: var(--radius-md);
-    background: color-mix(in srgb, var(--bg-terminal) 92%, transparent);
+    border: 1px solid rgba(100, 157, 226, 0.6);
+    background: rgba(8, 12, 22, 0.72);
   }
 
   @media (max-width: 720px) {
     .resume-page {
-      width: min(100% - (var(--space-4) * 2), 1120px);
+      padding-bottom: var(--space-10);
     }
 
-    .resume-hero {
-      padding-top: var(--space-10);
+    .resume-shell {
+      width: min(100% - (var(--space-4) * 2), 1240px);
+      margin-top: var(--space-6);
     }
 
     .resume-preview iframe {

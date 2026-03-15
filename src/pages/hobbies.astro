@@ -1,5 +1,6 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import PageHero from '../components/astro/PageHero.astro';
 ---
 
 <MainLayout
@@ -7,15 +8,14 @@ import MainLayout from '../layouts/MainLayout.astro';
   description="Personal interests: game design and development, learning and academia, reading and writing, and intentional digital living."
 >
   <main class="hobbies-page" data-ngx-section="hobbies" data-ngx-label="Hobbies" data-ngx-focusable="true" data-ngx-route="/hobbies">
-    <header class="hobbies-hero">
-      <p class="hobbies-kicker">Life Outside Work</p>
-      <h1>Hobbies</h1>
-
-      <p class="hobbies-lead">
-        Outside of work, most of my time goes into building, learning, and reflecting. I enjoy hobbies that are
-        creative, technical, and meaningful over the long term.
-      </p>
-    </header>
+    <PageHero
+      kicker="Life Outside Work"
+      title="Hobbies"
+      description="Outside of work, most of my time goes into building, learning, and reflecting. I enjoy hobbies that are creative, technical, and meaningful over the long term."
+      image="/hero/space3.png"
+      sectionId="hobbies-hero"
+      sectionLabel="Hobbies Hero"
+    />
 
     <section
       class="hobby-card"
@@ -111,47 +111,17 @@ import MainLayout from '../layouts/MainLayout.astro';
 
 <style>
   .hobbies-page {
-    width: min(1120px, calc(100% - (var(--space-10) * 2)));
-    margin: 0 auto;
+    background: #03070f;
     padding-bottom: var(--space-14);
-    display: grid;
-    gap: var(--space-6);
-  }
-
-  .hobbies-hero {
-    display: grid;
-    gap: var(--space-3);
-    padding-top: var(--space-16);
-    margin-bottom: var(--space-2);
-    max-width: 78ch;
-    text-align: left;
-  }
-
-  .hobbies-kicker {
-    margin: 0;
-    color: var(--text-accent);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: var(--text-sm);
-  }
-
-  .hobbies-hero h1 {
-    margin: 0;
-    line-height: var(--leading-tight);
-    font-size: clamp(var(--text-2xl), 6vw, 4rem);
-  }
-
-  .hobbies-lead {
-    margin: 0;
-    color: var(--text-primary);
   }
 
   .hobby-card {
+    width: min(1240px, calc(100% - (var(--space-8) * 2)));
+    margin: var(--space-8) auto 0;
     position: relative;
     padding: var(--space-5);
-    border: 1px solid color-mix(in srgb, var(--text-accent) 20%, transparent);
-    border-radius: var(--radius-lg);
-    background: color-mix(in srgb, var(--bg-terminal) 92%, transparent);
+    border: 1px solid rgba(100, 157, 226, 0.6);
+    background: rgba(8, 12, 22, 0.72);
     display: grid;
     gap: var(--space-3);
   }
@@ -164,8 +134,6 @@ import MainLayout from '../layouts/MainLayout.astro';
     width: 100%;
     height: 2px;
     background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--text-accent) 70%, white), transparent);
-    border-top-left-radius: var(--radius-lg);
-    border-top-right-radius: var(--radius-lg);
   }
 
   .hobby-card h2,
@@ -201,14 +169,12 @@ import MainLayout from '../layouts/MainLayout.astro';
 
   @media (max-width: 780px) {
     .hobbies-page {
-      width: min(100% - (var(--space-4) * 2), 1120px);
-    }
-
-    .hobbies-hero {
-      padding-top: var(--space-10);
+      padding-bottom: var(--space-10);
     }
 
     .hobby-card {
+      width: min(100% - (var(--space-4) * 2), 1240px);
+      margin-top: var(--space-6);
       padding: var(--space-4);
     }
   }

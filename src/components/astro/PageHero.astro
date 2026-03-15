@@ -1,0 +1,152 @@
+---
+interface Props {
+  kicker: string;
+  title: string;
+  description?: string;
+  image: string;
+  ctaHref?: string;
+  ctaLabel?: string;
+  sectionId?: string;
+  sectionLabel?: string;
+}
+
+const {
+  kicker,
+  title,
+  description,
+  image,
+  ctaHref,
+  ctaLabel,
+  sectionId,
+  sectionLabel,
+} = Astro.props;
+
+const shouldRenderCta = Boolean(ctaHref && ctaLabel);
+---
+
+<section
+  class="page-hero"
+  data-ngx-section={sectionId ?? 'page-hero'}
+  data-ngx-label={sectionLabel ?? title}
+  style={`--page-hero-image: url('${image}')`}
+>
+  <div class="page-hero-inner">
+    <div class="page-hero-copy">
+      <p class="page-hero-kicker">{kicker}</p>
+      <h1>{title}</h1>
+      {description && <p class="page-hero-description">{description}</p>}
+      {shouldRenderCta && (
+        <a class="page-hero-cta" href={ctaHref}>
+          {ctaLabel}
+        </a>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    margin-top: var(--space-2);
+    min-height: 390px;
+    background:
+      linear-gradient(to bottom, rgba(3, 8, 17, 0.3), rgba(3, 8, 17, 0.55)),
+      var(--page-hero-image) center center / cover no-repeat;
+    border-top: 1px solid rgba(101, 152, 210, 0.38);
+    border-bottom: 1px solid rgba(101, 152, 210, 0.38);
+    display: flex;
+    align-items: center;
+  }
+
+  .page-hero-inner {
+    position: relative;
+    width: min(1240px, calc(100% - (var(--space-8) * 2)));
+    margin: 0 auto;
+    padding: var(--space-8) 0;
+  }
+
+  .page-hero-inner::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    top: var(--space-2);
+    bottom: var(--space-2);
+    background: rgba(8, 13, 23, 0.42);
+    border-top: 1px solid rgba(101, 152, 210, 0.26);
+    border-bottom: 1px solid rgba(101, 152, 210, 0.26);
+    pointer-events: none;
+  }
+
+  .page-hero-copy {
+    position: relative;
+    z-index: 1;
+    width: min(600px, 100%);
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .page-hero-kicker {
+    margin: 0;
+    font-size: clamp(var(--text-xl), 3.3vw, 2.1rem);
+    line-height: var(--leading-tight);
+  }
+
+  .page-hero h1 {
+    margin: 0;
+    font-size: clamp(var(--text-2xl), 5.4vw, 4rem);
+    line-height: var(--leading-tight);
+  }
+
+  .page-hero-description {
+    margin: 0;
+    font-size: clamp(var(--text-base), 2vw, var(--text-xl));
+    max-width: 40ch;
+  }
+
+  .page-hero-cta {
+    margin-top: var(--space-4);
+    display: inline-block;
+    width: fit-content;
+    padding: var(--space-2) var(--space-4);
+    background: #2d5f92;
+    border: 1px solid #4a7fb8;
+    color: #e8f0ff;
+    text-decoration: none;
+    font-size: var(--text-sm);
+  }
+
+  .page-hero-cta:hover {
+    background: #366ca3;
+  }
+
+  @media (max-width: 720px) {
+    .page-hero {
+      margin-top: var(--space-4);
+      min-height: 280px;
+      background-position: 60% center;
+    }
+
+    .page-hero-inner {
+      width: min(100% - (var(--space-4) * 2), 1240px);
+      padding: var(--space-6) 0;
+    }
+
+    .page-hero-copy {
+      width: min(440px, 100%);
+    }
+
+    .page-hero-inner::before {
+      top: var(--space-1);
+      bottom: var(--space-1);
+    }
+
+    .page-hero-kicker {
+      font-size: var(--text-lg);
+    }
+
+    .page-hero-description {
+      font-size: var(--text-base);
+    }
+  }
+</style>

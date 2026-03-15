@@ -171,8 +171,23 @@ import MainLayout from '../layouts/MainLayout.astro';
   }
 
   .about-hero-inner {
+    position: relative;
     padding: var(--space-8) 0;
     margin: 0 auto;
+  }
+
+  .about-hero-inner::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    top: var(--space-2);
+    bottom: var(--space-2);
+    background: rgba(8, 13, 23, 0.42);
+    border-top: 1px solid rgba(101, 152, 210, 0.26);
+    border-bottom: 1px solid rgba(101, 152, 210, 0.26);
+    pointer-events: none;
   }
 
   .about-hero-copy {
@@ -181,21 +196,6 @@ import MainLayout from '../layouts/MainLayout.astro';
     width: min(560px, 100%);
     display: grid;
     gap: var(--space-3);
-  }
-
-  .about-hero-copy::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100vw;
-    top: -22px;
-    bottom: -22px;
-    background: rgba(8, 13, 23, 0.42);
-    border-top: 1px solid rgba(101, 152, 210, 0.26);
-    border-bottom: 1px solid rgba(101, 152, 210, 0.26);
-    z-index: -1;
-    pointer-events: none;
   }
 
   .about-kicker {
@@ -341,9 +341,9 @@ import MainLayout from '../layouts/MainLayout.astro';
       width: min(440px, 100%);
     }
 
-    .about-hero-copy::before {
-      top: -16px;
-      bottom: -16px;
+    .about-hero-inner::before {
+      top: var(--space-1);
+      bottom: var(--space-1);
     }
 
     .about-kicker {

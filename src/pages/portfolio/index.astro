@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
+import PageHero from '../../components/astro/PageHero.astro';
 
 const projects = (await getCollection('projects')).sort((left, right) => {
   const leftOrder = left.data.order ?? Number.MAX_SAFE_INTEGER;
@@ -59,19 +60,19 @@ const majorProjects = projects.filter(
 ---
 
 <MainLayout title="Portfolio" description="Categorized portfolio across client platforms, mapping systems, web products, games, and technical experiments by Nour Gaser.">
-  <main data-ngx-section="portfolio" data-ngx-label="Portfolio" data-ngx-focusable="true" data-ngx-route="/portfolio">
-    <section class="portfolio-page portfolio-hero" aria-labelledby="portfolio-heading">
-      <p class="portfolio-kicker">Selected work</p>
-      <h1 id="portfolio-heading">Portfolio</h1>
-      <p class="portfolio-intro">
-        A growing archive of games, software projects, prototypes, and technical experiments, rebuilt as crawlable
-        content with room for broader professional work.
-      </p>
-    </section>
+  <main class="portfolio-page" data-ngx-section="portfolio" data-ngx-label="Portfolio" data-ngx-focusable="true" data-ngx-route="/portfolio">
+    <PageHero
+      kicker="Selected work"
+      title="Portfolio"
+      description="A growing archive of games, software projects, prototypes, and technical experiments, rebuilt as crawlable content with room for broader professional work."
+      image="/hero/spaceship.png"
+      sectionId="portfolio-hero"
+      sectionLabel="Portfolio Hero"
+    />
 
     {
       majorProjects.length > 0 && (
-        <section class="portfolio-page portfolio-major" data-ngx-section="major-projects" data-ngx-label="Major Projects">
+        <section class="portfolio-shell portfolio-major" data-ngx-section="major-projects" data-ngx-label="Major Projects">
           <h2>Major Projects</h2>
           <p class="portfolio-category-intro">
             Featured large-scope projects spanning consultancy delivery, map platforms, and architecture-led execution.
@@ -127,7 +128,7 @@ const majorProjects = projects.filter(
     {
       groupedProjects.map((entry) => (
         <section
-          class="portfolio-page portfolio-category"
+          class="portfolio-shell portfolio-category"
           data-ngx-section={`portfolio-${entry.category}`}
           data-ngx-label={categoryLabels[entry.category].title}
         >
@@ -185,37 +186,21 @@ const majorProjects = projects.filter(
 
 <style>
   .portfolio-page {
-    width: min(1120px, calc(100% - (var(--space-10) * 2)));
-    margin: 0 auto;
+    background: #03070f;
+    padding-bottom: var(--space-14);
   }
 
-  .portfolio-hero {
-    padding: var(--space-16) 0 var(--space-10);
+  .portfolio-shell {
+    width: min(1240px, calc(100% - (var(--space-8) * 2)));
+    margin: var(--space-8) auto 0;
   }
 
-  .portfolio-kicker,
   .portfolio-status,
   .portfolio-featured {
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text-accent);
     font-size: var(--text-sm);
-  }
-
-  .portfolio-hero h1 {
-    margin: var(--space-2) 0 var(--space-4);
-    font-size: clamp(var(--text-2xl), 6vw, 4rem);
-    line-height: var(--leading-tight);
-  }
-
-  .portfolio-intro {
-    max-width: 58ch;
-    color: color-mix(in srgb, var(--text-primary) 86%, transparent);
-  }
-
-  .portfolio-major,
-  .portfolio-category {
-    padding-bottom: var(--space-10);
   }
 
   .portfolio-category h2,
@@ -237,11 +222,9 @@ const majorProjects = projects.filter(
   }
 
   .portfolio-card {
-    background: color-mix(in srgb, var(--bg-terminal) 92%, transparent);
-    border: 1px solid color-mix(in srgb, var(--text-accent) 18%, transparent);
-    border-radius: var(--radius-lg);
+    background: rgba(8, 12, 22, 0.72);
+    border: 1px solid rgba(100, 157, 226, 0.6);
     overflow: hidden;
-    box-shadow: var(--shadow-terminal);
   }
 
   .portfolio-card-media {
@@ -291,8 +274,7 @@ const majorProjects = projects.filter(
 
   .portfolio-tags li {
     padding: var(--space-1) var(--space-3);
-    border: 1px solid color-mix(in srgb, var(--text-accent) 25%, transparent);
-    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--text-accent) 40%, transparent);
     font-size: var(--text-sm);
     color: color-mix(in srgb, var(--text-primary) 88%, transparent);
   }
@@ -308,11 +290,12 @@ const majorProjects = projects.filter(
 
   @media (max-width: 720px) {
     .portfolio-page {
-      width: min(100% - (var(--space-4) * 2), 1120px);
+      padding-bottom: var(--space-10);
     }
 
-    .portfolio-hero {
-      padding-top: var(--space-10);
+    .portfolio-shell {
+      width: min(100% - (var(--space-4) * 2), 1240px);
+      margin-top: var(--space-6);
     }
   }
 </style>

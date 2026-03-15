@@ -1,5 +1,6 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import PageHero from '../components/astro/PageHero.astro';
 import {
   coreExpertise,
   currentProjectNotes,
@@ -12,19 +13,29 @@ import { skillCategories } from '../data/skills';
 ---
 
 <MainLayout title="Business" description="Business and academic profile, expertise, experience, and skills for technical consultancy and engineering work.">
-  <main data-ngx-section="business" data-ngx-label="Business" data-ngx-focusable="true" data-ngx-route="/business">
-    <section class="business-page business-hero" aria-labelledby="business-heading">
-      <p class="business-kicker">Business and Profession</p>
-      <h1 id="business-heading">Business</h1>
-      <p class="business-headline">{professionalSummary.headline}</p>
-      <p>{professionalSummary.blurb}</p>
-      <p>{professionalSummary.businessDescription}</p>
+  <main class="business-page" data-ngx-section="business" data-ngx-label="Business" data-ngx-focusable="true" data-ngx-route="/business">
+    <PageHero
+      kicker="Business and Profession"
+      title="Business"
+      description={professionalSummary.headline}
+      image="/hero/massive_spaceship.png"
+      sectionId="business-hero"
+      sectionLabel="Business Hero"
+      ctaHref="#business-profile"
+      ctaLabel="Open profile"
+    />
+
+    <section id="business-profile" class="business-shell" data-ngx-section="business-summary" data-ngx-label="Business Summary">
+      <article class="business-panel">
+        <p class="business-headline">{professionalSummary.blurb}</p>
+        <p>{professionalSummary.businessDescription}</p>
+      </article>
     </section>
 
-    <section class="business-page business-grid" data-ngx-section="core-expertise" data-ngx-label="Core Expertise">
+    <section class="business-shell business-grid" data-ngx-section="core-expertise" data-ngx-label="Core Expertise">
       {
         coreExpertise.map((area) => (
-          <article class="business-card">
+          <article class="business-panel">
             <h2>{area.title}</h2>
             <p>{area.description}</p>
           </article>
@@ -32,12 +43,12 @@ import { skillCategories } from '../data/skills';
       }
     </section>
 
-    <section class="business-page" data-ngx-section="featured-work" data-ngx-label="Featured Work">
+    <section class="business-shell" data-ngx-section="featured-work" data-ngx-label="Featured Work">
       <h2 class="business-section-title">Featured Work</h2>
       <div class="business-list">
         {
           featuredProfessionalWork.map((item) => (
-            <article class="business-card">
+            <article class="business-panel">
               {item.category && <p class="business-meta">{item.category}</p>}
               <h3>{item.title}</h3>
               <p>{item.description}</p>
@@ -52,13 +63,13 @@ import { skillCategories } from '../data/skills';
       </div>
     </section>
 
-    <section class="business-page business-columns" data-ngx-section="experience-and-education" data-ngx-label="Experience and Education">
+    <section class="business-shell business-columns" data-ngx-section="experience-and-education" data-ngx-label="Experience and Education">
       <article>
         <h2 class="business-section-title">Experience</h2>
         <div class="business-list">
           {
             experience.map((entry) => (
-              <article class="business-card">
+              <article class="business-panel">
                 <h3>{entry.role}</h3>
                 <p>{entry.organization}</p>
                 <p class="business-meta">{entry.period}</p>
@@ -75,7 +86,7 @@ import { skillCategories } from '../data/skills';
         <div class="business-list">
           {
             education.map((entry) => (
-              <article class="business-card">
+              <article class="business-panel">
                 <h3>{entry.degree}</h3>
                 <p>{entry.institution}</p>
                 <p class="business-meta">{entry.period}</p>
@@ -87,12 +98,12 @@ import { skillCategories } from '../data/skills';
       </article>
     </section>
 
-    <section class="business-page" data-ngx-section="skills" data-ngx-label="Skills">
+    <section class="business-shell" data-ngx-section="skills" data-ngx-label="Skills">
       <h2 class="business-section-title">Skills</h2>
       <div class="business-list">
         {
           skillCategories.map((category) => (
-            <article class="business-card">
+            <article class="business-panel">
               <h3>{category.name}</h3>
               <ul class="business-tags">
                 {category.items.map((item) => <li>{item}</li>)}
@@ -103,9 +114,9 @@ import { skillCategories } from '../data/skills';
       </div>
     </section>
 
-    <section class="business-page" data-ngx-section="current-project-notes" data-ngx-label="Current Project Notes">
+    <section class="business-shell" data-ngx-section="current-project-notes" data-ngx-label="Current Project Notes">
       <h2 class="business-section-title">Current Notes</h2>
-      <article class="business-card">
+      <article class="business-panel">
         <ul class="business-notes">
           {currentProjectNotes.map((note) => <li>{note}</li>)}
         </ul>
@@ -116,22 +127,15 @@ import { skillCategories } from '../data/skills';
 
 <style>
   .business-page {
-    width: min(1120px, calc(100% - (var(--space-10) * 2)));
-    margin: 0 auto;
+    background: #03070f;
+    padding-bottom: var(--space-14);
   }
 
-  .business-hero {
-    padding: var(--space-16) 0 var(--space-10);
-    display: grid;
-    gap: var(--space-4);
-    text-align: left;
+  .business-shell {
+    width: min(1240px, calc(100% - (var(--space-8) * 2)));
+    margin: var(--space-8) auto 0;
   }
 
-  .business-hero > p:not(.business-kicker) {
-    max-width: 76ch;
-  }
-
-  .business-kicker,
   .business-meta {
     color: var(--text-accent);
     text-transform: uppercase;
@@ -139,26 +143,16 @@ import { skillCategories } from '../data/skills';
     font-size: var(--text-sm);
   }
 
-  .business-hero h1,
-  .business-section-title {
-    margin: 0;
-    line-height: var(--leading-tight);
-  }
-
-  .business-hero h1 {
-    font-size: clamp(var(--text-2xl), 6vw, 4rem);
-  }
-
   .business-headline {
     margin: 0;
-    font-size: clamp(var(--text-lg), 2.5vw, var(--text-2xl));
-    line-height: var(--leading-tight);
-    color: color-mix(in srgb, var(--text-primary) 90%, transparent);
+    font-size: clamp(var(--text-base), 2vw, var(--text-xl));
   }
 
   .business-section-title {
-    margin-bottom: var(--space-5);
+    margin: 0;
     font-size: clamp(var(--text-xl), 3vw, 2.25rem);
+    line-height: var(--leading-tight);
+    margin-bottom: var(--space-4);
   }
 
   .business-grid {
@@ -177,25 +171,23 @@ import { skillCategories } from '../data/skills';
   .business-list {
     display: grid;
     gap: var(--space-5);
-    margin-bottom: var(--space-10);
   }
 
-  .business-card {
+  .business-panel {
     padding: var(--space-5);
-    background: color-mix(in srgb, var(--bg-terminal) 92%, transparent);
-    border: 1px solid color-mix(in srgb, var(--text-accent) 16%, transparent);
-    border-radius: var(--radius-lg);
+    background: rgba(8, 12, 22, 0.72);
+    border: 1px solid rgba(100, 157, 226, 0.6);
     display: grid;
     gap: var(--space-3);
   }
 
-  .business-card h2,
-  .business-card h3,
-  .business-card p {
+  .business-panel h2,
+  .business-panel h3,
+  .business-panel p {
     margin: 0;
   }
 
-  .business-card a {
+  .business-panel a {
     color: var(--text-accent);
   }
 
@@ -210,8 +202,7 @@ import { skillCategories } from '../data/skills';
 
   .business-tags li {
     padding: var(--space-1) var(--space-3);
-    border: 1px solid color-mix(in srgb, var(--text-accent) 24%, transparent);
-    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--text-accent) 38%, transparent);
     font-size: var(--text-sm);
   }
 
@@ -231,11 +222,12 @@ import { skillCategories } from '../data/skills';
 
   @media (max-width: 720px) {
     .business-page {
-      width: min(100% - (var(--space-4) * 2), 1120px);
+      padding-bottom: var(--space-10);
     }
 
-    .business-hero {
-      padding-top: var(--space-10);
+    .business-shell {
+      width: min(100% - (var(--space-4) * 2), 1240px);
+      margin-top: var(--space-6);
     }
   }
 </style>

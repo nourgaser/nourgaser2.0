@@ -1,19 +1,21 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import PageHero from '../components/astro/PageHero.astro';
 import { skillCategories } from '../data/skills';
 ---
 
 <MainLayout title="Skills" description="Current skills and technical strengths across engineering, infrastructure, and creative development.">
-  <main data-ngx-section="skills" data-ngx-label="Skills" data-ngx-focusable="true" data-ngx-route="/skills">
-    <section class="skills-page skills-hero" aria-labelledby="skills-heading">
-      <p class="skills-kicker">Skills and strengths</p>
-      <h1 id="skills-heading">Skills</h1>
-      <p>
-        Curated from current professional experience, public projects, and ongoing research work.
-      </p>
-    </section>
+  <main class="skills-page" data-ngx-section="skills" data-ngx-label="Skills" data-ngx-focusable="true" data-ngx-route="/skills">
+    <PageHero
+      kicker="Skills and strengths"
+      title="Skills"
+      description="Curated from current professional experience, public projects, and ongoing research work."
+      image="/hero/double_sunset.png"
+      sectionId="skills-hero"
+      sectionLabel="Skills Hero"
+    />
 
-    <section class="skills-page skills-grid" data-ngx-section="skills-categories" data-ngx-label="Skill Categories">
+    <section class="skills-shell skills-grid" data-ngx-section="skills-categories" data-ngx-label="Skill Categories">
       {
         skillCategories.map((category) => (
           <article class="skills-card">
@@ -30,45 +32,24 @@ import { skillCategories } from '../data/skills';
 
 <style>
   .skills-page {
-    width: min(1120px, calc(100% - (var(--space-10) * 2)));
-    margin: 0 auto;
+    background: #03070f;
+    padding-bottom: var(--space-14);
   }
 
-  .skills-hero {
-    padding: var(--space-16) 0 var(--space-10);
-    display: grid;
-    gap: var(--space-4);
-  }
-
-  .skills-hero > p:not(.skills-kicker) {
-    max-width: 74ch;
-  }
-
-  .skills-kicker {
-    color: var(--text-accent);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: var(--text-sm);
-    margin: 0;
-  }
-
-  .skills-hero h1 {
-    margin: 0;
-    line-height: var(--leading-tight);
-    font-size: clamp(var(--text-2xl), 6vw, 4rem);
+  .skills-shell {
+    width: min(1240px, calc(100% - (var(--space-8) * 2)));
+    margin: var(--space-8) auto 0;
   }
 
   .skills-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
     gap: var(--space-6);
-    padding-bottom: var(--space-16);
   }
 
   .skills-card {
-    background: color-mix(in srgb, var(--bg-terminal) 92%, transparent);
-    border: 1px solid color-mix(in srgb, var(--text-accent) 16%, transparent);
-    border-radius: var(--radius-lg);
+    background: rgba(8, 12, 22, 0.72);
+    border: 1px solid rgba(100, 157, 226, 0.6);
     padding: var(--space-5);
   }
 
@@ -86,11 +67,12 @@ import { skillCategories } from '../data/skills';
 
   @media (max-width: 720px) {
     .skills-page {
-      width: min(100% - (var(--space-4) * 2), 1120px);
+      padding-bottom: var(--space-10);
     }
 
-    .skills-hero {
-      padding-top: var(--space-10);
+    .skills-shell {
+      width: min(100% - (var(--space-4) * 2), 1240px);
+      margin-top: var(--space-6);
     }
   }
 </style>

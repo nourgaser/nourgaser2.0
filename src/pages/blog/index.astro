@@ -1,0 +1,109 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import PageHero from '../../components/astro/PageHero.astro';
+
+const blogEntries = [
+  {
+    title: 'Building ngxos as progressive enhancement',
+    summary: 'Why the runtime layer stays optional and how semantic Astro pages remain the source of truth.',
+    href: '/portfolio/',
+    label: 'Related work',
+  },
+  {
+    title: 'Architecture notes from map and platform projects',
+    summary: 'A practical record of decisions from geospatial SDKs, platform migrations, and product delivery work.',
+    href: '/portfolio/',
+    label: 'Portfolio archive',
+  },
+  {
+    title: 'Creative engineering and personal workflows',
+    summary: 'Reflections on balancing experimentation, performance, and maintainability in personal systems.',
+    href: '/',
+    label: 'About me',
+  },
+];
+---
+
+<MainLayout title="Blog" description="Writing on software architecture, systems thinking, design decisions, and creative engineering.">
+  <main class="blog-page" data-ngx-section="blog" data-ngx-label="Blog" data-ngx-focusable="true" data-ngx-route="/blog">
+    <PageHero
+      kicker="Writing and notes"
+      title="Blog"
+      description="Long-form notes on architecture decisions, systems thinking, creative engineering, and practical delivery lessons."
+      image="/hero/control_room.png"
+      sectionId="blog-hero"
+      sectionLabel="Blog Hero"
+    />
+
+    <section class="blog-shell" data-ngx-section="blog-index" data-ngx-label="Blog Index" data-ngx-focusable="true">
+      <h2>Latest Entries</h2>
+      <div class="blog-list">
+        {
+          blogEntries.map((entry) => (
+            <article class="blog-card">
+              <h3>{entry.title}</h3>
+              <p>{entry.summary}</p>
+              <p>
+                <a href={entry.href}>{entry.label}</a>
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+</MainLayout>
+
+<style>
+  .blog-page {
+    background: #03070f;
+    padding-bottom: var(--space-14);
+  }
+
+  .blog-shell {
+    width: min(1240px, calc(100% - (var(--space-8) * 2)));
+    margin: var(--space-8) auto 0;
+  }
+
+  .blog-shell h2 {
+    margin: 0 0 var(--space-4);
+    font-size: clamp(var(--text-xl), 3vw, 2.25rem);
+    line-height: var(--leading-tight);
+  }
+
+  .blog-list {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .blog-card {
+    background: rgba(8, 12, 22, 0.72);
+    border: 1px solid rgba(100, 157, 226, 0.6);
+    padding: var(--space-5);
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .blog-card h3,
+  .blog-card p {
+    margin: 0;
+  }
+
+  .blog-card a {
+    color: var(--text-accent);
+    text-decoration: none;
+    border: 1px solid color-mix(in srgb, var(--text-accent) 40%, transparent);
+    padding: var(--space-1) var(--space-3);
+  }
+
+  @media (max-width: 720px) {
+    .blog-page {
+      padding-bottom: var(--space-10);
+    }
+
+    .blog-shell {
+      width: min(100% - (var(--space-4) * 2), 1240px);
+      margin-top: var(--space-6);
+    }
+  }
+</style>

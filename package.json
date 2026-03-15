@@ -1,0 +1,21 @@
+{
+  "name": "nourgaser-com",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "bun": ">=1.1.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^5.0.0",
+    "@astrojs/svelte": "^8.0.0",
+    "astro": "^6.0.4",
+    "svelte": "^5.53.12",
+    "typescript": "^5.9.3"
+  }
+}

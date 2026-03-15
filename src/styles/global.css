@@ -27,6 +27,10 @@ nav {
   display: flex;
   align-items: center;
   padding: 0 60px;
+
+  border-bottom: 1px solid var(--border-muted-strong);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .site-header {
@@ -91,6 +95,7 @@ nav {
 .site-logo {
   height: 32px;
   width: auto;
+  margin-top: 8px;
 }
 
 /* Page content offset for fixed nav */

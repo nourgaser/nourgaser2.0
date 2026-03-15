@@ -113,7 +113,7 @@ import MainLayout from '../layouts/MainLayout.astro';
   .hobbies-page {
     width: min(1080px, calc(100% - (var(--space-10) * 2)));
     margin: 0 auto;
-    padding: var(--space-12) 0 var(--space-14);
+    padding: calc(var(--nav-height) + var(--space-12)) 0 var(--space-14);
     display: grid;
     gap: var(--space-6);
   }
@@ -199,7 +199,7 @@ import MainLayout from '../layouts/MainLayout.astro';
   @media (max-width: 780px) {
     .hobbies-page {
       width: min(100% - (var(--space-4) * 2), 1080px);
-      padding-top: var(--space-8);
+      padding-top: calc(var(--nav-height) + var(--space-8));
     }
 
     .hobby-card {

@@ -1,0 +1,21 @@
+name: Deploy Application
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build and deploy
+        env:
+          VIRTUAL_HOST: ${{ vars.VIRTUAL_HOST }}
+          LETSENCRYPT_HOST: ${{ vars.LETSENCRYPT_HOST }}
+          LETSENCRYPT_EMAIL: ${{ vars.LETSENCRYPT_EMAIL }}
+        run: docker compose up -d --build --force-recreate

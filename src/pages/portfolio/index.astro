@@ -51,12 +51,6 @@ const groupedProjects = categoryOrder
     projects: projects.filter((project) => project.data.category === category),
   }))
   .filter((entry) => entry.projects.length > 0);
-
-const majorProjects = projects.filter(
-  (project) =>
-    project.data.featured &&
-    (project.data.category === 'professional-platforms' || project.data.category === 'mapping-gis-3d')
-);
 ---
 
 <MainLayout title="Portfolio" description="Categorized portfolio across client platforms, mapping systems, web products, games, and technical experiments by Nour Gaser.">
@@ -69,61 +63,6 @@ const majorProjects = projects.filter(
       sectionId="portfolio-hero"
       sectionLabel="Portfolio Hero"
     />
-
-    {
-      majorProjects.length > 0 && (
-        <section class="portfolio-shell portfolio-major" data-ngx-section="major-projects" data-ngx-label="Major Projects">
-          <h2>Major Projects</h2>
-          <p class="portfolio-category-intro">
-            Featured large-scope projects spanning consultancy delivery, map platforms, and architecture-led execution.
-          </p>
-
-          <div class="portfolio-grid">
-            {majorProjects.map((project) => (
-              <article class="portfolio-card">
-                {project.data.coverImage && (
-                  <a href={`/portfolio/${project.id}/`} class="portfolio-card-media">
-                    <img src={project.data.coverImage} alt={project.data.title} loading="lazy" />
-                  </a>
-                )}
-
-                <div class="portfolio-card-body">
-                  <div class="portfolio-card-meta">
-                    <p class="portfolio-status">{project.data.status}</p>
-                    <p class="portfolio-featured">featured</p>
-                  </div>
-
-                  <h3>
-                    <a href={`/portfolio/${project.id}/`}>{project.data.title}</a>
-                  </h3>
-
-                  <p>{project.data.summary}</p>
-
-                  {project.data.note && <p class="portfolio-note">{project.data.note}</p>}
-
-                  <ul class="portfolio-tags" aria-label={`${project.data.title} tags`}>
-                    {project.data.tags.map((tag) => <li>{tag}</li>)}
-                  </ul>
-
-                  <div class="portfolio-links" aria-label={`${project.data.title} links`}>
-                    <a href={`/portfolio/${project.id}/`}>Open</a>
-                    {project.data.links?.live && (
-                      <a href={project.data.links.live} target="_blank" rel="noreferrer">Live</a>
-                    )}
-                    {project.data.links?.source && (
-                      <a href={project.data.links.source} target="_blank" rel="noreferrer">Source</a>
-                    )}
-                    {project.data.links?.design && (
-                      <a href={project.data.links.design} target="_blank" rel="noreferrer">Notes</a>
-                    )}
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      )
-    }
 
     {
       groupedProjects.map((entry) => (
@@ -203,8 +142,7 @@ const majorProjects = projects.filter(
     font-size: var(--text-sm);
   }
 
-  .portfolio-category h2,
-  .portfolio-major h2 {
+  .portfolio-category h2 {
     margin: 0;
     font-size: clamp(var(--text-2xl), 3vw, 2.25rem);
   }

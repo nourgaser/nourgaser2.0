@@ -1,9 +1,224 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import {
+  coreExpertise,
+  currentProjectNotes,
+  education,
+  experience,
+  featuredProfessionalWork,
+  professionalSummary,
+} from '../data/professional';
+import { skillCategories } from '../data/skills';
 ---
 
-<MainLayout title="Business">
+<MainLayout title="Business" description="Business profile, expertise, experience, and skills for technical consultancy and engineering work.">
   <main data-ngx-section="business" data-ngx-label="Business" data-ngx-focusable="true" data-ngx-route="/business">
-    <h1>Business</h1>
+    <section class="business-page business-hero" aria-labelledby="business-heading">
+      <p class="business-kicker">Business and Profession</p>
+      <h1 id="business-heading">{professionalSummary.headline}</h1>
+      <p>{professionalSummary.blurb}</p>
+      <p>{professionalSummary.businessDescription}</p>
+    </section>
+
+    <section class="business-page business-grid" data-ngx-section="core-expertise" data-ngx-label="Core Expertise">
+      {
+        coreExpertise.map((area) => (
+          <article class="business-card">
+            <h2>{area.title}</h2>
+            <p>{area.description}</p>
+          </article>
+        ))
+      }
+    </section>
+
+    <section class="business-page" data-ngx-section="featured-work" data-ngx-label="Featured Work">
+      <h2 class="business-section-title">Featured Work</h2>
+      <div class="business-list">
+        {
+          featuredProfessionalWork.map((item) => (
+            <article class="business-card">
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+              {item.url && (
+                <p>
+                  <a href={item.url} target="_blank" rel="noreferrer">{item.url}</a>
+                </p>
+              )}
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="business-page business-columns" data-ngx-section="experience-and-education" data-ngx-label="Experience and Education">
+      <article>
+        <h2 class="business-section-title">Experience</h2>
+        <div class="business-list">
+          {
+            experience.map((entry) => (
+              <article class="business-card">
+                <h3>{entry.role}</h3>
+                <p>{entry.organization}</p>
+                <p class="business-meta">{entry.period}</p>
+                {entry.location && <p class="business-meta">{entry.location}</p>}
+                {entry.notes && <p>{entry.notes}</p>}
+              </article>
+            ))
+          }
+        </div>
+      </article>
+
+      <article>
+        <h2 class="business-section-title">Education</h2>
+        <div class="business-list">
+          {
+            education.map((entry) => (
+              <article class="business-card">
+                <h3>{entry.degree}</h3>
+                <p>{entry.institution}</p>
+                <p class="business-meta">{entry.period}</p>
+                {entry.details && <p>{entry.details}</p>}
+              </article>
+            ))
+          }
+        </div>
+      </article>
+    </section>
+
+    <section class="business-page" data-ngx-section="skills" data-ngx-label="Skills">
+      <h2 class="business-section-title">Skills</h2>
+      <div class="business-list">
+        {
+          skillCategories.map((category) => (
+            <article class="business-card">
+              <h3>{category.name}</h3>
+              <ul class="business-tags">
+                {category.items.map((item) => <li>{item}</li>)}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="business-page" data-ngx-section="current-project-notes" data-ngx-label="Current Project Notes">
+      <h2 class="business-section-title">Current Notes</h2>
+      <article class="business-card">
+        <ul class="business-notes">
+          {currentProjectNotes.map((note) => <li>{note}</li>)}
+        </ul>
+      </article>
+    </section>
   </main>
 </MainLayout>
+
+<style>
+  .business-page {
+    width: min(1120px, calc(100% - (var(--space-10) * 2)));
+    margin: 0 auto;
+  }
+
+  .business-hero {
+    padding: var(--space-16) 0 var(--space-10);
+    display: grid;
+    gap: var(--space-4);
+    max-width: 76ch;
+  }
+
+  .business-kicker,
+  .business-meta {
+    color: var(--text-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: var(--text-sm);
+  }
+
+  .business-hero h1,
+  .business-section-title {
+    margin: 0;
+    line-height: var(--leading-tight);
+  }
+
+  .business-section-title {
+    margin-bottom: var(--space-5);
+    font-size: clamp(var(--text-xl), 3vw, 2.25rem);
+  }
+
+  .business-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-6);
+    margin-bottom: var(--space-10);
+  }
+
+  .business-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+  }
+
+  .business-list {
+    display: grid;
+    gap: var(--space-5);
+    margin-bottom: var(--space-10);
+  }
+
+  .business-card {
+    padding: var(--space-5);
+    background: color-mix(in srgb, var(--bg-terminal) 92%, transparent);
+    border: 1px solid color-mix(in srgb, var(--text-accent) 16%, transparent);
+    border-radius: var(--radius-lg);
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .business-card h2,
+  .business-card h3,
+  .business-card p {
+    margin: 0;
+  }
+
+  .business-card a {
+    color: var(--text-accent);
+  }
+
+  .business-tags {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .business-tags li {
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid color-mix(in srgb, var(--text-accent) 24%, transparent);
+    border-radius: 999px;
+    font-size: var(--text-sm);
+  }
+
+  .business-notes {
+    margin: 0;
+    padding-left: var(--space-5);
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  @media (max-width: 900px) {
+    .business-columns {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .business-page {
+      width: min(100% - (var(--space-4) * 2), 1120px);
+    }
+
+    .business-hero {
+      padding-top: var(--space-10);
+    }
+  }
+</style>

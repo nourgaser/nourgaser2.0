@@ -1,9 +1,235 @@
 ---
+import { getCollection } from 'astro:content';
 import MainLayout from '../layouts/MainLayout.astro';
+
+const projects = await getCollection('projects');
+const featuredProjects = projects
+  .filter((project) => project.data.featured)
+  .sort((left, right) => (left.data.order ?? Number.MAX_SAFE_INTEGER) - (right.data.order ?? Number.MAX_SAFE_INTEGER));
+
+const statusCounts = projects.reduce<Record<string, number>>((counts, project) => {
+  counts[project.data.status] = (counts[project.data.status] ?? 0) + 1;
+  return counts;
+}, {});
+
+const topTags = Array.from(
+  projects.reduce((counts, project) => {
+    for (const tag of project.data.tags) {
+      counts.set(tag, (counts.get(tag) ?? 0) + 1);
+    }
+
+    return counts;
+  }, new Map<string, number>())
+)
+  .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
+  .slice(0, 8);
 ---
 
-<MainLayout title="About">
+<MainLayout title="About" description="An overview of Nour Gaser's work, themes, and contact links.">
   <main data-ngx-section="about" data-ngx-label="About Me" data-ngx-focusable="true" data-ngx-route="/about">
-    <h1>About</h1>
+    <section class="about-page about-hero" aria-labelledby="about-heading">
+      <p class="about-kicker">About me</p>
+      <h1 id="about-heading">Nour Gaser</h1>
+      <p class="about-lede">
+        This site currently documents a body of game development work built mostly with Unity and C#, ranging from
+        educational games and pixel-art strategy prototypes to PvP experiments and custom editor tooling.
+      </p>
+      <p class="about-copy">
+        The portfolio mixes finished releases, active works in progress, demos, and incomplete experiments. It is being
+        rebuilt as a static-first Astro site so the work stays fast, accessible, and readable without JavaScript.
+      </p>
+    </section>
+
+    <section class="about-page about-stats" data-ngx-section="about-overview" data-ngx-label="Overview">
+      <article class="about-panel">
+        <p class="about-panel-label">Projects tracked</p>
+        <p class="about-panel-value">{projects.length}</p>
+      </article>
+      <article class="about-panel">
+        <p class="about-panel-label">Featured</p>
+        <p class="about-panel-value">{featuredProjects.length}</p>
+      </article>
+      <article class="about-panel">
+        <p class="about-panel-label">Status spread</p>
+        <p class="about-panel-value about-panel-list">
+          {Object.entries(statusCounts)
+            .sort((left, right) => left[0].localeCompare(right[0]))
+            .map(([status, count]) => `${status}: ${count}`)
+            .join(' • ')}
+        </p>
+      </article>
+    </section>
+
+    <section class="about-page about-columns" data-ngx-section="about-focus" data-ngx-label="Focus Areas">
+      <article class="about-panel">
+        <h2>Focus areas</h2>
+        <p>
+          Repeated themes across the archived work include strategy systems, 2D gameplay, PvP mechanics, educational
+          design, and rapid prototyping.
+        </p>
+        <ul class="about-tags" aria-label="Common technologies and themes">
+          {topTags.map(([tag]) => <li>{tag}</li>)}
+        </ul>
+      </article>
+
+      <article class="about-panel">
+        <h2>Links</h2>
+        <ul class="about-links" aria-label="External profiles">
+          <li><a href="https://github.com/nourgaser" target="_blank" rel="noreferrer">GitHub</a></li>
+          <li><a href="https://linkedin.com/in/nourgaser" target="_blank" rel="noreferrer">LinkedIn</a></li>
+          <li><a href="https://facebook.com/nourgaser" target="_blank" rel="noreferrer">Facebook</a></li>
+          <li><a href="/portfolio/">Portfolio archive</a></li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="about-page about-featured" data-ngx-section="about-featured-projects" data-ngx-label="Featured Projects">
+      <div class="about-section-heading">
+        <p class="about-kicker">Selected work</p>
+        <h2>Featured projects</h2>
+      </div>
+
+      <div class="about-featured-grid">
+        {
+          featuredProjects.map((project) => (
+            <article class="about-panel about-project-card">
+              <p class="about-panel-label">{project.data.status}</p>
+              <h3>
+                <a href={`/portfolio/${project.id}/`}>{project.data.title}</a>
+              </h3>
+              <p>{project.data.summary}</p>
+              {project.data.note && <p class="about-project-note">{project.data.note}</p>}
+            </article>
+          ))
+        }
+      </div>
+    </section>
   </main>
 </MainLayout>
+
+<style>
+  .about-page {
+    width: min(1080px, calc(100% - (var(--space-10) * 2)));
+    margin: 0 auto;
+  }
+
+  .about-hero {
+    padding: var(--space-16) 0 var(--space-10);
+    display: grid;
+    gap: var(--space-4);
+    max-width: 72ch;
+  }
+
+  .about-kicker,
+  .about-panel-label {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-accent);
+    font-size: var(--text-sm);
+  }
+
+  .about-hero h1,
+  .about-section-heading h2 {
+    margin: 0;
+    line-height: var(--leading-tight);
+  }
+
+  .about-hero h1 {
+    font-size: clamp(var(--text-2xl), 6vw, 4.75rem);
+  }
+
+  .about-lede {
+    font-size: var(--text-lg);
+    color: color-mix(in srgb, var(--text-primary) 92%, transparent);
+  }
+
+  .about-copy,
+  .about-panel p,
+  .about-panel-value {
+    color: color-mix(in srgb, var(--text-primary) 82%, transparent);
+  }
+
+  .about-stats,
+  .about-columns,
+  .about-featured-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .about-stats,
+  .about-columns {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    margin-bottom: var(--space-8);
+  }
+
+  .about-featured {
+    padding-bottom: var(--space-16);
+  }
+
+  .about-featured-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    margin-top: var(--space-6);
+  }
+
+  .about-panel {
+    padding: var(--space-6);
+    background: color-mix(in srgb, var(--bg-terminal) 92%, transparent);
+    border: 1px solid color-mix(in srgb, var(--text-accent) 18%, transparent);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-terminal);
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .about-panel-value {
+    font-size: clamp(var(--text-xl), 3vw, 2.5rem);
+    line-height: var(--leading-tight);
+  }
+
+  .about-panel-list {
+    font-size: var(--text-base);
+  }
+
+  .about-tags,
+  .about-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .about-tags li {
+    padding: var(--space-1) var(--space-3);
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--text-accent) 24%, transparent);
+    color: color-mix(in srgb, var(--text-primary) 88%, transparent);
+    font-size: var(--text-sm);
+  }
+
+  .about-links a,
+  .about-project-card h3 a {
+    color: var(--text-accent);
+    text-decoration: none;
+  }
+
+  .about-project-card h3 {
+    margin: 0;
+    font-size: var(--text-xl);
+  }
+
+  .about-project-note {
+    color: color-mix(in srgb, var(--text-primary) 72%, transparent);
+  }
+
+  @media (max-width: 720px) {
+    .about-page {
+      width: min(100% - (var(--space-4) * 2), 1080px);
+    }
+
+    .about-hero {
+      padding-top: var(--space-10);
+    }
+  }
+</style>

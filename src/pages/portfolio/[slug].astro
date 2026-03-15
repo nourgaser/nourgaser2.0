@@ -1,0 +1,172 @@
+---
+import { getCollection, render } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<MainLayout title={project.data.title} description={project.data.description ?? project.data.summary}>
+  <main data-ngx-section="portfolio-detail" data-ngx-label={project.data.title} data-ngx-focusable="true" data-ngx-route={`/portfolio/${project.id}`}>
+    <article class="project-page">
+      <header class="project-hero">
+        <p class="project-status">{project.data.status}</p>
+        <h1>{project.data.title}</h1>
+        <p class="project-summary">{project.data.summary}</p>
+
+        {project.data.note && <p class="project-note">{project.data.note}</p>}
+
+        <ul class="project-tags" aria-label={`${project.data.title} tags`}>
+          {project.data.tags.map((tag) => <li>{tag}</li>)}
+        </ul>
+
+        <nav class="project-links" aria-label={`${project.data.title} project links`}>
+          <a href="/portfolio/">Back to portfolio</a>
+          {project.data.links?.live && <a href={project.data.links.live} target="_blank" rel="noreferrer">Live</a>}
+          {project.data.links?.source && <a href={project.data.links.source} target="_blank" rel="noreferrer">Source</a>}
+          {project.data.links?.design && <a href={project.data.links.design} target="_blank" rel="noreferrer">Notes</a>}
+        </nav>
+      </header>
+
+      {project.data.media.length > 0 && (
+        <section class="project-media" data-ngx-section="portfolio-media" data-ngx-label="Project Media">
+          {
+            project.data.media.map((item) => (
+              <figure class="project-media-item">
+                {item.isVideo ? (
+                  <video controls preload="metadata" playsinline>
+                    <source src={item.path} type="video/mp4" />
+                  </video>
+                ) : (
+                  <img src={item.path} alt={item.alt ?? project.data.title} loading="lazy" />
+                )}
+                {item.alt && <figcaption>{item.alt}</figcaption>}
+              </figure>
+            ))
+          }
+        </section>
+      )}
+
+      <section class="project-content" data-ngx-section="portfolio-content" data-ngx-label="Project Content">
+        <Content />
+      </section>
+    </article>
+  </main>
+</MainLayout>
+
+<style>
+  .project-page {
+    width: min(980px, calc(100% - (var(--space-10) * 2)));
+    margin: 0 auto;
+    padding: var(--space-16) 0;
+  }
+
+  .project-hero {
+    display: grid;
+    gap: var(--space-4);
+    margin-bottom: var(--space-10);
+  }
+
+  .project-status {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-accent);
+    font-size: var(--text-sm);
+  }
+
+  .project-hero h1 {
+    margin: 0;
+    font-size: clamp(var(--text-2xl), 5vw, 4rem);
+    line-height: var(--leading-tight);
+  }
+
+  .project-summary,
+  .project-note {
+    max-width: 62ch;
+  }
+
+  .project-note {
+    color: color-mix(in srgb, var(--text-primary) 76%, transparent);
+  }
+
+  .project-tags,
+  .project-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .project-tags {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .project-tags li {
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid color-mix(in srgb, var(--text-accent) 25%, transparent);
+    border-radius: 999px;
+    font-size: var(--text-sm);
+  }
+
+  .project-links a {
+    color: var(--text-accent);
+    text-decoration: none;
+  }
+
+  .project-media {
+    display: grid;
+    gap: var(--space-6);
+    margin-bottom: var(--space-10);
+  }
+
+  .project-media-item {
+    margin: 0;
+    background: color-mix(in srgb, var(--bg-terminal) 92%, transparent);
+    border: 1px solid color-mix(in srgb, var(--text-accent) 18%, transparent);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-terminal);
+  }
+
+  .project-media-item img,
+  .project-media-item video {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #000;
+  }
+
+  .project-media-item figcaption {
+    padding: var(--space-4);
+    color: color-mix(in srgb, var(--text-primary) 86%, transparent);
+    font-size: var(--text-sm);
+  }
+
+  .project-content {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 70ch;
+  }
+
+  .project-content :global(p) {
+    margin: 0;
+  }
+
+  @media (max-width: 720px) {
+    .project-page {
+      width: min(100% - (var(--space-4) * 2), 980px);
+      padding-top: var(--space-10);
+    }
+  }
+</style>

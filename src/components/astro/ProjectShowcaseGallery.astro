@@ -61,7 +61,7 @@ const liveLinks = [links?.live].filter((value): value is string => Boolean(value
     }
 
     {
-      previewMedia.length > 0 && (
+      previewMedia.length > 1 && (
         <ul class="showcase-strip" aria-label={`${title} gallery previews`}>
           {previewMedia.map((item, index) => (
             <li class="showcase-thumb-item">

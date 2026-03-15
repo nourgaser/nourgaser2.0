@@ -23,16 +23,23 @@
   --bg-terminal-header:     #292929;
   --bg-terminal-statusbar:  #292929;
   --bg-button:              #343434;
+  --surface-panel:          rgba(8, 12, 22, 0.72);
 
   /* Borders */
   --border-button:          #1b1b1b;
   --border-terminal:        transparent;
+  --border-muted-strong:    rgba(130, 130, 130, 0.52);
+  --hero-edge-border:       rgba(146, 146, 146, 0.34);
+  --hero-strip-border:      rgba(146, 146, 146, 0.24);
 
   /* Text */
   --text-primary:           #ffffff;
   --text-accent:            #a6a6a6;
   --text-accent-2:          #8e8e8e;
   --text-dimmed:            #464646;
+  --button-muted-bg:        #4c4c4c;
+  --button-muted-border:    #707070;
+  --button-muted-hover:     #5a5a5a;
 
   /* Shadows */
   --shadow-terminal:        0px 0px 15px 5px rgba(0, 0, 0, 0.25);

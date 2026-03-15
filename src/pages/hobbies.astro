@@ -116,12 +116,12 @@ import PageHero from '../components/astro/PageHero.astro';
   }
 
   .hobby-card {
-    width: min(1240px, calc(100% - (var(--space-8) * 2)));
+    width: var(--content-shell-width-desktop);
     margin: var(--space-8) auto;
     position: relative;
     padding: var(--space-5);
-    border: 1px solid rgba(130, 130, 130, 0.52);
-    background: rgba(8, 12, 22, 0.72);
+    border: 1px solid var(--border-muted-strong);
+    background: var(--surface-panel);
     display: grid;
     gap: var(--space-3);
   }
@@ -173,8 +173,8 @@ import PageHero from '../components/astro/PageHero.astro';
     }
 
     .hobby-card {
-      width: min(100% - (var(--space-4) * 2), 1240px);
-      margin-top: var(--space-6);
+      width: var(--content-shell-width-mobile);
+      margin-top: var(--content-shell-margin-top-mobile);
       padding: var(--space-4);
     }
   }

@@ -78,13 +78,13 @@ const { Content } = await render(project);
   }
 
   .project-shell {
-    width: min(1240px, calc(100% - (var(--space-8) * 2)));
+    width: var(--content-shell-width-desktop);
     margin: var(--space-8) auto;
   }
 
   .project-header {
-    background: rgba(8, 12, 22, 0.72);
-    border: 1px solid rgba(130, 130, 130, 0.52);
+    background: var(--surface-panel);
+    border: 1px solid var(--border-muted-strong);
     padding: var(--space-5);
     display: grid;
     gap: var(--space-3);
@@ -132,8 +132,8 @@ const { Content } = await render(project);
 
   .project-media-item {
     margin: 0;
-    background: rgba(8, 12, 22, 0.72);
-    border: 1px solid rgba(130, 130, 130, 0.52);
+    background: var(--surface-panel);
+    border: 1px solid var(--border-muted-strong);
     overflow: hidden;
   }
 
@@ -167,8 +167,8 @@ const { Content } = await render(project);
     }
 
     .project-shell {
-      width: min(100% - (var(--space-4) * 2), 1240px);
-      margin-top: var(--space-6);
+      width: var(--content-shell-width-mobile);
+      margin-top: var(--content-shell-margin-top-mobile);
     }
   }
 </style>

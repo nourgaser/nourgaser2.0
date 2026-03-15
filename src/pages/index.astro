@@ -158,15 +158,15 @@ import MainLayout from '../layouts/MainLayout.astro';
     background:
       linear-gradient(to bottom, rgba(3, 8, 17, 0.3), rgba(3, 8, 17, 0.55)),
       url('/about/man_on_planet.png') center center / cover no-repeat;
-    border-top: 1px solid rgba(146, 146, 146, 0.34);
-    border-bottom: 1px solid rgba(146, 146, 146, 0.34);
+    border-top: 1px solid var(--hero-edge-border);
+    border-bottom: 1px solid var(--hero-edge-border);
     display: flex;
     align-items: center;
   }
 
   .about-hero-inner,
   .about-section-inner {
-    width: min(1240px, calc(100% - (var(--space-8) * 2)));
+    width: var(--content-shell-width-desktop);
     margin: 0 auto;
   }
 
@@ -185,8 +185,8 @@ import MainLayout from '../layouts/MainLayout.astro';
     top: var(--space-2);
     bottom: var(--space-2);
     background: rgba(8, 13, 23, 0.42);
-    border-top: 1px solid rgba(146, 146, 146, 0.24);
-    border-bottom: 1px solid rgba(146, 146, 146, 0.24);
+    border-top: 1px solid var(--hero-strip-border);
+    border-bottom: 1px solid var(--hero-strip-border);
     pointer-events: none;
   }
 
@@ -214,15 +214,15 @@ import MainLayout from '../layouts/MainLayout.astro';
     margin-top: var(--space-4);
     display: inline-block;
     padding: var(--space-2) var(--space-4);
-    background: #4c4c4c;
-    border: 1px solid #707070;
+    background: var(--button-muted-bg);
+    border: 1px solid var(--button-muted-border);
     color: #e8f0ff;
     text-decoration: none;
     font-size: var(--text-sm);
   }
 
   .about-cta:hover {
-    background: #5a5a5a;
+    background: var(--button-muted-hover);
   }
 
   .about-section {
@@ -235,8 +235,8 @@ import MainLayout from '../layouts/MainLayout.astro';
   }
 
   .about-box {
-    background: rgba(8, 12, 22, 0.72);
-    border: 1px solid rgba(130, 130, 130, 0.52);
+    background: var(--surface-panel);
+    border: 1px solid var(--border-muted-strong);
     padding: var(--space-4);
     display: flex;
     gap: var(--space-4);
@@ -328,7 +328,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 
     .about-hero-inner,
     .about-section-inner {
-      width: min(100% - (var(--space-4) * 2), 1240px);
+      width: var(--content-shell-width-mobile);
     }
 
     .about-hero {
@@ -355,7 +355,7 @@ import MainLayout from '../layouts/MainLayout.astro';
     }
 
     .about-section {
-      margin-top: var(--space-6);
+      margin-top: var(--content-shell-margin-top-mobile);
     }
 
     .about-section h2 {

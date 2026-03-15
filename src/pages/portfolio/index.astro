@@ -191,7 +191,7 @@ const majorProjects = projects.filter(
   }
 
   .portfolio-shell {
-    width: min(1240px, calc(100% - (var(--space-8) * 2)));
+    width: var(--content-shell-width-desktop);
     margin: var(--space-8) auto;
   }
 
@@ -222,8 +222,8 @@ const majorProjects = projects.filter(
   }
 
   .portfolio-card {
-    background: rgba(8, 12, 22, 0.72);
-    border: 1px solid rgba(130, 130, 130, 0.52);
+    background: var(--surface-panel);
+    border: 1px solid var(--border-muted-strong);
     overflow: hidden;
   }
 
@@ -280,7 +280,7 @@ const majorProjects = projects.filter(
   }
 
   .portfolio-links {
-    margin-top: var(--space-6);
+    margin-top: var(--content-shell-margin-top-mobile);
   }
 
   .portfolio-links a {
@@ -294,8 +294,8 @@ const majorProjects = projects.filter(
     }
 
     .portfolio-shell {
-      width: min(100% - (var(--space-4) * 2), 1240px);
-      margin-top: var(--space-6);
+      width: var(--content-shell-width-mobile);
+      margin-top: var(--content-shell-margin-top-mobile);
     }
   }
 </style>

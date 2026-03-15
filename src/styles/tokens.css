@@ -55,4 +55,11 @@
   --terminal-width:          658px;
   --terminal-height:         459px;
   --terminal-header-height:  49px;
+
+  /* --- Shared layout shells --- */
+  --content-shell-max-width:         1240px;
+  --content-shell-width-desktop:     min(var(--content-shell-max-width), calc(100% - (var(--space-8) * 2)));
+  --content-shell-width-mobile:      min(100% - (var(--space-4) * 2), var(--content-shell-max-width));
+  --content-shell-margin-top:        var(--space-8);
+  --content-shell-margin-top-mobile: var(--space-6);
 }

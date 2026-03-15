@@ -34,7 +34,7 @@ import PageHero from '../components/astro/PageHero.astro';
   }
 
   .resume-shell {
-    width: min(1240px, calc(100% - (var(--space-8) * 2)));
+    width: var(--content-shell-width-desktop);
     margin: var(--space-8) auto;
   }
 
@@ -43,8 +43,8 @@ import PageHero from '../components/astro/PageHero.astro';
     flex-wrap: wrap;
     gap: var(--space-3);
     margin: 0;
-    background: rgba(8, 12, 22, 0.72);
-    border: 1px solid rgba(130, 130, 130, 0.52);
+    background: var(--surface-panel);
+    border: 1px solid var(--border-muted-strong);
     padding: var(--space-4);
   }
 
@@ -58,8 +58,8 @@ import PageHero from '../components/astro/PageHero.astro';
   .resume-preview iframe {
     width: 100%;
     min-height: 72vh;
-    border: 1px solid rgba(130, 130, 130, 0.52);
-    background: rgba(8, 12, 22, 0.72);
+    border: 1px solid var(--border-muted-strong);
+    background: var(--surface-panel);
   }
 
   @media (max-width: 720px) {
@@ -68,8 +68,8 @@ import PageHero from '../components/astro/PageHero.astro';
     }
 
     .resume-shell {
-      width: min(100% - (var(--space-4) * 2), 1240px);
-      margin-top: var(--space-6);
+      width: var(--content-shell-width-mobile);
+      margin-top: var(--content-shell-margin-top-mobile);
     }
 
     .resume-preview iframe {

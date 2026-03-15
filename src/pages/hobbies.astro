@@ -2,8 +2,208 @@
 import MainLayout from '../layouts/MainLayout.astro';
 ---
 
-<MainLayout title="Hobbies">
-  <main data-ngx-section="hobbies" data-ngx-label="Hobbies" data-ngx-focusable="true" data-ngx-route="/hobbies">
-    <h1>Hobbies</h1>
+<MainLayout
+  title="Hobbies"
+  description="Personal interests: game design and development, learning and academia, reading and writing, and intentional digital living."
+>
+  <main class="hobbies-page" data-ngx-section="hobbies" data-ngx-label="Hobbies" data-ngx-focusable="true" data-ngx-route="/hobbies">
+    <header class="hobbies-hero">
+      <p class="hobbies-kicker">Life Outside Work</p>
+      <h1>Hobbies</h1>
+
+      <p class="hobbies-lead">
+        Outside of work, most of my time goes into building, learning, and reflecting. I enjoy hobbies that are
+        creative, technical, and meaningful over the long term.
+      </p>
+    </header>
+
+    <section
+      class="hobby-card"
+      aria-labelledby="hobby-game-design"
+      data-ngx-section="game-design"
+      data-ngx-label="Game Design"
+      data-ngx-focusable="true"
+    >
+      <h2 id="hobby-game-design">Game Design, Development, and Gaming</h2>
+      <p>
+        Game design is one of my favorite outlets. I enjoy designing systems, balancing mechanics, and building
+        playful prototypes as much as shipping complete experiences.
+      </p>
+      <ul>
+        <li>Designing game mechanics, loops, and progression systems</li>
+        <li>Building game prototypes and tools</li>
+        <li>Playing games with strong systems and creative worldbuilding</li>
+      </ul>
+    </section>
+
+    <section
+      class="hobby-card"
+      aria-labelledby="hobby-reading-writing"
+      data-ngx-section="reading-writing"
+      data-ngx-label="Reading and Writing"
+      data-ngx-focusable="true"
+    >
+      <h2 id="hobby-reading-writing">Reading and Writing</h2>
+      <p>
+        Reading and writing help me think clearly. I enjoy technical reading, thoughtful long-form writing, and keeping
+        notes that turn ideas into action.
+      </p>
+      <ul>
+        <li>Technical articles and engineering concepts</li>
+        <li>Reflective writing and idea journals</li>
+        <li>Books that combine meaning, depth, and practical insight</li>
+      </ul>
+    </section>
+
+    <section
+      class="hobby-card"
+      aria-labelledby="hobby-learning"
+      data-ngx-section="learning"
+      data-ngx-label="Learning"
+      data-ngx-focusable="true"
+    >
+      <h2 id="hobby-learning">Learning, Academia, and Deep Study</h2>
+      <p>
+        I genuinely enjoy structured learning and academia. I like studying topics in depth and connecting theory to
+        implementation.
+      </p>
+      <ul>
+        <li>Computer science foundations and systems thinking</li>
+        <li>Research-driven learning and long-term study habits</li>
+        <li>Building projects that test and apply what I learn</li>
+      </ul>
+    </section>
+
+    <section
+      class="hobby-card"
+      aria-labelledby="hobby-faith"
+      data-ngx-section="faith"
+      data-ngx-label="Faith"
+      data-ngx-focusable="true"
+    >
+      <h2 id="hobby-faith">Faith and Values</h2>
+      <p>
+        Islam and religious grounding are central in my life. They shape my priorities, discipline, and sense of
+        purpose.
+      </p>
+    </section>
+
+    <section
+      class="hobby-card"
+      aria-labelledby="hobby-intentional"
+      data-ngx-section="intentional-living"
+      data-ngx-label="Intentional Living"
+      data-ngx-focusable="true"
+    >
+      <h2 id="hobby-intentional">Digital Minimalism and Intentional Living</h2>
+      <p>
+        I am actively moving toward a more intentional digital life: less noise, fewer distractions, and more focused
+        work and study.
+      </p>
+      <ul>
+        <li>Reducing low-value screen time</li>
+        <li>Keeping simple workflows and fewer tools</li>
+        <li>Prioritizing depth, consistency, and real-world impact</li>
+      </ul>
+    </section>
   </main>
 </MainLayout>
+
+<style>
+  .hobbies-page {
+    width: min(1080px, calc(100% - (var(--space-10) * 2)));
+    margin: 0 auto;
+    padding: var(--space-12) 0 var(--space-14);
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .hobbies-hero {
+    display: grid;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+    max-width: 78ch;
+  }
+
+  .hobbies-kicker {
+    margin: 0;
+    color: var(--text-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: var(--text-sm);
+  }
+
+  .hobbies-hero h1 {
+    margin: 0;
+    line-height: var(--leading-tight);
+  }
+
+  .hobbies-lead {
+    margin: 0;
+    color: var(--text-primary);
+  }
+
+  .hobby-card {
+    position: relative;
+    padding: var(--space-5);
+    border: 1px solid color-mix(in srgb, var(--text-accent) 20%, transparent);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--bg-terminal) 92%, transparent);
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .hobby-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--text-accent) 70%, white), transparent);
+    border-top-left-radius: var(--radius-lg);
+    border-top-right-radius: var(--radius-lg);
+  }
+
+  .hobby-card h2,
+  .hobby-card p,
+  .hobby-card ul {
+    margin: 0;
+  }
+
+  .hobby-card h2 {
+    font-size: clamp(1.25rem, 2.1vw, 1.8rem);
+    line-height: var(--leading-tight);
+  }
+
+  .hobby-card ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .hobby-card li {
+    position: relative;
+    padding-left: var(--space-5);
+  }
+
+  .hobby-card li::before {
+    content: '>_';
+    position: absolute;
+    left: 0;
+    color: var(--text-accent);
+    font-size: 0.85em;
+  }
+
+  @media (max-width: 780px) {
+    .hobbies-page {
+      width: min(100% - (var(--space-4) * 2), 1080px);
+      padding-top: var(--space-8);
+    }
+
+    .hobby-card {
+      padding: var(--space-4);
+    }
+  }
+</style>

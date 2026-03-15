@@ -1,0 +1,202 @@
+---
+interface ProjectEntry {
+  id: string;
+  title: string;
+}
+
+interface ProjectGroup {
+  category: string;
+  label: string;
+  projects: ProjectEntry[];
+}
+
+interface Props {
+  currentSlug: string;
+  groups: ProjectGroup[];
+}
+
+const { currentSlug, groups } = Astro.props;
+---
+
+<!-- Desktop: sticky sidebar. Mobile: collapsible panel at top. -->
+<nav class="project-nav" aria-label="All projects">
+  <!-- Mobile: collapsible via <details> -->
+  <details class="project-nav-mobile">
+    <summary class="project-nav-summary">
+      <span>All projects</span>
+      <span class="project-nav-chevron" aria-hidden="true">▾</span>
+    </summary>
+    <div class="project-nav-body">
+      {groups.map((group) => (
+        <section class="project-nav-group">
+          <h2 class="project-nav-group-label">{group.label}</h2>
+          <ul>
+            {group.projects.map((entry) => (
+              <li>
+                <a
+                  href={`/portfolio/${entry.id}/`}
+                  class:list={['project-nav-item', { 'project-nav-item--active': entry.id === currentSlug }]}
+                  aria-current={entry.id === currentSlug ? 'page' : undefined}
+                >
+                  {entry.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </details>
+
+  <!-- Desktop: always visible -->
+  <div class="project-nav-desktop" aria-hidden="true">
+    {groups.map((group) => (
+      <section class="project-nav-group">
+        <h2 class="project-nav-group-label">{group.label}</h2>
+        <ul>
+          {group.projects.map((entry) => (
+            <li>
+              <a
+                href={`/portfolio/${entry.id}/`}
+                class:list={['project-nav-item', { 'project-nav-item--active': entry.id === currentSlug }]}
+                aria-current={entry.id === currentSlug ? 'page' : undefined}
+                tabindex="-1"
+              >
+                {entry.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</nav>
+
+<style>
+  .project-nav {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  /* ── Shared inner parts ──────────────────────────────────────── */
+
+  .project-nav-group {
+    border-bottom: 1px solid var(--border-muted-strong);
+    padding: var(--space-4) 0 var(--space-4);
+  }
+
+  .project-nav-group:first-child {
+    padding-top: 0;
+  }
+
+  .project-nav-group:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .project-nav-group-label {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-accent-2);
+  }
+
+  .project-nav-group ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .project-nav-item {
+    display: block;
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--text-sm);
+    color: color-mix(in srgb, var(--text-primary) 78%, transparent);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: color 100ms ease, border-color 100ms ease;
+  }
+
+  .project-nav-item:hover {
+    color: var(--text-primary);
+    border-left-color: var(--border-muted-strong);
+  }
+
+  .project-nav-item--active {
+    color: var(--text-primary);
+    border-left-color: var(--text-accent);
+    background: color-mix(in srgb, var(--bg-terminal-header) 64%, transparent);
+  }
+
+  /* ── Mobile: <details> collapsible ──────────────────────────── */
+
+  .project-nav-mobile {
+    display: none;
+    background: var(--surface-panel);
+    border: 1px solid var(--border-muted-strong);
+    width: 100%;
+  }
+
+  .project-nav-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    cursor: pointer;
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-accent);
+    list-style: none;
+    user-select: none;
+    background: color-mix(in srgb, var(--bg-terminal-header) 40%, transparent);
+  }
+
+  .project-nav-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .project-nav-chevron {
+    transition: transform 160ms ease;
+  }
+
+  details[open] .project-nav-chevron {
+    transform: scaleY(-1);
+  }
+
+  .project-nav-mobile .project-nav-body {
+    padding: var(--space-4);
+    border-top: 1px solid var(--border-muted-strong);
+  }
+
+  /* ── Desktop: always-visible sticky sidebar ─────────────────── */
+
+  .project-nav-desktop {
+    background: var(--surface-panel);
+    border: 1px solid var(--border-muted-strong);
+    padding: var(--space-4);
+    width: 100%;
+  }
+
+  /* ── Responsive switch ───────────────────────────────────────── */
+
+  @media (max-width: 960px) {
+    .project-nav-desktop {
+      display: none;
+    }
+
+    .project-nav-mobile {
+      display: block;
+    }
+  }
+
+  @media (min-width: 961px) {
+    .project-nav-desktop {
+      display: block;
+    }
+  }
+</style>

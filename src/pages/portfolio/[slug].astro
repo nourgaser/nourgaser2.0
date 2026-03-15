@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import PageHero from '../../components/astro/PageHero.astro';
 import ProjectShowcaseGallery from '../../components/astro/ProjectShowcaseGallery.astro';
+import ProjectNav from '../../components/astro/ProjectNav.astro';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -32,6 +33,32 @@ const previousProject = projectIndex > 0 ? orderedProjects[projectIndex - 1] : u
 const nextProject = projectIndex >= 0 && projectIndex < orderedProjects.length - 1
   ? orderedProjects[projectIndex + 1]
   : undefined;
+
+const categoryOrder = [
+  'professional-platforms',
+  'mapping-gis-3d',
+  'web-platforms',
+  'games',
+  'experiments',
+] as const;
+
+const categoryLabels: Record<string, string> = {
+  'professional-platforms': 'Professional Platforms',
+  'mapping-gis-3d':         'Mapping, GIS & 3D',
+  'web-platforms':          'Web Platforms & Tools',
+  'games':                  'Games',
+  'experiments':            'Experiments',
+};
+
+const navGroups = categoryOrder
+  .map((category) => ({
+    category,
+    label: categoryLabels[category],
+    projects: orderedProjects
+      .filter((entry) => entry.data.category === category)
+      .map((entry) => ({ id: entry.id, title: entry.data.title })),
+  }))
+  .filter((group) => group.projects.length > 0);
 ---
 
 <MainLayout title={project.data.title} description={project.data.description ?? project.data.summary}>
@@ -49,33 +76,42 @@ const nextProject = projectIndex >= 0 && projectIndex < orderedProjects.length -
 
     <article class="project-shell">
       <header class="project-header" data-ngx-section="portfolio-header" data-ngx-label="Project Intro">
-        <nav id="project-links" class="project-links" aria-label={`${project.data.title} project links`}>
-          <a href="/portfolio/">Back to portfolio</a>
-        </nav>
+        <div id="project-links" class="project-links">
+          <a class="project-back-link" href="/portfolio/">Back to portfolio</a>
+        </div>
 
         {project.data.note && <p class="project-note">{project.data.note}</p>}
       </header>
 
-      {
-        project.data.media.length > 0 && (
-          <section id="project-showcase">
-            <ProjectShowcaseGallery
-              title={project.data.title}
-              media={project.data.media}
-              tags={project.data.tags}
-              links={project.data.links}
-              previousTitle={previousProject?.data.title}
-              previousSlug={previousProject?.id}
-              nextTitle={nextProject?.data.title}
-              nextSlug={nextProject?.id}
-            />
-          </section>
-        )
-      }
+      <div class="project-body">
+        <aside class="project-sidebar">
+          <ProjectNav currentSlug={project.id} groups={navGroups} />
+        </aside>
 
-      <section class="project-content" data-ngx-section="portfolio-content" data-ngx-label="Project Content">
-        <Content />
-      </section>
+        <div class="project-main">
+
+          {
+            project.data.media.length > 0 && (
+              <section id="project-showcase">
+                <ProjectShowcaseGallery
+                  title={project.data.title}
+                  media={project.data.media}
+                  tags={project.data.tags}
+                  links={project.data.links}
+                  previousTitle={previousProject?.data.title}
+                  previousSlug={previousProject?.id}
+                  nextTitle={nextProject?.data.title}
+                  nextSlug={nextProject?.id}
+                />
+              </section>
+            )
+          }
+
+          <section class="project-content" data-ngx-section="portfolio-content" data-ngx-label="Project Content">
+            <Content />
+          </section>
+        </div>
+      </div>
     </article>
   </main>
 </MainLayout>
@@ -91,6 +127,23 @@ const nextProject = projectIndex >= 0 && projectIndex < orderedProjects.length -
     margin: var(--space-8) auto;
     display: grid;
     gap: var(--space-6);
+  }
+
+  .project-body {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  .project-sidebar {
+    min-width: 0;
+  }
+
+  .project-main {
+    display: grid;
+    gap: var(--space-6);
+    min-width: 0;
   }
 
   .project-header {
@@ -112,6 +165,21 @@ const nextProject = projectIndex >= 0 && projectIndex < orderedProjects.length -
     text-decoration: none;
   }
 
+  .project-back-link {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--border-muted-strong);
+    background: color-mix(in srgb, var(--bg-terminal-header) 44%, transparent);
+  }
+
+  .project-back-link:hover {
+    color: var(--text-primary);
+    border-color: color-mix(in srgb, var(--text-accent) 55%, transparent);
+    background: color-mix(in srgb, var(--bg-terminal-header) 68%, transparent);
+  }
+
   .project-note {
     margin: 0;
     max-width: 72ch;
@@ -128,7 +196,7 @@ const nextProject = projectIndex >= 0 && projectIndex < orderedProjects.length -
     margin: 0;
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: 960px) {
     .project-page {
       padding-bottom: var(--space-10);
     }
@@ -136,6 +204,11 @@ const nextProject = projectIndex >= 0 && projectIndex < orderedProjects.length -
     .project-shell {
       width: var(--content-shell-width-mobile);
       margin-top: var(--content-shell-margin-top-mobile);
+      gap: var(--space-5);
+    }
+
+    .project-body {
+      grid-template-columns: 1fr;
       gap: var(--space-5);
     }
   }

@@ -16,7 +16,7 @@ body {
 }
 
 /* Navigation bar shell */
-nav {
+.site-header nav {
   height: var(--nav-height);
   background-color: var(--bg-nav);
   position: fixed;
@@ -189,7 +189,7 @@ main {
 }
 
 @media (max-width: 720px) {
-  nav {
+  .site-header nav {
     padding: 0 var(--space-4);
   }
 

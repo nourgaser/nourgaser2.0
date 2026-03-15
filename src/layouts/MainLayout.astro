@@ -30,7 +30,7 @@ const currentYear = new Date().getFullYear();
         <a class="site-logo-link" href="/" aria-label="Go to site start">
           <img class="site-logo" src="/logo.svg" alt="nourgaser" />
         </a>
-        <div class="site-nav-links">
+        <div class="site-nav-links site-nav-links-desktop">
           <a href="/about">about</a>
           <a href="/portfolio">portfolio</a>
           <a href="/skills">skills</a>
@@ -38,6 +38,21 @@ const currentYear = new Date().getFullYear();
           <a href="/business">business</a>
           <a href="/resume">resume</a>
         </div>
+        <details class="site-nav-menu">
+          <summary class="site-nav-toggle" aria-label="Toggle primary menu">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </summary>
+          <div class="site-nav-links site-nav-links-mobile" id="primary-nav-links-mobile">
+            <a href="/about">about</a>
+            <a href="/portfolio">portfolio</a>
+            <a href="/skills">skills</a>
+            <a href="/hobbies">hobbies</a>
+            <a href="/business">business</a>
+            <a href="/resume">resume</a>
+          </div>
+        </details>
       </nav>
     </header>
 
@@ -75,5 +90,39 @@ const currentYear = new Date().getFullYear();
         </div>
       </div>
     </footer>
+
+    <script>
+      const navMenu = document.querySelector('.site-nav-menu');
+
+      if (navMenu instanceof HTMLDetailsElement) {
+        const closeMenu = () => {
+          navMenu.open = false;
+        };
+
+        document.addEventListener('click', (event) => {
+          if (!navMenu.open) {
+            return;
+          }
+
+          if (!(event.target instanceof Node)) {
+            return;
+          }
+
+          if (!navMenu.contains(event.target)) {
+            closeMenu();
+          }
+        });
+
+        navMenu.querySelectorAll('.site-nav-links a').forEach((link) => {
+          link.addEventListener('click', closeMenu);
+        });
+
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && navMenu.open) {
+            closeMenu();
+          }
+        });
+      }
+    </script>
   </body>
 </html>

@@ -246,29 +246,30 @@ import MainLayout from '../layouts/MainLayout.astro';
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    border-left: 1px solid rgba(100, 157, 226, 0.55);
+    border-left: 0;
     flex: 0 0 auto;
+    background-color: rgba(2, 8, 20, 0.62);
   }
 
   .about-box--who .about-box-media {
-    width: 102px;
-    background-image: linear-gradient(to left, rgba(4, 8, 16, 0.15), rgba(4, 8, 16, 0.95)), url('/about/cave.png');
-    background-position: right center;
-    background-size: cover;
+    width: 250px;
+    background-image: linear-gradient(to left, rgba(4, 8, 16, 0.1), rgba(4, 8, 16, 0.88)), url('/about/cave.png');
+    background-position: 72% center;
+    background-size: contain;
   }
 
   .about-box--productivity {
-    align-items: center;
+    align-items: stretch;
   }
 
   .about-box--productivity .about-box-media {
     order: -1;
-    width: 256px;
+    width: 272px;
     border-left: 0;
-    border-right: 1px solid rgba(100, 157, 226, 0.55);
+    border-right: 0;
     background-color: rgba(2, 8, 20, 0.55);
-    background-size: 92% auto;
-    background-position: center center;
+    background-size: contain;
+    background-position: 52% center;
     background-image: linear-gradient(to right, rgba(4, 8, 16, 0.15), rgba(4, 8, 16, 0.78)), url('/about/brain.png');
   }
 
@@ -276,17 +277,17 @@ import MainLayout from '../layouts/MainLayout.astro';
     width: 236px;
     background-image: linear-gradient(to left, rgba(4, 8, 16, 0.1), rgba(4, 8, 16, 0.9)), url('/about/space_spaceship.png');
     background-position: right center;
-    background-size: cover;
+    background-size: auto 100%;
   }
 
   .about-box--business .about-box-media {
     order: -1;
     width: 216px;
     border-left: 0;
-    border-right: 1px solid rgba(100, 157, 226, 0.55);
+    border-right: 0;
     background-image: linear-gradient(to left, rgba(4, 8, 16, 0.2), rgba(4, 8, 16, 0.94)), url('/about/space.png');
-    background-position: left center;
-    background-size: cover;
+    background-position: center center;
+    background-size: auto 100%;
   }
 
   .about-box p {
@@ -364,7 +365,9 @@ import MainLayout from '../layouts/MainLayout.astro';
       margin-top: var(--space-3);
       border-left: 0;
       border-right: 0;
-      border-top: 1px solid rgba(100, 157, 226, 0.55);
+      border-top: 0;
+      background-size: cover !important;
+      background-position: center !important;
     }
 
     .about-box--productivity .about-box-media {

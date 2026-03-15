@@ -1,28 +1,32 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import PageHero from '../components/astro/PageHero.astro';
+import { resumePageContent } from '../data/pages/resume';
 ---
 
-<MainLayout title="Resume" description="Latest resume for Nour Gaser Algendi.">
+<MainLayout title="Resume" description={resumePageContent.seoDescription}>
   <main class="resume-page" data-ngx-section="resume" data-ngx-label="Resume" data-ngx-focusable="true" data-ngx-route="/resume">
     <PageHero
-      kicker="Professional document"
-      title="Resume"
-      description="Download or preview the latest resume."
-      image="/hero/galaxy.png"
-      sectionId="resume-hero"
-      sectionLabel="Resume Hero"
+      kicker={resumePageContent.hero.kicker}
+      title={resumePageContent.hero.title}
+      description={resumePageContent.hero.description}
+      image={resumePageContent.hero.image}
+      sectionId={resumePageContent.hero.sectionId}
+      sectionLabel={resumePageContent.hero.sectionLabel}
     />
 
     <section class="resume-shell" data-ngx-section="resume-links" data-ngx-label="Resume Links">
       <p class="resume-actions">
-        <a href="/resume-nour-gaser-jan-2026.pdf" download>Download PDF</a>
-        <a href="/business">Go to business profile</a>
+        {
+          resumePageContent.actions.map((action) => (
+            <a href={action.href} download={action.download}>{action.label}</a>
+          ))
+        }
       </p>
     </section>
 
     <section class="resume-shell resume-preview" data-ngx-section="resume-preview" data-ngx-label="Resume Preview">
-      <iframe src="/resume-nour-gaser-jan-2026.pdf" title="Resume PDF preview"></iframe>
+      <iframe src={resumePageContent.resumeFile} title={resumePageContent.previewTitle}></iframe>
     </section>
   </main>
 </MainLayout>

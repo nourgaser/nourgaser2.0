@@ -1,45 +1,25 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
 import PageHero from '../../components/astro/PageHero.astro';
-
-const blogEntries = [
-  {
-    title: 'Building ngxos as progressive enhancement',
-    summary: 'Why the runtime layer stays optional and how semantic Astro pages remain the source of truth.',
-    href: '/portfolio/',
-    label: 'Related work',
-  },
-  {
-    title: 'Architecture notes from map and platform projects',
-    summary: 'A practical record of decisions from geospatial SDKs, platform migrations, and product delivery work.',
-    href: '/portfolio/',
-    label: 'Portfolio archive',
-  },
-  {
-    title: 'Creative engineering and personal workflows',
-    summary: 'Reflections on balancing experimentation, performance, and maintainability in personal systems.',
-    href: '/',
-    label: 'About me',
-  },
-];
+import { blogPageContent } from '../../data/pages/blog';
 ---
 
-<MainLayout title="Blog" description="Writing on software architecture, systems thinking, design decisions, and creative engineering.">
+<MainLayout title="Blog" description={blogPageContent.seoDescription}>
   <main class="blog-page" data-ngx-section="blog" data-ngx-label="Blog" data-ngx-focusable="true" data-ngx-route="/blog">
     <PageHero
-      kicker="Writing and notes"
-      title="Blog"
-      description="Long-form notes on architecture decisions, systems thinking, creative engineering, and practical delivery lessons."
-      image="/hero/control_room.png"
-      sectionId="blog-hero"
-      sectionLabel="Blog Hero"
+      kicker={blogPageContent.hero.kicker}
+      title={blogPageContent.hero.title}
+      description={blogPageContent.hero.description}
+      image={blogPageContent.hero.image}
+      sectionId={blogPageContent.hero.sectionId}
+      sectionLabel={blogPageContent.hero.sectionLabel}
     />
 
     <section class="blog-shell" data-ngx-section="blog-index" data-ngx-label="Blog Index" data-ngx-focusable="true">
-      <h2>Latest Entries</h2>
+      <h2>{blogPageContent.latestEntriesHeading}</h2>
       <div class="blog-list">
         {
-          blogEntries.map((entry) => (
+          blogPageContent.entries.map((entry) => (
             <article class="blog-card">
               <h3>{entry.title}</h3>
               <p>{entry.summary}</p>

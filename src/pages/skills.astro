@@ -2,17 +2,18 @@
 import MainLayout from '../layouts/MainLayout.astro';
 import PageHero from '../components/astro/PageHero.astro';
 import { skillCategories } from '../data/skills';
+import { skillsPageContent } from '../data/pages/skills-page';
 ---
 
-<MainLayout title="Skills" description="Current skills and technical strengths across engineering, infrastructure, and creative development.">
+<MainLayout title="Skills" description={skillsPageContent.seoDescription}>
   <main class="skills-page" data-ngx-section="skills" data-ngx-label="Skills" data-ngx-focusable="true" data-ngx-route="/skills">
     <PageHero
-      kicker="Skills and strengths"
-      title="Skills"
-      description="Curated from current professional experience, public projects, and ongoing research work."
-      image="/hero/double_sunset.png"
-      sectionId="skills-hero"
-      sectionLabel="Skills Hero"
+      kicker={skillsPageContent.hero.kicker}
+      title={skillsPageContent.hero.title}
+      description={skillsPageContent.hero.description}
+      image={skillsPageContent.hero.image}
+      sectionId={skillsPageContent.hero.sectionId}
+      sectionLabel={skillsPageContent.hero.sectionLabel}
     />
 
     <section class="skills-shell skills-grid" data-ngx-section="skills-categories" data-ngx-label="Skill Categories">

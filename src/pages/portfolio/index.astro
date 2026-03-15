@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import PageHero from '../../components/astro/PageHero.astro';
+import { portfolioCategoryMeta, portfolioCategoryOrder, portfolioPageContent } from '../../data/pages/portfolio';
 
 const projects = (await getCollection('projects')).sort((left, right) => {
   const leftOrder = left.data.order ?? Number.MAX_SAFE_INTEGER;
@@ -14,38 +15,7 @@ const projects = (await getCollection('projects')).sort((left, right) => {
   return left.data.title.localeCompare(right.data.title);
 });
 
-const categoryOrder = [
-  'professional-platforms',
-  'mapping-gis-3d',
-  'web-platforms',
-  'games',
-  'experiments',
-] as const;
-
-const categoryLabels: Record<(typeof categoryOrder)[number], { title: string; description: string }> = {
-  'professional-platforms': {
-    title: 'Professional Platforms',
-    description: 'Client-facing systems, multi-service platforms, and architecture-heavy product delivery.',
-  },
-  'mapping-gis-3d': {
-    title: 'Mapping, GIS & 3D',
-    description: 'Indoor map services, 3D SDK work, geospatial data flows, and navigation tooling.',
-  },
-  'web-platforms': {
-    title: 'Web Platforms & Tools',
-    description: 'Productivity, education, and knowledge-oriented software projects.',
-  },
-  games: {
-    title: 'Games',
-    description: 'Playable systems, mechanics R&D, and game design experiments.',
-  },
-  experiments: {
-    title: 'Experiments',
-    description: 'Focused technical studies and smaller exploratory implementations.',
-  },
-};
-
-const groupedProjects = categoryOrder
+const groupedProjects = portfolioCategoryOrder
   .map((category) => ({
     category,
     projects: projects.filter((project) => project.data.category === category),
@@ -53,15 +23,15 @@ const groupedProjects = categoryOrder
   .filter((entry) => entry.projects.length > 0);
 ---
 
-<MainLayout title="Portfolio" description="Categorized portfolio across client platforms, mapping systems, web products, games, and technical experiments by Nour Gaser.">
+<MainLayout title="Portfolio" description={portfolioPageContent.seoDescription}>
   <main class="portfolio-page" data-ngx-section="portfolio" data-ngx-label="Portfolio" data-ngx-focusable="true" data-ngx-route="/portfolio">
     <PageHero
-      kicker="Selected work"
-      title="Portfolio"
-      description="A growing archive of games, software projects, prototypes, and technical experiments, rebuilt as crawlable content with room for broader professional work."
-      image="/hero/spaceship.png"
-      sectionId="portfolio-hero"
-      sectionLabel="Portfolio Hero"
+      kicker={portfolioPageContent.hero.kicker}
+      title={portfolioPageContent.hero.title}
+      description={portfolioPageContent.hero.description}
+      image={portfolioPageContent.hero.image}
+      sectionId={portfolioPageContent.hero.sectionId}
+      sectionLabel={portfolioPageContent.hero.sectionLabel}
     />
 
     {
@@ -69,10 +39,10 @@ const groupedProjects = categoryOrder
         <section
           class="portfolio-shell portfolio-category"
           data-ngx-section={`portfolio-${entry.category}`}
-          data-ngx-label={categoryLabels[entry.category].title}
+          data-ngx-label={portfolioCategoryMeta[entry.category].title}
         >
-          <h2>{categoryLabels[entry.category].title}</h2>
-          <p class="portfolio-category-intro">{categoryLabels[entry.category].description}</p>
+          <h2>{portfolioCategoryMeta[entry.category].title}</h2>
+          <p class="portfolio-category-intro">{portfolioCategoryMeta[entry.category].description}</p>
 
           <div class="portfolio-grid">
             {entry.projects.map((project) => (

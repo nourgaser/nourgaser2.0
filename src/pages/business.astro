@@ -10,19 +10,20 @@ import {
   professionalSummary,
 } from '../data/professional';
 import { skillCategories } from '../data/skills';
+import { businessPageContent } from '../data/pages/business';
 ---
 
-<MainLayout title="Business" description="Business and academic profile, expertise, experience, and skills for technical consultancy and engineering work.">
+<MainLayout title="Business" description={businessPageContent.seoDescription}>
   <main class="business-page" data-ngx-section="business" data-ngx-label="Business" data-ngx-focusable="true" data-ngx-route="/business">
     <PageHero
-      kicker="Business and Profession"
-      title="Business"
+      kicker={businessPageContent.hero.kicker}
+      title={businessPageContent.hero.title}
       description={professionalSummary.headline}
-      image="/hero/massive_spaceship.png"
-      sectionId="business-hero"
-      sectionLabel="Business Hero"
-      ctaHref="#business-profile"
-      ctaLabel="Open profile"
+      image={businessPageContent.hero.image}
+      sectionId={businessPageContent.hero.sectionId}
+      sectionLabel={businessPageContent.hero.sectionLabel}
+      ctaHref={businessPageContent.hero.ctaHref}
+      ctaLabel={businessPageContent.hero.ctaLabel}
     />
 
     <section id="business-profile" class="business-shell" data-ngx-section="business-summary" data-ngx-label="Business Summary">
@@ -44,7 +45,7 @@ import { skillCategories } from '../data/skills';
     </section>
 
     <section class="business-shell" data-ngx-section="featured-work" data-ngx-label="Featured Work">
-      <h2 class="business-section-title">Featured Work</h2>
+      <h2 class="business-section-title">{businessPageContent.sections.featuredWorkTitle}</h2>
       <div class="business-list">
         {
           featuredProfessionalWork.map((item) => (
@@ -65,7 +66,7 @@ import { skillCategories } from '../data/skills';
 
     <section class="business-shell business-columns" data-ngx-section="experience-and-education" data-ngx-label="Experience and Education">
       <article>
-        <h2 class="business-section-title">Experience</h2>
+        <h2 class="business-section-title">{businessPageContent.sections.experienceTitle}</h2>
         <div class="business-list">
           {
             experience.map((entry) => (
@@ -82,7 +83,7 @@ import { skillCategories } from '../data/skills';
       </article>
 
       <article>
-        <h2 class="business-section-title">Academic Background</h2>
+        <h2 class="business-section-title">{businessPageContent.sections.academicBackgroundTitle}</h2>
         <div class="business-list">
           {
             education.map((entry) => (
@@ -99,7 +100,7 @@ import { skillCategories } from '../data/skills';
     </section>
 
     <section class="business-shell" data-ngx-section="skills" data-ngx-label="Skills">
-      <h2 class="business-section-title">Skills</h2>
+      <h2 class="business-section-title">{businessPageContent.sections.skillsTitle}</h2>
       <div class="business-list">
         {
           skillCategories.map((category) => (
@@ -115,7 +116,7 @@ import { skillCategories } from '../data/skills';
     </section>
 
     <section class="business-shell" data-ngx-section="current-project-notes" data-ngx-label="Current Project Notes">
-      <h2 class="business-section-title">Current Notes</h2>
+      <h2 class="business-section-title">{businessPageContent.sections.currentNotesTitle}</h2>
       <article class="business-panel">
         <ul class="business-notes">
           {currentProjectNotes.map((note) => <li>{note}</li>)}

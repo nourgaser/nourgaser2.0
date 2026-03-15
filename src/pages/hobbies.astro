@@ -1,111 +1,44 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import PageHero from '../components/astro/PageHero.astro';
+import { hobbiesPageContent } from '../data/pages/hobbies';
 ---
 
 <MainLayout
   title="Hobbies"
-  description="Personal interests: game design and development, learning and academia, reading and writing, and intentional digital living."
+  description={hobbiesPageContent.seoDescription}
 >
   <main class="hobbies-page" data-ngx-section="hobbies" data-ngx-label="Hobbies" data-ngx-focusable="true" data-ngx-route="/hobbies">
     <PageHero
-      kicker="Life Outside Work"
-      title="Hobbies"
-      description="Outside of work, most of my time goes into building, learning, and reflecting. I enjoy hobbies that are creative, technical, and meaningful over the long term."
-      image="/hero/space3.png"
-      sectionId="hobbies-hero"
-      sectionLabel="Hobbies Hero"
+      kicker={hobbiesPageContent.hero.kicker}
+      title={hobbiesPageContent.hero.title}
+      description={hobbiesPageContent.hero.description}
+      image={hobbiesPageContent.hero.image}
+      sectionId={hobbiesPageContent.hero.sectionId}
+      sectionLabel={hobbiesPageContent.hero.sectionLabel}
     />
 
-    <section
-      class="hobby-card"
-      aria-labelledby="hobby-game-design"
-      data-ngx-section="game-design"
-      data-ngx-label="Game Design"
-      data-ngx-focusable="true"
-    >
-      <h2 id="hobby-game-design">Game Design, Development, and Gaming</h2>
-      <p>
-        Game design is one of my favorite outlets. I enjoy designing systems, balancing mechanics, and building
-        playful prototypes as much as shipping complete experiences.
-      </p>
-      <ul>
-        <li>Designing game mechanics, loops, and progression systems</li>
-        <li>Building game prototypes and tools</li>
-        <li>Playing games with strong systems and creative worldbuilding</li>
-      </ul>
-    </section>
-
-    <section
-      class="hobby-card"
-      aria-labelledby="hobby-reading-writing"
-      data-ngx-section="reading-writing"
-      data-ngx-label="Reading and Writing"
-      data-ngx-focusable="true"
-    >
-      <h2 id="hobby-reading-writing">Reading and Writing</h2>
-      <p>
-        Reading and writing help me think clearly. I enjoy technical reading, thoughtful long-form writing, and keeping
-        notes that turn ideas into action.
-      </p>
-      <ul>
-        <li>Technical articles and engineering concepts</li>
-        <li>Reflective writing and idea journals</li>
-        <li>Books that combine meaning, depth, and practical insight</li>
-      </ul>
-    </section>
-
-    <section
-      class="hobby-card"
-      aria-labelledby="hobby-learning"
-      data-ngx-section="learning"
-      data-ngx-label="Learning"
-      data-ngx-focusable="true"
-    >
-      <h2 id="hobby-learning">Learning, Academia, and Deep Study</h2>
-      <p>
-        I genuinely enjoy structured learning and academia. I like studying topics in depth and connecting theory to
-        implementation.
-      </p>
-      <ul>
-        <li>Computer science foundations and systems thinking</li>
-        <li>Research-driven learning and long-term study habits</li>
-        <li>Building projects that test and apply what I learn</li>
-      </ul>
-    </section>
-
-    <section
-      class="hobby-card"
-      aria-labelledby="hobby-faith"
-      data-ngx-section="faith"
-      data-ngx-label="Faith"
-      data-ngx-focusable="true"
-    >
-      <h2 id="hobby-faith">Faith and Values</h2>
-      <p>
-        Islam and religious grounding are central in my life. They shape my priorities, discipline, and sense of
-        purpose.
-      </p>
-    </section>
-
-    <section
-      class="hobby-card"
-      aria-labelledby="hobby-intentional"
-      data-ngx-section="intentional-living"
-      data-ngx-label="Intentional Living"
-      data-ngx-focusable="true"
-    >
-      <h2 id="hobby-intentional">Digital Minimalism and Intentional Living</h2>
-      <p>
-        I am actively moving toward a more intentional digital life: less noise, fewer distractions, and more focused
-        work and study.
-      </p>
-      <ul>
-        <li>Reducing low-value screen time</li>
-        <li>Keeping simple workflows and fewer tools</li>
-        <li>Prioritizing depth, consistency, and real-world impact</li>
-      </ul>
-    </section>
+    {
+      hobbiesPageContent.cards.map((card) => (
+        <section
+          class="hobby-card"
+          aria-labelledby={card.headingId}
+          data-ngx-section={card.sectionId}
+          data-ngx-label={card.sectionLabel}
+          data-ngx-focusable="true"
+        >
+          <h2 id={card.headingId}>{card.title}</h2>
+          <p>{card.description}</p>
+          {
+            card.points && (
+              <ul>
+                {card.points.map((point) => <li>{point}</li>)}
+              </ul>
+            )
+          }
+        </section>
+      ))
+    }
   </main>
 </MainLayout>
 

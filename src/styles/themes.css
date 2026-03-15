@@ -30,8 +30,8 @@
 
   /* Text */
   --text-primary:           #ffffff;
-  --text-accent:            #fcdeb6;  /* warm amber — primary accent color */
-  --text-accent-2:          #fcdeb6;
+  --text-accent:            #a6a6a6;
+  --text-accent-2:          #8e8e8e;
   --text-dimmed:            #464646;
 
   /* Shadows */
@@ -57,20 +57,20 @@
 
   /* Borders */
   --border-button:          #1b1b1b;
-  --border-terminal:        color-mix(in srgb, #58e1ff 30%, transparent);
+  --border-terminal:        color-mix(in srgb, #9a9a9a 24%, transparent);
 
   /* Text */
   --text-primary:           #ffffff;
-  --text-accent:            #58e1ff;  /* cyan */
-  --text-accent-2:          #b06cff;  /* purple */
+  --text-accent:            #a6a6a6;
+  --text-accent-2:          #8e8e8e;
   --text-dimmed:            #464646;
 
   /* Shadows */
   --shadow-terminal:        0px 0px 15px 5px rgba(0, 0, 0, 0.25);
 
   /* Glow effects */
-  --glow-accent:            0 0 12px color-mix(in srgb, #58e1ff 50%, transparent);
-  --glow-focus:             0 0 24px color-mix(in srgb, #58e1ff 45%, transparent);
+  --glow-accent:            none;
+  --glow-focus:             none;
 }
 
 /* ------------------------------------------------------------------ */
@@ -86,16 +86,16 @@
   --bg-button:              #343434;
 
   --border-button:          #1b1b1b;
-  --border-terminal:        color-mix(in srgb, #e95420 30%, transparent);
+  --border-terminal:        color-mix(in srgb, #9a9a9a 24%, transparent);
 
   --text-primary:           #ffffff;
-  --text-accent:            #e95420;  /* ubuntu orange */
-  --text-accent-2:          #f4a261;
+  --text-accent:            #a6a6a6;
+  --text-accent-2:          #8e8e8e;
   --text-dimmed:            #464646;
 
   --shadow-terminal:        0px 0px 15px 5px rgba(0, 0, 0, 0.25);
-  --glow-accent:            0 0 12px color-mix(in srgb, #e95420 50%, transparent);
-  --glow-focus:             0 0 24px color-mix(in srgb, #e95420 45%, transparent);
+  --glow-accent:            none;
+  --glow-focus:             none;
 }
 
 /* ------------------------------------------------------------------ */
@@ -111,16 +111,16 @@
   --bg-button:              #343434;
 
   --border-button:          #1b1b1b;
-  --border-terminal:        color-mix(in srgb, #3c6eb4 30%, transparent);
+  --border-terminal:        color-mix(in srgb, #9a9a9a 24%, transparent);
 
   --text-primary:           #ffffff;
-  --text-accent:            #3c6eb4;  /* fedora blue */
-  --text-accent-2:          #74a7e0;
+  --text-accent:            #a6a6a6;
+  --text-accent-2:          #8e8e8e;
   --text-dimmed:            #464646;
 
   --shadow-terminal:        0px 0px 15px 5px rgba(0, 0, 0, 0.25);
-  --glow-accent:            0 0 12px color-mix(in srgb, #3c6eb4 50%, transparent);
-  --glow-focus:             0 0 24px color-mix(in srgb, #3c6eb4 45%, transparent);
+  --glow-accent:            none;
+  --glow-focus:             none;
 }
 
 /* ------------------------------------------------------------------ */

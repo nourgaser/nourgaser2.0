@@ -16,7 +16,8 @@ Before writing any CSS, layout, or visual markup:
    - `docs/design/terminals/` — terminal UI
    - `docs/design/font/` — typography
    - `docs/design/logo/` — branding
-3. If neither source is accessible, **stop and ask the user**.
+3. If MCP is unavailable and the in-repo references are not clear enough to confirm the visual intent, **ask the user for screenshots before proceeding**.
+4. If neither source nor user-provided screenshots are available, **stop and ask the user**.
 
 ## CSS Rules
 

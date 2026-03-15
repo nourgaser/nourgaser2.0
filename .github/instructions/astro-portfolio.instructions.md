@@ -15,6 +15,7 @@ applyTo: "src/pages/**/*.astro, src/layouts/**/*.astro, src/components/astro/**/
 ## Visual Implementation
 
 - **Before writing any layout, spacing, color, or structural HTML**, consult the Figma design file via MCP or `docs/design/pages/` screenshots.
+- If MCP is unavailable and the in-repo design references are ambiguous, incomplete, or visually unclear, ask the user for screenshots before implementing.
 - Match the Figma design pixel-faithfully. Do not substitute colors, fonts, or layout with generic alternatives.
 - The design is the requirement. Deviating from it is a bug.
 

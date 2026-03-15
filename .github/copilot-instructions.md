@@ -115,7 +115,8 @@ The design is defined in the **Figma project**.
 1. **Open the Figma file via MCP** (`mcp_com_figma_mcp_get_design_context` or `mcp_com_figma_mcp_get_screenshot`) and inspect the relevant frame/component.
 2. If MCP is unavailable, **check `docs/design/`** for committed screenshots and references.
 3. Only proceed with implementation once you have confirmed the visual intent from those sources.
-4. If neither source is accessible, **stop and ask the user** rather than guessing.
+4. If MCP access is unavailable and the in-repo references are missing, unclear, or not clean enough to confirm the design, **ask the user for screenshots before proceeding**.
+5. If neither source nor user-provided screenshots are available, **stop and ask the user** rather than guessing.
 
 ### Figma File
 

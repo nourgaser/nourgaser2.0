@@ -1,4 +1,7 @@
 ---
+import Logo from '../assets/icons/logo.svg';
+import NgxosShield from '../assets/icons/ngxos-shield.svg';
+
 import '../styles/reset.css';
 import '../styles/tokens.css';
 import '../styles/themes.css';
@@ -29,7 +32,7 @@ const currentYear = new Date().getFullYear();
     <header class="site-header" data-ngx-section="site-header" data-ngx-label="Header" data-ngx-route="/">
       <nav aria-label="Primary">
         <a class="site-logo-link" href="/" aria-label="Go to site start">
-          <img class="site-logo" src="/logo.svg" alt="nourgaser" />
+          <Logo class="site-logo" aria-hidden="true" focusable="false" />
         </a>
         <div class="site-nav-links site-nav-links-desktop">
           {
@@ -61,7 +64,7 @@ const currentYear = new Date().getFullYear();
       <div class="site-footer-inner">
         <div class="site-footer-center">
           <p class="site-footer-powered">
-            <img src="/ngxos-shield.svg" alt="" aria-hidden="true" />
+            <NgxosShield aria-hidden="true" focusable="false" />
             <span>{siteShellContent.footer.poweredBy}</span>
           </p>
           <p class="site-footer-credit">{siteShellContent.footer.credit}</p>

@@ -1,4 +1,5 @@
 ---
+import { Picture } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 
 type ProjectMediaItem = CollectionEntry<'projects'>['data']['media'][number];
@@ -51,10 +52,22 @@ const liveLinks = [links?.live].filter((value): value is string => Boolean(value
         <figure class="showcase-hero" data-gallery-main>
           {leadMedia.isVideo ? (
             <video controls preload="metadata" playsinline>
-              <source src={leadMedia.path} type="video/mp4" />
+              <source src={typeof leadMedia.path === 'string' ? leadMedia.path : undefined} type="video/mp4" />
             </video>
+          ) : typeof leadMedia.path === 'string' ? (
+            <img src={leadMedia.path} alt={leadMedia.alt ?? `${title} preview`} loading="eager" decoding="async" />
           ) : (
-            <img src={leadMedia.path} alt={leadMedia.alt ?? `${title} preview`} loading="eager" />
+            <Picture
+              src={leadMedia.path}
+              alt={leadMedia.alt ?? `${title} preview`}
+              formats={['avif', 'webp']}
+              width={1400}
+              height={875}
+              sizes="(min-width: 1200px) 900px, 100vw"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+            />
           )}
         </figure>
       )
@@ -74,10 +87,21 @@ const liveLinks = [links?.live].filter((value): value is string => Boolean(value
               >
                 {item.isVideo ? (
                   <video preload="metadata" playsinline muted>
-                    <source src={item.path} type="video/mp4" />
+                    <source src={typeof item.path === 'string' ? item.path : undefined} type="video/mp4" />
                   </video>
+                ) : typeof item.path === 'string' ? (
+                  <img src={item.path} alt={item.alt ?? `${title} preview ${index + 1}`} loading="lazy" decoding="async" />
                 ) : (
-                  <img src={item.path} alt={item.alt ?? `${title} preview ${index + 1}`} loading="lazy" />
+                  <Picture
+                    src={item.path}
+                    alt={item.alt ?? `${title} preview ${index + 1}`}
+                    formats={['avif', 'webp']}
+                    width={320}
+                    height={200}
+                    sizes="(min-width: 860px) 180px, 33vw"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 )}
                 <span class="showcase-thumb-tag">{item.isVideo ? 'video' : 'image'}</span>
               </button>
@@ -215,11 +239,16 @@ const liveLinks = [links?.live].filter((value): value is string => Boolean(value
     background: color-mix(in srgb, var(--bg-nav) 86%, transparent);
   }
 
-  .showcase-hero img,
+  .showcase-hero :global(picture),
+  .showcase-hero :global(img),
   .showcase-hero video {
     display: block;
     width: 100%;
     height: auto;
+  }
+
+  .showcase-hero :global(img),
+  .showcase-hero video {
     min-height: 240px;
     max-height: 660px;
     object-fit: cover;
@@ -284,12 +313,17 @@ const liveLinks = [links?.live].filter((value): value is string => Boolean(value
     pointer-events: none;
   }
 
-  .showcase-strip img,
+  .showcase-strip :global(picture),
+  .showcase-strip :global(img),
   .showcase-strip video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
     display: block;
+  }
+
+  .showcase-strip :global(img),
+  .showcase-strip video {
+    object-fit: cover;
   }
 
   .showcase-meta {

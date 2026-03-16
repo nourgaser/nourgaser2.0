@@ -1,4 +1,5 @@
 ---
+import { Picture } from 'astro:assets';
 import MainLayout from '../layouts/MainLayout.astro';
 import { homePageContent } from '../data/pages/home';
 ---
@@ -6,6 +7,18 @@ import { homePageContent } from '../data/pages/home';
 <MainLayout title="Home" description={homePageContent.seoDescription}>
   <main class="about-page" data-ngx-section="about" data-ngx-label="About Me" data-ngx-focusable="true" data-ngx-route="/">
     <section class="about-hero" data-ngx-section="about-intro" data-ngx-label="About Intro">
+      <div class="about-hero-media" aria-hidden="true">
+        <Picture
+          src={homePageContent.hero.image}
+          alt=""
+          formats={['avif', 'webp']}
+          widths={[640, 960, 1280, 1600, 1920]}
+          sizes="100vw"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </div>
       <div class="about-hero-inner">
         <div class="about-hero-copy">
           <p class="about-kicker">{homePageContent.hero.kicker}</p>
@@ -37,7 +50,17 @@ import { homePageContent } from '../data/pages/home';
                   )
                 }
               </div>
-              <div class="about-box-media" aria-hidden="true"></div>
+              <div class="about-box-media" aria-hidden="true">
+                <Picture
+                  src={section.image}
+                  alt=""
+                  formats={['avif', 'webp']}
+                  widths={[320, 480, 640]}
+                  sizes="(max-width: 720px) 100vw, 280px"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
             </div>
           </div>
         </section>
@@ -58,15 +81,40 @@ import { homePageContent } from '../data/pages/home';
   }
 
   .about-hero {
+    position: relative;
+    overflow: hidden;
     margin-top: var(--space-2);
     min-height: 390px;
-    background:
-      linear-gradient(to bottom, rgba(3, 8, 17, 0.3), rgba(3, 8, 17, 0.55)),
-      url('/about/man_on_planet.png') center center / cover no-repeat;
     border-top: 1px solid var(--hero-edge-border);
     border-bottom: 1px solid var(--hero-edge-border);
     display: flex;
     align-items: center;
+  }
+
+  .about-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(3, 8, 17, 0.3), rgba(3, 8, 17, 0.55));
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .about-hero-media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .about-hero-media :global(picture),
+  .about-hero-media :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .about-hero-media :global(img) {
+    object-fit: cover;
+    object-position: center;
   }
 
   .about-hero-inner,
@@ -79,6 +127,7 @@ import { homePageContent } from '../data/pages/home';
     position: relative;
     padding: var(--space-8) 0;
     margin: 0 auto;
+    z-index: 2;
   }
 
   .about-hero-inner::before {
@@ -159,6 +208,8 @@ import { homePageContent } from '../data/pages/home';
   }
 
   .about-box-media {
+    position: relative;
+    overflow: hidden;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -167,11 +218,35 @@ import { homePageContent } from '../data/pages/home';
     background-color: rgba(2, 8, 20, 0.62);
   }
 
+  .about-box-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .about-box-media :global(picture),
+  .about-box-media :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .about-box-media :global(img) {
+    object-fit: contain;
+    object-position: center;
+  }
+
   .about-box--who .about-box-media {
     width: 250px;
-    background-image: linear-gradient(to left, rgba(4, 8, 16, 0.1), rgba(4, 8, 16, 0.88)), url('/about/cave.png');
-    background-position: 72% center;
-    background-size: contain;
+  }
+
+  .about-box--who .about-box-media::after {
+    background: linear-gradient(to left, rgba(4, 8, 16, 0.1), rgba(4, 8, 16, 0.88));
+  }
+
+  .about-box--who .about-box-media :global(img) {
+    object-position: 72% center;
   }
 
   .about-box--productivity {
@@ -184,16 +259,26 @@ import { homePageContent } from '../data/pages/home';
     border-left: 0;
     border-right: 0;
     background-color: rgba(2, 8, 20, 0.55);
-    background-size: contain;
-    background-position: 52% center;
-    background-image: linear-gradient(to right, rgba(4, 8, 16, 0.15), rgba(4, 8, 16, 0.78)), url('/about/brain.png');
+  }
+
+  .about-box--productivity .about-box-media::after {
+    background: linear-gradient(to right, rgba(4, 8, 16, 0.15), rgba(4, 8, 16, 0.78));
+  }
+
+  .about-box--productivity .about-box-media :global(img) {
+    object-position: 52% center;
   }
 
   .about-box--hobbies .about-box-media {
     width: 236px;
-    background-image: linear-gradient(to left, rgba(4, 8, 16, 0.1), rgba(4, 8, 16, 0.9)), url('/about/space_spaceship.png');
-    background-position: right center;
-    background-size: auto 100%;
+  }
+
+  .about-box--hobbies .about-box-media::after {
+    background: linear-gradient(to left, rgba(4, 8, 16, 0.1), rgba(4, 8, 16, 0.9));
+  }
+
+  .about-box--hobbies .about-box-media :global(img) {
+    object-position: right center;
   }
 
   .about-box--business .about-box-media {
@@ -201,9 +286,10 @@ import { homePageContent } from '../data/pages/home';
     width: 216px;
     border-left: 0;
     border-right: 0;
-    background-image: linear-gradient(to left, rgba(4, 8, 16, 0.2), rgba(4, 8, 16, 0.94)), url('/about/space.png');
-    background-position: center center;
-    background-size: auto 100%;
+  }
+
+  .about-box--business .about-box-media::after {
+    background: linear-gradient(to left, rgba(4, 8, 16, 0.2), rgba(4, 8, 16, 0.94));
   }
 
   .about-box p {
@@ -242,7 +328,10 @@ import { homePageContent } from '../data/pages/home';
     .about-hero {
       margin-top: var(--space-4);
       min-height: 280px;
-      background-position: 62% center;
+    }
+
+    .about-hero-media :global(img) {
+      object-position: 62% center;
     }
 
     .about-hero-copy {
@@ -282,8 +371,11 @@ import { homePageContent } from '../data/pages/home';
       border-left: 0;
       border-right: 0;
       border-top: 0;
-      background-size: cover !important;
-      background-position: center !important;
+    }
+
+    .about-box-media :global(img) {
+      object-fit: cover !important;
+      object-position: center !important;
     }
 
     .about-box--productivity .about-box-media {

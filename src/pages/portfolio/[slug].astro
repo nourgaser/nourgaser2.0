@@ -5,6 +5,7 @@ import PageHero from '../../components/astro/PageHero.astro';
 import ProjectShowcaseGallery from '../../components/astro/ProjectShowcaseGallery.astro';
 import ProjectNav from '../../components/astro/ProjectNav.astro';
 import PortfolioProjectEnhancer from '../../components/svelte/PortfolioProjectEnhancer.svelte';
+import { heroImages } from '../../data/image-assets';
 import { portfolioCategoryLabels, portfolioCategoryOrder } from '../../data/pages/portfolio';
 
 export async function getStaticPaths() {
@@ -57,7 +58,7 @@ const navGroups = portfolioCategoryOrder
       kicker={project.data.status}
       title={project.data.title}
       description={project.data.summary}
-      image={project.data.coverImage ?? '/hero/space3.png'}
+      image={project.data.coverImage ?? heroImages.space3}
       sectionId="project-hero"
       sectionLabel="Project Hero"
       ctaHref="#project-showcase"

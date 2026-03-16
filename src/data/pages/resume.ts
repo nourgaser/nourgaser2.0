@@ -1,10 +1,12 @@
+import { heroImages } from '../image-assets';
+
 export const resumePageContent = {
   seoDescription: 'Latest resume for Nour Gaser Algendi.',
   hero: {
     kicker: 'Professional document',
     title: 'Resume',
     description: 'Download or preview the latest resume.',
-    image: '/hero/galaxy.png',
+    image: heroImages.galaxy,
     sectionId: 'resume-hero',
     sectionLabel: 'Resume Hero',
   },

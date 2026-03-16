@@ -145,7 +145,7 @@ main {
   font-size: var(--text-sm);
 }
 
-.site-footer-powered img {
+.site-footer-powered svg {
   width: 21px;
   height: 21px;
   flex: 0 0 auto;

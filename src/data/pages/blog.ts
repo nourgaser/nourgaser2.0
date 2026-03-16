@@ -1,3 +1,5 @@
+import { heroImages } from '../image-assets';
+
 export type BlogEntry = {
   title: string;
   summary: string;
@@ -12,7 +14,7 @@ export const blogPageContent = {
     title: 'Blog',
     description:
       'Long-form notes on architecture decisions, systems thinking, creative engineering, and practical delivery lessons.',
-    image: '/hero/control_room.png',
+    image: heroImages.controlRoom,
     sectionId: 'blog-hero',
     sectionLabel: 'Blog Hero',
   },

@@ -1,3 +1,5 @@
+import { heroImages } from '../image-assets';
+
 export type HobbyCard = {
   headingId: string;
   sectionId: string;
@@ -15,7 +17,7 @@ export const hobbiesPageContent = {
     title: 'Hobbies',
     description:
       'Outside of work, most of my time goes into building, learning, and reflecting. I enjoy hobbies that are creative, technical, and meaningful over the long term.',
-    image: '/hero/space3.png',
+    image: heroImages.space3,
     sectionId: 'hobbies-hero',
     sectionLabel: 'Hobbies Hero',
   },

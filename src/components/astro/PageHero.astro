@@ -1,9 +1,12 @@
 ---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 interface Props {
   kicker: string;
   title: string;
   description?: string;
-  image: string;
+  image: ImageMetadata;
   ctaHref?: string;
   ctaLabel?: string;
   sectionId?: string;
@@ -28,8 +31,19 @@ const shouldRenderCta = Boolean(ctaHref && ctaLabel);
   class="page-hero"
   data-ngx-section={sectionId ?? 'page-hero'}
   data-ngx-label={sectionLabel ?? title}
-  style={`--page-hero-image: url('${image}')`}
 >
+  <div class="page-hero-media" aria-hidden="true">
+    <Picture
+      src={image}
+      alt=""
+      formats={['avif', 'webp']}
+      widths={[640, 960, 1280, 1600, 1920]}
+      sizes="100vw"
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+    />
+  </div>
   <div class="page-hero-inner">
     <div class="page-hero-copy">
       <p class="page-hero-kicker">{kicker}</p>
@@ -46,19 +60,45 @@ const shouldRenderCta = Boolean(ctaHref && ctaLabel);
 
 <style>
   .page-hero {
+    position: relative;
+    overflow: hidden;
     margin-top: var(--space-2);
     min-height: 390px;
-    background:
-      linear-gradient(to bottom, rgba(3, 8, 17, 0.3), rgba(3, 8, 17, 0.55)),
-      var(--page-hero-image) center center / cover no-repeat;
     border-top: 1px solid var(--hero-edge-border);
     border-bottom: 1px solid var(--hero-edge-border);
     display: flex;
     align-items: center;
   }
 
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(3, 8, 17, 0.3), rgba(3, 8, 17, 0.55));
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .page-hero-media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .page-hero-media :global(picture),
+  .page-hero-media :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .page-hero-media :global(img) {
+    object-fit: cover;
+    object-position: center;
+  }
+
   .page-hero-inner {
     position: relative;
+    z-index: 2;
     width: var(--content-shell-width-desktop);
     margin: 0 auto;
     padding: var(--space-8) 0;
@@ -127,7 +167,10 @@ const shouldRenderCta = Boolean(ctaHref && ctaLabel);
     .page-hero {
       margin-top: var(--space-4);
       min-height: 280px;
-      background-position: 60% center;
+    }
+
+    .page-hero-media :global(img) {
+      object-position: 60% center;
     }
 
     .page-hero-inner {

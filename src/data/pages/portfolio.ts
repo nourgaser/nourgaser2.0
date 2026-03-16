@@ -1,3 +1,5 @@
+import { heroImages } from '../image-assets';
+
 export type PortfolioCategoryKey =
   | 'professional-platforms'
   | 'mapping-gis-3d'
@@ -13,7 +15,7 @@ export const portfolioPageContent = {
     title: 'Portfolio',
     description:
       'A growing archive of games, software projects, prototypes, and technical experiments, rebuilt as crawlable content with room for broader professional work.',
-    image: '/hero/spaceship.png',
+    image: heroImages.spaceship,
     sectionId: 'portfolio-hero',
     sectionLabel: 'Portfolio Hero',
   },

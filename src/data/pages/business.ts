@@ -1,10 +1,12 @@
+import { heroImages } from '../image-assets';
+
 export const businessPageContent = {
   seoDescription:
     'Business and academic profile, expertise, experience, and skills for technical consultancy and engineering work.',
   hero: {
     kicker: 'Business and Profession',
     title: 'Business',
-    image: '/hero/massive_spaceship.png',
+    image: heroImages.massiveSpaceship,
     sectionId: 'business-hero',
     sectionLabel: 'Business Hero',
     ctaHref: '#business-profile',

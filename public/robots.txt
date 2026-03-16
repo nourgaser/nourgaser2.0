@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://me.nourgaser.com/sitemap-index.xml
+Sitemap: https://nourgaser.com/sitemap-index.xml

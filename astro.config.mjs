@@ -11,5 +11,5 @@ export default defineConfig({
   image: {
     responsiveStyles: true,
   },
-  site: 'https://me.nourgaser.com',
+  site: 'https://nourgaser.com',
 });

@@ -4,13 +4,19 @@ import MainLayout from '../layouts/MainLayout.astro';
 import { homePageContent } from '../data/pages/home';
 ---
 
-<MainLayout title="Home" description={homePageContent.seoDescription} ogImage={homePageContent.hero.image}>
+<MainLayout
+  title="Home"
+  seoTitle={homePageContent.seoTitle}
+  description={homePageContent.seoDescription}
+  ogImage={homePageContent.hero.image}
+>
   <main class="about-page" data-ngx-section="about" data-ngx-label="About Me" data-ngx-focusable="true" data-ngx-route="/">
+    <h1 class="visually-hidden">Nour Gaser portfolio, projects, skills, hobbies, and business profile</h1>
     <section class="about-hero" data-ngx-section="about-intro" data-ngx-label="About Intro">
       <div class="about-hero-media" aria-hidden="true">
         <Picture
           src={homePageContent.hero.image}
-          alt=""
+          alt={homePageContent.hero.imageAlt}
           formats={['avif', 'webp']}
           widths={[640, 960, 1280, 1600, 1920]}
           sizes="100vw"
@@ -53,7 +59,7 @@ import { homePageContent } from '../data/pages/home';
               <div class="about-box-media" aria-hidden="true">
                 <Picture
                   src={section.image}
-                  alt=""
+                  alt={section.imageAlt}
                   formats={['avif', 'webp']}
                   widths={[320, 480, 640]}
                   sizes="(max-width: 720px) 100vw, 280px"
@@ -70,6 +76,18 @@ import { homePageContent } from '../data/pages/home';
 </MainLayout>
 
 <style>
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   .about-page {
     background: #03070f;
     padding-bottom: var(--space-16);

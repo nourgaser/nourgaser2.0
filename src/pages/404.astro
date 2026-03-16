@@ -1,0 +1,89 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout
+  title="Not Found"
+  seoTitle="404 Not Found | nourgaser"
+  description="The page you requested could not be found. Explore portfolio projects, skills, business profile, and latest content from Nour Gaser."
+>
+  <main class="not-found" data-ngx-section="not-found" data-ngx-label="404 Not Found" data-ngx-focusable="true" data-ngx-route="/404">
+    <section class="not-found-card">
+      <p class="not-found-kicker">404 Error</p>
+      <h1>Page not found</h1>
+      <p>
+        The URL you requested does not exist, moved, or was removed.
+        You can continue from one of the links below.
+      </p>
+      <nav aria-label="Suggested links" class="not-found-links">
+        <a href="/">Home</a>
+        <a href="/portfolio">Portfolio</a>
+        <a href="/skills">Skills</a>
+        <a href="/business">Business</a>
+      </nav>
+    </section>
+  </main>
+</MainLayout>
+
+<style>
+  .not-found {
+    padding: calc(var(--nav-height) + var(--space-8)) var(--space-4) var(--space-16);
+    background: var(--bg-page);
+    min-height: 72vh;
+    display: grid;
+    place-items: center;
+  }
+
+  .not-found-card {
+    width: min(100%, 720px);
+    border: 1px solid var(--border-muted-strong);
+    background: var(--surface-panel);
+    padding: var(--space-6);
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .not-found-kicker {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: color-mix(in srgb, var(--text-accent) 90%, transparent);
+  }
+
+  .not-found-card h1,
+  .not-found-card p {
+    margin: 0;
+  }
+
+  .not-found-card h1 {
+    font-size: clamp(var(--text-2xl), 6vw, var(--text-3xl));
+    line-height: var(--leading-tight);
+  }
+
+  .not-found-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  .not-found-links a {
+    text-decoration: none;
+    color: var(--text-accent);
+    border: 1px solid color-mix(in srgb, var(--text-accent) 34%, transparent);
+    padding: var(--space-1) var(--space-3);
+  }
+
+  .not-found-links a:hover {
+    color: color-mix(in srgb, var(--text-accent) 75%, transparent);
+  }
+
+  @media (max-width: 720px) {
+    .not-found {
+      padding: calc(var(--nav-height) + var(--space-6)) var(--space-4) var(--space-12);
+    }
+
+    .not-found-card {
+      padding: var(--space-4);
+    }
+  }
+</style>

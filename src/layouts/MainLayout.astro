@@ -15,6 +15,7 @@ import { siteShellContent } from '../data/site-shell';
 
 export interface Props {
   title: string;
+  seoTitle?: string;
   description?: string;
   ogImage?: ImageMetadata | string;
   ogType?: 'website' | 'article';
@@ -22,13 +23,14 @@ export interface Props {
 
 const {
   title,
+  seoTitle,
   description = 'nourgaser.com — personal portfolio',
   ogImage = heroImages.spaceship,
   ogType = 'website',
 } = Astro.props;
 
 const siteUrl = Astro.site ?? new URL(Astro.url.origin);
-const pageTitle = `${title} | nourgaser`;
+const pageTitle = seoTitle ?? `${title} | nourgaser`;
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
 const robots = 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1';
 
@@ -97,6 +99,25 @@ const currentYear = new Date().getFullYear();
     <meta name="author" content={siteShellContent.footer.copyrightOwner} />
     <meta name="theme-color" content="#03070f" />
     <link rel="canonical" href={canonicalUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      />
+    </noscript>
 
     <meta property="og:site_name" content="nourgaser" />
     <meta property="og:locale" content="en_US" />

@@ -27,8 +27,6 @@ const {
   nextSlug,
 } = Astro.props;
 
-const previewMedia = media;
-const leadMedia = media[0];
 const sourceLinks = [links?.source].filter((value): value is string => Boolean(value));
 const liveLinks = [links?.live].filter((value): value is string => Boolean(value));
 ---
@@ -48,40 +46,56 @@ const liveLinks = [links?.live].filter((value): value is string => Boolean(value
 
   <div class="showcase-shell">
     {
-      leadMedia && (
+      media.length > 0 && (
         <figure class="showcase-hero" data-gallery-main>
-          {leadMedia.isVideo ? (
-            <video controls preload="metadata" playsinline>
-              <source src={typeof leadMedia.path === 'string' ? leadMedia.path : undefined} type="video/mp4" />
-            </video>
-          ) : typeof leadMedia.path === 'string' ? (
-            <img src={leadMedia.path} alt={leadMedia.alt ?? `${title} preview`} loading="eager" decoding="async" />
-          ) : (
-            <Picture
-              src={leadMedia.path}
-              alt={leadMedia.alt ?? `${title} preview`}
-              formats={['avif', 'webp']}
-              width={1400}
-              height={875}
-              sizes="(min-width: 1200px) 900px, 100vw"
-              loading="eager"
-              decoding="async"
-              fetchpriority="high"
-            />
-          )}
+          {media.map((item, index) => (
+            <div data-gallery-media={index} hidden={index !== 0}>
+              {item.isVideo ? (
+                <video
+                  controls={index === 0 ? true : undefined}
+                  muted={index === 0 ? undefined : true}
+                  preload="metadata"
+                  playsinline
+                >
+                  <source src={typeof item.path === 'string' ? item.path : undefined} type="video/mp4" />
+                </video>
+              ) : typeof item.path === 'string' ? (
+                <img
+                  src={item.path}
+                  alt={item.alt ?? `${title} preview`}
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                  fetchpriority={index === 0 ? 'high' : undefined}
+                />
+              ) : (
+                <Picture
+                  src={item.path}
+                  alt={item.alt ?? `${title} preview`}
+                  formats={['avif', 'webp']}
+                  width={1400}
+                  height={875}
+                  sizes="(min-width: 1200px) 900px, 100vw"
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                  fetchpriority={index === 0 ? 'high' : undefined}
+                />
+              )}
+            </div>
+          ))}
         </figure>
       )
     }
 
     {
-      previewMedia.length > 1 && (
+      media.length > 1 && (
         <ul class="showcase-strip" aria-label={`${title} gallery previews`}>
-          {previewMedia.map((item, index) => (
+          {media.map((item, index) => (
             <li class="showcase-thumb-item">
               <button
                 type="button"
                 class:list={['showcase-thumb-button', { 'showcase-thumb-button--selected': index === 0 }]}
                 data-gallery-thumb="true"
+                data-gallery-thumb-index={index}
                 aria-pressed={index === 0 ? 'true' : 'false'}
                 aria-label={`Set preview ${index + 1} as main media`}
               >

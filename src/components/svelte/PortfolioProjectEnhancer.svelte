@@ -68,27 +68,28 @@
       return;
     }
 
-    const thumbMedia = getMediaElement(thumbButton);
-    const mainMedia = getMediaElement(mainContainer);
+    const index = Number(thumbButton.dataset.galleryThumbIndex ?? '0');
 
-    if (!thumbMedia || !mainMedia) {
-      return;
+    const allMediaItems = mainContainer.querySelectorAll('[data-gallery-media]');
+    allMediaItems.forEach((item) => {
+      if (item instanceof HTMLElement) {
+        item.hidden = true;
+        const video = item.querySelector('video');
+        if (video instanceof HTMLVideoElement) {
+          video.pause();
+        }
+      }
+    });
+
+    const targetItem = mainContainer.querySelector(`[data-gallery-media="${index}"]`);
+    if (targetItem instanceof HTMLElement) {
+      targetItem.hidden = false;
+      const media = targetItem.querySelector('img, video');
+      if (media instanceof HTMLImageElement || media instanceof HTMLVideoElement) {
+        prepareAsMainMedia(media);
+      }
     }
 
-    const nextMainMedia = thumbMedia.cloneNode(true);
-
-    if (!(nextMainMedia instanceof HTMLImageElement || nextMainMedia instanceof HTMLVideoElement)) {
-      return;
-    }
-
-    if (getMediaKey(mainMedia) === getMediaKey(thumbMedia)) {
-      setSelectedThumb(showcase, thumbButton);
-      return;
-    }
-
-    prepareAsMainMedia(nextMainMedia);
-
-    mainMedia.replaceWith(nextMainMedia);
     setSelectedThumb(showcase, thumbButton);
   }
 

@@ -4,7 +4,7 @@ import PageHero from '../../components/astro/PageHero.astro';
 import { blogPageContent } from '../../data/pages/blog';
 ---
 
-<MainLayout title="Blog" description={blogPageContent.seoDescription}>
+<MainLayout title="Blog" description={blogPageContent.seoDescription} ogImage={blogPageContent.hero.image}>
   <main class="blog-page" data-ngx-section="blog" data-ngx-label="Blog" data-ngx-focusable="true" data-ngx-route="/blog">
     <PageHero
       kicker={blogPageContent.hero.kicker}

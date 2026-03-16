@@ -4,7 +4,7 @@ import PageHero from '../components/astro/PageHero.astro';
 import { resumePageContent } from '../data/pages/resume';
 ---
 
-<MainLayout title="Resume" description={resumePageContent.seoDescription}>
+<MainLayout title="Resume" description={resumePageContent.seoDescription} ogImage={resumePageContent.hero.image}>
   <main class="resume-page" data-ngx-section="resume" data-ngx-label="Resume" data-ngx-focusable="true" data-ngx-route="/resume">
     <PageHero
       kicker={resumePageContent.hero.kicker}

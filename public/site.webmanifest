@@ -1,0 +1,22 @@
+{
+  "name": "nourgaser.com",
+  "short_name": "nourgaser",
+  "description": "Personal portfolio of Nour Gaser — software engineer, creative developer.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable any"
+    }
+  ]
+}

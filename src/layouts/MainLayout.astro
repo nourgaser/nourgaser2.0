@@ -1,4 +1,7 @@
 ---
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 import Logo from '../assets/icons/logo.svg';
 import NgxosShield from '../assets/icons/ngxos-shield.svg';
 
@@ -7,14 +10,80 @@ import '../styles/tokens.css';
 import '../styles/themes.css';
 import '../styles/global.css';
 import '../styles/animations.css';
+import { heroImages } from '../data/image-assets';
 import { siteShellContent } from '../data/site-shell';
 
 export interface Props {
   title: string;
   description?: string;
+  ogImage?: ImageMetadata | string;
+  ogType?: 'website' | 'article';
 }
 
-const { title, description = 'nourgaser.com — personal portfolio' } = Astro.props;
+const {
+  title,
+  description = 'nourgaser.com — personal portfolio',
+  ogImage = heroImages.spaceship,
+  ogType = 'website',
+} = Astro.props;
+
+const siteUrl = Astro.site ?? new URL(Astro.url.origin);
+const pageTitle = `${title} | nourgaser`;
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const robots = 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1';
+
+let ogImageUrl: string;
+
+if (typeof ogImage === 'string') {
+  ogImageUrl = ogImage.startsWith('http') ? ogImage : new URL(ogImage, siteUrl).toString();
+} else {
+  const optimizedOgImage = await getImage({
+    src: ogImage,
+    width: 1200,
+    height: 630,
+    format: 'jpg',
+    quality: 82,
+    fit: 'cover',
+  });
+
+  ogImageUrl = new URL(optimizedOgImage.src, siteUrl).toString();
+}
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl.toString()}#website`,
+      url: siteUrl.toString(),
+      name: 'nourgaser',
+      description,
+      inLanguage: 'en',
+    },
+    {
+      '@type': 'Person',
+      '@id': `${siteUrl.toString()}#person`,
+      name: siteShellContent.footer.copyrightOwner,
+      url: siteUrl.toString(),
+      sameAs: siteShellContent.footer.socialLinks.map((link) => link.href),
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${canonicalUrl}#webpage`,
+      url: canonicalUrl,
+      name: pageTitle,
+      description,
+      isPartOf: { '@id': `${siteUrl.toString()}#website` },
+      about: { '@id': `${siteUrl.toString()}#person` },
+      primaryImageOfPage: {
+        '@type': 'ImageObject',
+        url: ogImageUrl,
+      },
+      inLanguage: 'en',
+    },
+  ],
+};
+
 const currentYear = new Date().getFullYear();
 ---
 
@@ -24,9 +93,33 @@ const currentYear = new Date().getFullYear();
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+    <meta name="author" content={siteShellContent.footer.copyrightOwner} />
+    <meta name="theme-color" content="#03070f" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <meta property="og:site_name" content="nourgaser" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${title} preview image`} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
-    <title>{title} | nourgaser</title>
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>{pageTitle}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
   </head>
   <body>
     <header class="site-header" data-ngx-section="site-header" data-ngx-label="Header" data-ngx-route="/">

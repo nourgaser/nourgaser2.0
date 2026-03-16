@@ -24,7 +24,7 @@ const groupedProjects = portfolioCategoryOrder
   .filter((entry) => entry.projects.length > 0);
 ---
 
-<MainLayout title="Portfolio" description={portfolioPageContent.seoDescription}>
+<MainLayout title="Portfolio" description={portfolioPageContent.seoDescription} ogImage={portfolioPageContent.hero.image}>
   <main class="portfolio-page" data-ngx-section="portfolio" data-ngx-label="Portfolio" data-ngx-focusable="true" data-ngx-route="/portfolio">
     <PageHero
       kicker={portfolioPageContent.hero.kicker}

@@ -4,7 +4,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 import { homePageContent } from '../data/pages/home';
 ---
 
-<MainLayout title="Home" description={homePageContent.seoDescription}>
+<MainLayout title="Home" description={homePageContent.seoDescription} ogImage={homePageContent.hero.image}>
   <main class="about-page" data-ngx-section="about" data-ngx-label="About Me" data-ngx-focusable="true" data-ngx-route="/">
     <section class="about-hero" data-ngx-section="about-intro" data-ngx-label="About Intro">
       <div class="about-hero-media" aria-hidden="true">

@@ -52,7 +52,12 @@ const navGroups = portfolioCategoryOrder
   .filter((group) => group.projects.length > 0);
 ---
 
-<MainLayout title={project.data.title} description={project.data.description ?? project.data.summary}>
+<MainLayout
+  title={project.data.title}
+  description={project.data.description ?? project.data.summary}
+  ogImage={project.data.coverImage ?? heroImages.space3}
+  ogType="article"
+>
   <main class="project-page" data-project-page="true" data-ngx-section="portfolio-detail" data-ngx-label={project.data.title} data-ngx-focusable="true" data-ngx-route={`/portfolio/${project.id}`}>
     <PageHero
       kicker={project.data.status}

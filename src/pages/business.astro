@@ -13,7 +13,7 @@ import { skillCategories } from '../data/skills';
 import { businessPageContent } from '../data/pages/business';
 ---
 
-<MainLayout title="Business" description={businessPageContent.seoDescription}>
+<MainLayout title="Business" description={businessPageContent.seoDescription} ogImage={businessPageContent.hero.image}>
   <main class="business-page" data-ngx-section="business" data-ngx-label="Business" data-ngx-focusable="true" data-ngx-route="/business">
     <PageHero
       kicker={businessPageContent.hero.kicker}

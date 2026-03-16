@@ -5,7 +5,7 @@ import { skillCategories } from '../data/skills';
 import { skillsPageContent } from '../data/pages/skills-page';
 ---
 
-<MainLayout title="Skills" description={skillsPageContent.seoDescription}>
+<MainLayout title="Skills" description={skillsPageContent.seoDescription} ogImage={skillsPageContent.hero.image}>
   <main class="skills-page" data-ngx-section="skills" data-ngx-label="Skills" data-ngx-focusable="true" data-ngx-route="/skills">
     <PageHero
       kicker={skillsPageContent.hero.kicker}

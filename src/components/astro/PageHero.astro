@@ -1,6 +1,6 @@
 ---
-import { Picture } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
+import { Picture } from "astro:assets";
+import type { ImageMetadata } from "astro";
 
 interface Props {
   kicker: string;
@@ -35,27 +35,27 @@ const {
 } = Astro.props;
 
 const shouldRenderCta = Boolean(ctaHref && ctaLabel);
-const heroClasses = ['page-hero', className].filter(Boolean).join(' ');
+const heroClasses = ["page-hero", className].filter(Boolean).join(" ");
 const heroStyle = [
   copyWidth && `--page-hero-copy-width: ${copyWidth}`,
   descriptionMaxWidth && `--page-hero-description-max-width: ${descriptionMaxWidth}`,
   mobileImagePosition && `--page-hero-mobile-image-position: ${mobileImagePosition}`,
 ]
   .filter(Boolean)
-  .join('; ');
+  .join("; ");
 ---
 
 <section
   class={heroClasses}
   style={heroStyle || undefined}
-  data-ngx-section={sectionId ?? 'page-hero'}
+  data-ngx-section={sectionId ?? "page-hero"}
   data-ngx-label={sectionLabel ?? title ?? kicker}
 >
   <div class="page-hero-media" aria-hidden="true">
     <Picture
       src={image}
       alt={imageAlt ?? `${title ?? kicker} hero image`}
-      formats={['avif', 'webp']}
+      formats={["avif", "webp"]}
       widths={[640, 960, 1280, 1600, 1920]}
       sizes="100vw"
       loading="eager"
@@ -68,21 +68,71 @@ const heroStyle = [
       <p class="page-hero-kicker">{kicker}</p>
       {title && <h1>{title}</h1>}
       {description && <p class="page-hero-description">{description}</p>}
-      {shouldRenderCta && (
-        <a class="page-hero-cta" href={ctaHref}>
-          {ctaLabel}
+      <div class="page-hero-buttons">
+        {
+          shouldRenderCta && (
+            <a class="page-hero-cta" href={ctaHref}>
+              {ctaLabel}
+            </a>
+          )
+        }
+        <a
+          class="page-hero-scroll-indicator"
+          href="#"
+          data-page-hero-scroll
+          hidden
+          aria-label="Scroll to next section"
+        >
+          SCROLL
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path d="M1 3L5 7L9 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </a>
-      )}
+      </div>
     </div>
   </div>
 </section>
+
+<script>
+  const headingSelector = "h1, h2, h3, h4, h5, h6";
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const findNextHeading = (hero: Element): HTMLHeadingElement | null => {
+    let node: Element | null = hero.nextElementSibling;
+    while (node) {
+      if (node.matches?.(headingSelector)) return node as HTMLHeadingElement;
+      const heading = node.querySelector?.(headingSelector) as HTMLHeadingElement | null;
+      if (heading) return heading;
+      node = node.nextElementSibling;
+    }
+    return null;
+  };
+
+  document.querySelectorAll<HTMLAnchorElement>("[data-page-hero-scroll]").forEach((trigger, index) => {
+    const hero = trigger.closest<HTMLElement>(".page-hero");
+    if (!hero) return;
+
+    const heading = findNextHeading(hero);
+    if (!heading) { trigger.hidden = true; return; }
+
+    if (!heading.id) heading.id = `page-hero-next-heading-${index + 1}`;
+    trigger.setAttribute("href", `#${heading.id}`);
+    trigger.hidden = false;
+
+    trigger.addEventListener("click", (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      heading.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "center" });
+    });
+  });
+</script>
 
 <style>
   .page-hero {
     position: relative;
     overflow: hidden;
-    margin-top: var(--space-2);
-    min-height: 390px;
+    min-height: 100vh;
+    top: calc(-1 * var(--nav-height));
     border-top: 1px solid var(--hero-edge-border);
     border-bottom: 1px solid var(--hero-edge-border);
     display: flex;
@@ -90,7 +140,7 @@ const heroStyle = [
   }
 
   .page-hero::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     background: linear-gradient(to bottom, rgba(3, 8, 17, 0.3), rgba(3, 8, 17, 0.55));
@@ -124,7 +174,7 @@ const heroStyle = [
   }
 
   .page-hero-inner::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -135,7 +185,6 @@ const heroStyle = [
     border-top: 1px solid var(--hero-strip-border);
     border-bottom: 1px solid var(--hero-strip-border);
     pointer-events: none;
-    
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
   }
@@ -166,26 +215,76 @@ const heroStyle = [
     max-width: var(--page-hero-description-max-width, 40ch);
   }
 
-  .page-hero-cta {
+  .page-hero-buttons {
+    display: flex;
+    gap: var(--space-3);
     margin-top: var(--space-4);
-    display: inline-block;
-    width: fit-content;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  /* Shared button baseline — both buttons use this */
+  .page-hero-cta,
+  .page-hero-scroll-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
     padding: var(--space-2) var(--space-4);
-    background: var(--button-muted-bg);
-    border: 1px solid var(--button-muted-border);
-    color: #e8f0ff;
+    border: 1px solid;
     text-decoration: none;
     font-size: var(--text-sm);
+    line-height: 1;
+    white-space: nowrap;
+    box-sizing: border-box;
+  }
+
+  .page-hero-cta {
+    background: var(--button-muted-bg);
+    border-color: var(--button-muted-border);
+    color: #e8f0ff;
   }
 
   .page-hero-cta:hover {
     background: var(--button-muted-hover);
   }
 
-  @media (max-width: 720px) {
+  .page-hero-scroll-indicator {
+    color: color-mix(in srgb, var(--text-primary) 88%, transparent);
+    border-color: var(--button-muted-border);
+    background: color-mix(in srgb, rgba(2, 8, 20, 0.7) 75%, transparent);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    /* Compensate for letter-spacing trailing gap so height stays identical to .page-hero-cta */
+    padding-right: calc(var(--space-4) - 0.16em);
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .page-hero-scroll-indicator:hover {
+    color: var(--text-primary);
+    border-color: var(--hero-strip-border);
+  }
+
+  .page-hero-scroll-indicator svg {
+    animation: scroll-bounce 1.6s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes scroll-bounce {
+    0%, 100% { transform: translateY(0);   opacity: 0.78; }
+    50%       { transform: translateY(2px); opacity: 1;    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page-hero-scroll-indicator svg {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 860px) {
     .page-hero {
-      margin-top: var(--space-4);
       min-height: 280px;
+      top: 0;
     }
 
     .page-hero-media :global(img) {
@@ -212,6 +311,10 @@ const heroStyle = [
 
     .page-hero-description {
       font-size: var(--text-base);
+    }
+
+    .page-hero-buttons {
+      display: none;
     }
   }
 </style>

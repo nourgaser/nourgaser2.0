@@ -197,7 +197,7 @@ main {
   font-size: var(--text-base);
 }
 
-@media (max-width: 720px) {
+@media (max-width: 860px) {
   .site-header nav {
     padding: 0 var(--space-4);
   }

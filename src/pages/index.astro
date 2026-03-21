@@ -1,5 +1,6 @@
 ---
 import { Picture } from 'astro:assets';
+import PageHero from '../components/astro/PageHero.astro';
 import MainLayout from '../layouts/MainLayout.astro';
 import { homePageContent } from '../data/pages/home';
 ---
@@ -12,27 +13,19 @@ import { homePageContent } from '../data/pages/home';
 >
   <main class="about-page" data-ngx-section="about" data-ngx-label="About Me" data-ngx-focusable="true" data-ngx-route="/">
     <h1 class="visually-hidden">Nour Gaser portfolio, projects, skills, hobbies, and business profile</h1>
-    <section class="about-hero" data-ngx-section="about-intro" data-ngx-label="About Intro">
-      <div class="about-hero-media" aria-hidden="true">
-        <Picture
-          src={homePageContent.hero.image}
-          alt={homePageContent.hero.imageAlt}
-          formats={['avif', 'webp']}
-          widths={[640, 960, 1280, 1600, 1920]}
-          sizes="100vw"
-          loading="eager"
-          decoding="async"
-          fetchpriority="high"
-        />
-      </div>
-      <div class="about-hero-inner">
-        <div class="about-hero-copy">
-          <p class="about-kicker">{homePageContent.hero.kicker}</p>
-          <p class="about-intro-text">{homePageContent.hero.introText}</p>
-          <a class="about-cta" href={homePageContent.hero.ctaHref}>{homePageContent.hero.ctaLabel}</a>
-        </div>
-      </div>
-    </section>
+    <PageHero
+      kicker={homePageContent.hero.kicker}
+      description={homePageContent.hero.introText}
+      image={homePageContent.hero.image}
+      imageAlt={homePageContent.hero.imageAlt}
+      ctaHref={homePageContent.hero.ctaHref}
+      ctaLabel={homePageContent.hero.ctaLabel}
+      sectionId="about-intro"
+      sectionLabel="About Intro"
+      copyWidth="min(560px, 100%)"
+      descriptionMaxWidth="36ch"
+      mobileImagePosition="62% center"
+    />
 
     {
       homePageContent.sections.map((section) => (
@@ -93,111 +86,13 @@ import { homePageContent } from '../data/pages/home';
     padding-bottom: var(--space-16);
   }
 
-  .about-hero,
   .about-section {
     width: 100%;
   }
 
-  .about-hero {
-    position: relative;
-    overflow: hidden;
-    margin-top: var(--space-2);
-    min-height: 390px;
-    border-top: 1px solid var(--hero-edge-border);
-    border-bottom: 1px solid var(--hero-edge-border);
-    display: flex;
-    align-items: center;
-  }
-
-  .about-hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(3, 8, 17, 0.3), rgba(3, 8, 17, 0.55));
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  .about-hero-media {
-    position: absolute;
-    inset: 0;
-  }
-
-  .about-hero-media :global(picture),
-  .about-hero-media :global(img) {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-
-  .about-hero-media :global(img) {
-    object-fit: cover;
-    object-position: center;
-  }
-
-  .about-hero-inner,
   .about-section-inner {
     width: var(--content-shell-width-desktop);
     margin: 0 auto;
-  }
-
-  .about-hero-inner {
-    position: relative;
-    padding: var(--space-8) 0;
-    margin: 0 auto;
-    z-index: 2;
-  }
-
-  .about-hero-inner::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100vw;
-    top: var(--space-2);
-    bottom: var(--space-2);
-    background: rgba(8, 13, 23, 0.42);
-    border-top: 1px solid var(--hero-strip-border);
-    border-bottom: 1px solid var(--hero-strip-border);
-    pointer-events: none;
-
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-  }
-
-  .about-hero-copy {
-    position: relative;
-    z-index: 1;
-    width: min(560px, 100%);
-    display: grid;
-    gap: var(--space-3);
-  }
-
-  .about-kicker {
-    margin: 0;
-    font-size: clamp(var(--text-xl), 3.3vw, 2.1rem);
-    line-height: var(--leading-tight);
-  }
-
-  .about-intro-text {
-    margin: 0;
-    font-size: clamp(var(--text-base), 2vw, var(--text-xl));
-    max-width: 36ch;
-  }
-
-  .about-cta {
-    margin-top: var(--space-4);
-    display: inline-block;
-    padding: var(--space-2) var(--space-4);
-    background: var(--button-muted-bg);
-    border: 1px solid var(--button-muted-border);
-    color: #e8f0ff;
-    text-decoration: none;
-    font-size: var(--text-sm);
-  }
-
-  .about-cta:hover {
-    background: var(--button-muted-hover);
   }
 
   .about-section {
@@ -338,35 +233,8 @@ import { homePageContent } from '../data/pages/home';
   @media (max-width: 720px) {
     .about-page { padding-bottom: var(--space-10); }
 
-    .about-hero-inner,
     .about-section-inner {
       width: var(--content-shell-width-mobile);
-    }
-
-    .about-hero {
-      margin-top: var(--space-4);
-      min-height: 280px;
-    }
-
-    .about-hero-media :global(img) {
-      object-position: 62% center;
-    }
-
-    .about-hero-copy {
-      width: min(440px, 100%);
-    }
-
-    .about-hero-inner::before {
-      top: var(--space-1);
-      bottom: var(--space-1);
-    }
-
-    .about-kicker {
-      font-size: var(--text-lg);
-    }
-
-    .about-intro-text {
-      font-size: var(--text-base);
     }
 
     .about-section {

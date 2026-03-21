@@ -11,6 +11,9 @@ import massiveSpaceship from '../assets/images/hero/massive_spaceship.webp';
 import space3 from '../assets/images/hero/space3.webp';
 import spaceship from '../assets/images/hero/spaceship.webp';
 
+import statue from '../assets/images/hero/statue.webp';
+import sword from '../assets/images/hero/sword.webp';
+
 export const aboutImages = {
   brain,
   cave,
@@ -26,4 +29,6 @@ export const heroImages = {
   massiveSpaceship,
   space3,
   spaceship,
+  statue,
+  sword,
 };

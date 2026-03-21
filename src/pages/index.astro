@@ -1,276 +1,218 @@
 ---
-import { Picture } from 'astro:assets';
-import PageHero from '../components/astro/PageHero.astro';
-import MainLayout from '../layouts/MainLayout.astro';
-import { homePageContent } from '../data/pages/home';
+import PageHero from "../components/astro/PageHero.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import { heroImages } from "../data/image-assets";
+
+const homeSections = [
+  {
+    href: "/",
+    title: "",
+    description: "",
+    isCurrent: true,
+  },
+  {
+    href: "/about",
+    title: "About",
+    description:
+      "Personal background, worldview, hobbies, and what drives my work.",
+  },
+  {
+    href: "/portfolio",
+    title: "Portfolio",
+    description:
+      "Selected projects, product work, and implementation case studies.",
+  },
+  {
+    href: "/skills",
+    title: "Skills",
+    description: "Technical stack, capabilities, and areas of practical depth.",
+  },
+  {
+    href: "/business",
+    title: "Business",
+    description: "Professional profile, services, and collaboration details.",
+  },
+  {
+    href: "/resume",
+    title: "Resume",
+    description: "Experience timeline and role-focused summary.",
+  },
+  {
+    href: "/hobbies",
+    title: "Hobbies",
+    description: "Interests, experiments, and non-client creative projects.",
+  },
+  {
+    href: "/blog",
+    title: "Blog",
+    description: "Notes on systems, design decisions, and engineering process.",
+  },
+];
 ---
 
 <MainLayout
   title="Home"
-  seoTitle={homePageContent.seoTitle}
-  description={homePageContent.seoDescription}
-  ogImage={homePageContent.hero.image}
+  seoTitle="Nour Gaser | Home"
+  description="Welcome to nourgaser.com. Explore personal and professional pages including portfolio, skills, business profile, hobbies, resume, and writing."
+  ogImage={heroImages.space3}
 >
-  <main class="about-page" data-ngx-section="about" data-ngx-label="About Me" data-ngx-focusable="true" data-ngx-route="/">
-    <h1 class="visually-hidden">Nour Gaser portfolio, projects, skills, hobbies, and business profile</h1>
+  <main
+    class="home-page"
+    data-ngx-section="home"
+    data-ngx-label="Home"
+    data-ngx-focusable="true"
+    data-ngx-route="/"
+  >
     <PageHero
-      kicker={homePageContent.hero.kicker}
-      description={homePageContent.hero.introText}
-      image={homePageContent.hero.image}
-      imageAlt={homePageContent.hero.imageAlt}
-      ctaHref={homePageContent.hero.ctaHref}
-      ctaLabel={homePageContent.hero.ctaLabel}
-      sectionId="about-intro"
-      sectionLabel="About Intro"
-      copyWidth="min(560px, 100%)"
-      descriptionMaxWidth="36ch"
+      kicker="Hello, dear visitor"
+      title="***"
+      description="Welcome to my neck of the woods. Here you'll find both personal and professional information about me, alongside some other random fun things."
+      image={heroImages.space3}
+      imageAlt="Hero artwork with a sword in a cosmic landscape"
+      ctaHref="#site-map"
+      ctaLabel="Explore sections"
+      sectionId="home-intro"
+      sectionLabel="Home Intro"
+      copyWidth="min(640px, 100%)"
+      descriptionMaxWidth="52ch"
       mobileImagePosition="62% center"
     />
 
-    {
-      homePageContent.sections.map((section) => (
-        <section
-          id={section.id}
-          class="about-section"
-          data-ngx-section={section.sectionId}
-          data-ngx-label={section.sectionLabel}
-          data-ngx-focusable="true"
-        >
-          <div class="about-section-inner">
-            <h2>{section.title}</h2>
-            <div class={`about-box ${section.boxClassName}`}>
-              <div class="about-box-content">
-                {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-                {
-                  section.links && (
-                    <p class="about-business-links">
-                      {section.links.map((link) => <a href={link.href}>{link.label}</a>)}
-                    </p>
-                  )
-                }
-              </div>
-              <div class="about-box-media" aria-hidden="true">
-                <Picture
-                  src={section.image}
-                  alt={section.imageAlt}
-                  formats={['avif', 'webp']}
-                  widths={[320, 480, 640]}
-                  sizes="(max-width: 720px) 100vw, 280px"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-      ))
-    }
+    <section
+      id="site-map"
+      class="home-links-section"
+      data-ngx-section="home-links"
+      data-ngx-label="Home Links"
+      data-ngx-focusable="true"
+    >
+      <div class="home-links-inner">
+        <h1>Website map</h1>
+        <p class="home-links-lead">
+          We all have to start somewhere... Including you right now, make a choice. :)
+        </p>
+        <nav aria-label="Site sections" class="home-links-grid">
+          {
+            homeSections.map((section) => (
+              section.isCurrent ? (
+                <div
+                  class="home-link-card home-link-card--home"
+                  style={`--home-link-bg-image: url(${heroImages.sword.src});`}
+                  aria-current="page"
+                >
+                  <span class="home-link-title">{section.title}</span>
+                  <span class="home-link-description">{section.description}</span>
+                </div>
+              ) : (
+                <a href={section.href} class="home-link-card">
+                  <span class="home-link-title">{section.title}</span>
+                  <span class="home-link-description">{section.description}</span>
+                </a>
+              )
+            ))
+          }
+        </nav>
+      </div>
+    </section>
   </main>
 </MainLayout>
 
 <style>
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-
-  .about-page {
+  .home-page {
     background: #03070f;
-    padding-bottom: var(--space-16);
   }
 
-  .about-section {
-    width: 100%;
-  }
-
-  .about-section-inner {
+  .home-links-inner {
     width: var(--content-shell-width-desktop);
     margin: 0 auto;
-  }
-
-  .about-section {
     margin-top: var(--space-8);
-  }
-
-  .about-section h2 {
-    margin: 0 0 var(--space-3);
-    font-size: clamp(var(--text-xl), 3vw, 2.2rem);
-  }
-
-  .about-box {
-    background: var(--surface-panel);
     border: 1px solid var(--border-muted-strong);
-    padding: var(--space-4);
-    display: flex;
-    gap: var(--space-4);
-    overflow: hidden;
-    align-items: stretch;
-    min-height: 96px;
+    background: color-mix(in srgb, var(--surface-panel) 86%, #02060f);
+    padding: var(--space-5);
   }
 
-  .about-box-content {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .about-box-media {
-    position: relative;
-    overflow: hidden;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    border-left: 0;
-    flex: 0 0 auto;
-    background-color: rgba(2, 8, 20, 0.62);
-  }
-
-  .about-box-media::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
-
-  .about-box-media :global(picture),
-  .about-box-media :global(img) {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-
-  .about-box-media :global(img) {
-    object-fit: contain;
-    object-position: center;
-  }
-
-  .about-box--who .about-box-media {
-    width: 250px;
-  }
-
-  .about-box--who .about-box-media::after {
-    background: linear-gradient(to left, rgba(4, 8, 16, 0.1), rgba(4, 8, 16, 0.88));
-  }
-
-  .about-box--who .about-box-media :global(img) {
-    object-position: 72% center;
-  }
-
-  .about-box--productivity {
-    align-items: stretch;
-  }
-
-  .about-box--productivity .about-box-media {
-    order: -1;
-    width: 272px;
-    border-left: 0;
-    border-right: 0;
-    background-color: rgba(2, 8, 20, 0.55);
-  }
-
-  .about-box--productivity .about-box-media::after {
-    background: linear-gradient(to right, rgba(4, 8, 16, 0.15), rgba(4, 8, 16, 0.78));
-  }
-
-  .about-box--productivity .about-box-media :global(img) {
-    object-position: 52% center;
-  }
-
-  .about-box--hobbies .about-box-media {
-    width: 236px;
-  }
-
-  .about-box--hobbies .about-box-media::after {
-    background: linear-gradient(to left, rgba(4, 8, 16, 0.1), rgba(4, 8, 16, 0.9));
-  }
-
-  .about-box--hobbies .about-box-media :global(img) {
-    object-position: right center;
-  }
-
-  .about-box--business .about-box-media {
-    order: -1;
-    width: 216px;
-    border-left: 0;
-    border-right: 0;
-  }
-
-  .about-box--business .about-box-media::after {
-    background: linear-gradient(to left, rgba(4, 8, 16, 0.2), rgba(4, 8, 16, 0.94));
-  }
-
-  .about-box p {
+  .home-links-inner h1 {
     margin: 0;
+    font-size: clamp(var(--text-xl), 3vw, var(--text-2xl));
+  }
+
+  .home-links-lead {
+    margin: var(--space-2) 0 0;
+    max-width: 70ch;
+    color: color-mix(in srgb, var(--text-primary) 90%, transparent);
+    line-height: 1.5;
+  }
+
+  .home-links-grid {
+    margin-top: var(--space-5);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  .home-link-card {
+    position: relative;
+    display: grid;
+    gap: var(--space-1);
+    text-decoration: none;
+    background: rgba(7, 12, 22, 0.72);
+    border: 1px solid color-mix(in srgb, var(--text-accent) 28%, transparent);
+    padding: var(--space-3);
+    min-height: 120px;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .home-link-card:not(.home-link-card--home):hover {
+    border-color: color-mix(in srgb, var(--text-accent) 56%, transparent);
+    background: rgba(9, 16, 30, 0.88);
+  }
+
+  .home-link-card--home {
+    background-color: transparent;
+    background-image: var(--home-link-bg-image);
+    background-size: cover;
+    background-position: center 45%;
+    background-repeat: no-repeat;
+    filter: brightness(1.22) contrast(1.1);
+  }
+
+  .home-link-card--home:hover {
+    border-color: color-mix(in srgb, var(--text-accent) 56%, transparent);
+    background-color: transparent;
+    background-image: var(--home-link-bg-image);
+    filter: brightness(1.26) contrast(1.12);
+  }
+
+  .home-link-title {
+    font-size: var(--text-lg);
+    color: var(--text-primary);
+    line-height: var(--leading-tight);
+  }
+
+  .home-link-description {
+    font-size: var(--text-sm);
     color: color-mix(in srgb, var(--text-primary) 92%, transparent);
     line-height: 1.45;
-    font-size: 15px;
-  }
-
-  .about-box p + p {
-    margin-top: var(--space-4);
-  }
-
-  .about-business-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    margin-top: var(--space-4);
-  }
-
-  .about-business-links a {
-    color: var(--text-accent);
-    text-decoration: none;
-    border: 1px solid color-mix(in srgb, var(--text-accent) 32%, transparent);
-    padding: var(--space-1) var(--space-3);
   }
 
   @media (max-width: 720px) {
-    .about-page { padding-bottom: var(--space-10); }
+    .home-page {
+      padding-bottom: var(--space-10);
+    }
 
-    .about-section-inner {
+    .home-links-inner {
       width: var(--content-shell-width-mobile);
-    }
-
-    .about-section {
       margin-top: var(--content-shell-margin-top-mobile);
+      padding: var(--space-4);
     }
 
-    .about-section h2 {
-      font-size: clamp(var(--text-lg), 6vw, var(--text-xl));
+    .home-links-grid {
+      grid-template-columns: minmax(0, 1fr);
     }
 
-    .about-box {
-      display: block;
-      padding: var(--space-3);
-    }
-
-    .about-box-media {
-      width: 100% !important;
-      min-height: 120px;
-      margin-top: var(--space-3);
-      border-left: 0;
-      border-right: 0;
-      border-top: 0;
-    }
-
-    .about-box-media :global(img) {
-      object-fit: cover !important;
-      object-position: center !important;
-    }
-
-    .about-box--productivity .about-box-media {
-      order: initial;
-    }
-
-    .about-box--business .about-box-media {
-      order: initial;
-      border-right: 0;
+    .home-link-card {
+      min-height: 106px;
     }
   }
 </style>

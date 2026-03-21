@@ -1,3 +1,276 @@
 ---
-return Astro.redirect('/');
+import { Picture } from 'astro:assets';
+import PageHero from '../components/astro/PageHero.astro';
+import MainLayout from '../layouts/MainLayout.astro';
+import { aboutPageContent } from '../data/pages/about';
 ---
+
+<MainLayout
+	title="About"
+	seoTitle={aboutPageContent.seoTitle}
+	description={aboutPageContent.seoDescription}
+	ogImage={aboutPageContent.hero.image}
+>
+	<main class="about-page" data-ngx-section="about" data-ngx-label="About Me" data-ngx-focusable="true" data-ngx-route="/about">
+		<h1 class="visually-hidden">Nour Gaser portfolio, projects, skills, hobbies, and business profile</h1>
+		<PageHero
+			kicker={aboutPageContent.hero.kicker}
+			description={aboutPageContent.hero.introText}
+			image={aboutPageContent.hero.image}
+			imageAlt={aboutPageContent.hero.imageAlt}
+			ctaHref={aboutPageContent.hero.ctaHref}
+			ctaLabel={aboutPageContent.hero.ctaLabel}
+			sectionId="about-intro"
+			sectionLabel="About Intro"
+			copyWidth="min(560px, 100%)"
+			descriptionMaxWidth="36ch"
+			mobileImagePosition="62% center"
+		/>
+
+		{
+			aboutPageContent.sections.map((section) => (
+				<section
+					id={section.id}
+					class="about-section"
+					data-ngx-section={section.sectionId}
+					data-ngx-label={section.sectionLabel}
+					data-ngx-focusable="true"
+				>
+					<div class="about-section-inner">
+						<h2>{section.title}</h2>
+						<div class={`about-box ${section.boxClassName}`}>
+							<div class="about-box-content">
+								{section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+								{
+									section.links && (
+										<p class="about-business-links">
+											{section.links.map((link) => <a href={link.href}>{link.label}</a>)}
+										</p>
+									)
+								}
+							</div>
+							<div class="about-box-media" aria-hidden="true">
+								<Picture
+									src={section.image}
+									alt={section.imageAlt}
+									formats={['avif', 'webp']}
+									widths={[320, 480, 640]}
+									sizes="(max-width: 720px) 100vw, 280px"
+									loading="lazy"
+									decoding="async"
+								/>
+							</div>
+						</div>
+					</div>
+				</section>
+			))
+		}
+	</main>
+</MainLayout>
+
+<style>
+	.visually-hidden {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	.about-page {
+		background: #03070f;
+		padding-bottom: var(--space-16);
+	}
+
+	.about-section {
+		width: 100%;
+	}
+
+	.about-section-inner {
+		width: var(--content-shell-width-desktop);
+		margin: 0 auto;
+	}
+
+	.about-section {
+		margin-top: var(--space-8);
+	}
+
+	.about-section h2 {
+		margin: 0 0 var(--space-3);
+		font-size: clamp(var(--text-xl), 3vw, 2.2rem);
+	}
+
+	.about-box {
+		background: var(--surface-panel);
+		border: 1px solid var(--border-muted-strong);
+		padding: var(--space-4);
+		display: flex;
+		gap: var(--space-4);
+		overflow: hidden;
+		align-items: stretch;
+		min-height: 96px;
+	}
+
+	.about-box-content {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.about-box-media {
+		position: relative;
+		overflow: hidden;
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center;
+		border-left: 0;
+		flex: 0 0 auto;
+		background-color: rgba(2, 8, 20, 0.62);
+	}
+
+	.about-box-media::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+	}
+
+	.about-box-media :global(picture),
+	.about-box-media :global(img) {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.about-box-media :global(img) {
+		object-fit: contain;
+		object-position: center;
+	}
+
+	.about-box--who .about-box-media {
+		width: 250px;
+	}
+
+	.about-box--who .about-box-media::after {
+		background: linear-gradient(to left, rgba(4, 8, 16, 0.1), rgba(4, 8, 16, 0.88));
+	}
+
+	.about-box--who .about-box-media :global(img) {
+		object-position: 72% center;
+	}
+
+	.about-box--productivity {
+		align-items: stretch;
+	}
+
+	.about-box--productivity .about-box-media {
+		order: -1;
+		width: 272px;
+		border-left: 0;
+		border-right: 0;
+		background-color: rgba(2, 8, 20, 0.55);
+	}
+
+	.about-box--productivity .about-box-media::after {
+		background: linear-gradient(to right, rgba(4, 8, 16, 0.15), rgba(4, 8, 16, 0.78));
+	}
+
+	.about-box--productivity .about-box-media :global(img) {
+		object-position: 52% center;
+	}
+
+	.about-box--hobbies .about-box-media {
+		width: 236px;
+	}
+
+	.about-box--hobbies .about-box-media::after {
+		background: linear-gradient(to left, rgba(4, 8, 16, 0.1), rgba(4, 8, 16, 0.9));
+	}
+
+	.about-box--hobbies .about-box-media :global(img) {
+		object-position: right center;
+	}
+
+	.about-box--business .about-box-media {
+		order: -1;
+		width: 216px;
+		border-left: 0;
+		border-right: 0;
+	}
+
+	.about-box--business .about-box-media::after {
+		background: linear-gradient(to left, rgba(4, 8, 16, 0.2), rgba(4, 8, 16, 0.94));
+	}
+
+	.about-box p {
+		margin: 0;
+		color: color-mix(in srgb, var(--text-primary) 92%, transparent);
+		line-height: 1.45;
+		font-size: 15px;
+	}
+
+	.about-box p + p {
+		margin-top: var(--space-4);
+	}
+
+	.about-business-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-3);
+		margin-top: var(--space-4);
+	}
+
+	.about-business-links a {
+		color: var(--text-accent);
+		text-decoration: none;
+		border: 1px solid color-mix(in srgb, var(--text-accent) 32%, transparent);
+		padding: var(--space-1) var(--space-3);
+	}
+
+	@media (max-width: 720px) {
+		.about-page { padding-bottom: var(--space-10); }
+
+		.about-section-inner {
+			width: var(--content-shell-width-mobile);
+		}
+
+		.about-section {
+			margin-top: var(--content-shell-margin-top-mobile);
+		}
+
+		.about-section h2 {
+			font-size: clamp(var(--text-lg), 6vw, var(--text-xl));
+		}
+
+		.about-box {
+			display: block;
+			padding: var(--space-3);
+		}
+
+		.about-box-media {
+			width: 100% !important;
+			min-height: 120px;
+			margin-top: var(--space-3);
+			border-left: 0;
+			border-right: 0;
+			border-top: 0;
+		}
+
+		.about-box-media :global(img) {
+			object-fit: cover !important;
+			object-position: center !important;
+		}
+
+		.about-box--productivity .about-box-media {
+			order: initial;
+		}
+
+		.about-box--business .about-box-media {
+			order: initial;
+			border-right: 0;
+		}
+	}
+</style>

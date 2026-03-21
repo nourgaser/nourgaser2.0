@@ -2,12 +2,12 @@ import type { ImageMetadata } from 'astro';
 
 import { aboutImages, heroImages } from '../image-assets';
 
-export type HomeSectionLink = {
+export type AboutSectionLink = {
   href: string;
   label: string;
 };
 
-export type HomeSection = {
+export type AboutSection = {
   id?: string;
   sectionId: string;
   sectionLabel: string;
@@ -16,10 +16,10 @@ export type HomeSection = {
   image: ImageMetadata;
   imageAlt: string;
   paragraphs: string[];
-  links?: HomeSectionLink[];
+  links?: AboutSectionLink[];
 };
 
-export const homePageContent = {
+export const aboutPageContent = {
   seoTitle: 'Nour Gaser Portfolio, Projects, Skills, Hobbies and Business Profile',
   seoDescription:
     'Personal website of Nour Gaser Algendi featuring software engineering projects, technical skills, professional business profile, hobbies, and long-form notes on systems, design, and creative development.',
@@ -27,7 +27,6 @@ export const homePageContent = {
     kicker: 'About me',
     introText:
       "Why anyone would be interested in reading about me is beyond me... Unless you're a potential business partner, in which case I implore you to continue.",
-    // image: aboutImages.manOnPlanet,
     image: heroImages.statue,
     imageAlt: 'Nour Gaser about page hero artwork with a lone figure and a cosmic landscape',
     ctaHref: '#business-and-profession',
@@ -91,5 +90,5 @@ export const homePageContent = {
         { href: '/portfolio', label: 'Portfolio' },
       ],
     },
-  ] as HomeSection[],
+  ] as AboutSection[],
 };

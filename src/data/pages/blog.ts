@@ -37,7 +37,7 @@ export const blogPageContent = {
       title: 'Creative engineering and personal workflows',
       summary:
         'Reflections on balancing experimentation, performance, and maintainability in personal systems.',
-      href: '/',
+      href: '/about',
       label: 'About me',
     },
   ] as BlogEntry[],

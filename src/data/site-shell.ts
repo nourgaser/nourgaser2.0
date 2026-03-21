@@ -11,7 +11,8 @@ export type SiteSocialLink = {
 
 export const siteShellContent = {
   navLinks: [
-    { href: '/', label: 'about' },
+    { href: '/', label: 'home' },
+    { href: '/about', label: 'about' },
     { href: '/blog', label: 'blog' },
     { href: '/portfolio', label: 'portfolio' },
     { href: '/skills', label: 'skills' },

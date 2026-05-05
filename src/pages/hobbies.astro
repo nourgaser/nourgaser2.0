@@ -1,7 +1,13 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import PageHero from '../components/astro/PageHero.astro';
+import GamesILoveSection from '../components/svelte/GamesILoveSection.svelte';
 import { hobbiesPageContent } from '../data/pages/hobbies';
+import { resolveGamesILove } from '../lib/rawg/resolve';
+import { parseGamesListState } from '../lib/rawg/games-ui-state';
+
+const games = await resolveGamesILove();
+const initialGamesState = parseGamesListState(Astro.url.searchParams, games);
 ---
 
 <MainLayout
@@ -21,23 +27,28 @@ import { hobbiesPageContent } from '../data/pages/hobbies';
 
     {
       hobbiesPageContent.cards.map((card) => (
-        <section
-          class="hobby-card"
-          aria-labelledby={card.headingId}
-          data-ngx-section={card.sectionId}
-          data-ngx-label={card.sectionLabel}
-          data-ngx-focusable="true"
-        >
-          <h2 id={card.headingId}>{card.title}</h2>
-          <p>{card.description}</p>
-          {
-            card.points && (
-              <ul>
-                {card.points.map((point) => <li>{point}</li>)}
-              </ul>
-            )
-          }
-        </section>
+        <>
+          <section
+            class="hobby-card"
+            aria-labelledby={card.headingId}
+            data-ngx-section={card.sectionId}
+            data-ngx-label={card.sectionLabel}
+            data-ngx-focusable="true"
+          >
+            <h2 id={card.headingId}>{card.title}</h2>
+            <p>{card.description}</p>
+            {
+              card.points && (
+                <ul>
+                  {card.points.map((point) => <li>{point}</li>)}
+                </ul>
+              )
+            }
+          </section>
+          {card.headingId === 'hobby-game-design' && (
+            <GamesILoveSection client:load games={games} initialState={initialGamesState} />
+          )}
+        </>
       ))
     }
   </main>

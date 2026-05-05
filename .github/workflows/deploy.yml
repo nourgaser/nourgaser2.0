@@ -18,4 +18,5 @@ jobs:
           VIRTUAL_HOST: ${{ vars.VIRTUAL_HOST }}
           LETSENCRYPT_HOST: ${{ vars.LETSENCRYPT_HOST }}
           LETSENCRYPT_EMAIL: ${{ vars.LETSENCRYPT_EMAIL }}
+          RAWG_API_KEY: ${{ secrets.RAWG_API_KEY }}
         run: docker compose up -d --build --force-recreate

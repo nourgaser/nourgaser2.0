@@ -6,13 +6,16 @@
 FROM oven/bun:1.2 AS builder
 WORKDIR /app
 
+# Build-time arguments for environment configuration
+ARG RAWG_API_KEY
+
 # Install dependencies first for better layer caching.
 COPY package.json bun.lock* ./
 RUN if [ -f bun.lock ]; then bun install --frozen-lockfile; else bun install; fi
 
 # Copy source and build.
 COPY . .
-RUN bun run build
+RUN RAWG_API_KEY=${RAWG_API_KEY} bun run build
 
 ###############################
 # Stage 2: Runtime (nginx)

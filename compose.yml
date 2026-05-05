@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        RAWG_API_KEY: ${RAWG_API_KEY}
     environment:
       # nginx-proxy routing.
       VIRTUAL_HOST: ${VIRTUAL_HOST:-nourgaser.com, www.nourgaser.com}
@@ -13,6 +15,8 @@ services:
       # Let's Encrypt provisioning.
       LETSENCRYPT_HOST: ${LETSENCRYPT_HOST:-nourgaser.com, www.nourgaser.com}
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:-dev@nourgaser.com}
+
+      RAWG_API_KEY: ${RAWG_API_KEY} # from .env / GitHub Secrets
     restart: unless-stopped
     networks:
       - nginx-proxy

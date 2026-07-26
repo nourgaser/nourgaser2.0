@@ -9,6 +9,14 @@ WORKDIR /app
 # Build-time arguments for environment configuration
 ARG RAWG_API_KEY
 
+# LaTeX toolchain for compiling the resume (resume/resume.tex -> public/resume.pdf).
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      texlive-latex-base \
+      texlive-latex-extra \
+      texlive-fonts-extra \
+      texlive-fonts-recommended \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install dependencies first for better layer caching.
 COPY package.json bun.lock* ./
 RUN if [ -f bun.lock ]; then bun install --frozen-lockfile; else bun install; fi

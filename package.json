@@ -7,7 +7,8 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "bun run build:resume && astro build",
+    "build:resume": "cd resume && pdflatex -interaction=nonstopmode -output-directory=../public -jobname=resume resume.tex && pdflatex -interaction=nonstopmode -output-directory=../public -jobname=resume resume.tex && rm -f ../public/resume.aux ../public/resume.log ../public/resume.out",
     "preview": "astro preview",
     "astro": "astro"
   },

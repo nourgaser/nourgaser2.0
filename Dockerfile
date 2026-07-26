@@ -31,8 +31,13 @@ COPY package.json bun.lock* ./
 RUN if [ -f bun.lock ]; then bun install --frozen-lockfile; else bun install; fi
 
 # Copy source and build.
+# node_modules/.astro is Astro's image-transform cache — keyed by content hash,
+# so unchanged images are skipped instead of reprocessed by sharp every build.
+# It's gitignored and normally wiped with the rest of node_modules each build;
+# mounting it as a cache persists it across builds on this runner.
 COPY . .
-RUN RAWG_API_KEY=${RAWG_API_KEY} bun run build
+RUN --mount=type=cache,target=/app/node_modules/.astro,sharing=locked \
+    RAWG_API_KEY=${RAWG_API_KEY} bun run build
 
 ###############################
 # Stage 2: Runtime (nginx)

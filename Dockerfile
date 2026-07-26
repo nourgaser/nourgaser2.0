@@ -10,12 +10,21 @@ WORKDIR /app
 ARG RAWG_API_KEY
 
 # LaTeX toolchain for compiling the resume (resume/resume.tex -> public/resume.pdf).
+# tex-common's postinst tries to rebuild format files for every TeX engine
+# (fmtutil-sys --all), which can fail on an unrelated/unused engine and makes
+# apt-get report the whole install as failed even though the packages we
+# actually need (including pdflatex) unpacked and configured fine. Retry the
+# format build tolerantly, patch up dpkg's state, then verify pdflatex works.
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
       texlive-latex-base \
       texlive-latex-extra \
       texlive-fonts-extra \
       texlive-fonts-recommended \
-    && rm -rf /var/lib/apt/lists/*
+    ; fmtutil-sys --all || true \
+    ; apt-get install -y -f --no-install-recommends \
+    ; rm -rf /var/lib/apt/lists/*
+RUN pdflatex --version
 
 # Install dependencies first for better layer caching.
 COPY package.json bun.lock* ./

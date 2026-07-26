@@ -93,7 +93,10 @@ const liveLinks = [links?.live].filter((value): value is string => Boolean(value
             <button type="button" class="showcase-nav showcase-nav--next" data-gallery-nav="next" aria-label="Next media">›</button>
           )}
           {media.length > 1 && (
-            <span class="showcase-nav-hint">Use <kbd>&larr;</kbd> <kbd>&rarr;</kbd> to browse ({media.length} items)</span>
+            <span class="showcase-nav-hint showcase-nav-hint--keys">Use <kbd>&larr;</kbd> <kbd>&rarr;</kbd> to browse ({media.length} items)</span>
+          )}
+          {media.length > 1 && (
+            <span class="showcase-nav-hint showcase-nav-hint--touch">Swipe to browse ({media.length} items)</span>
           )}
         </figure>
       )
@@ -328,9 +331,19 @@ const liveLinks = [links?.live].filter((value): value is string => Boolean(value
     border: 1px solid var(--portfolio-gallery-border);
   }
 
-  @media (max-width: 600px) {
-    .showcase-nav-hint {
+  /* Default to hover-capable (mouse/trackpad): show the keyboard hint. */
+  .showcase-nav-hint--touch {
+    display: none;
+  }
+
+  /* No hover capability (touch primary): show the swipe hint instead. */
+  @media (hover: none) {
+    .showcase-nav-hint--keys {
       display: none;
+    }
+
+    .showcase-nav-hint--touch {
+      display: block;
     }
   }
 

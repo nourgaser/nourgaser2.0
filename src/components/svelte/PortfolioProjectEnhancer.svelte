@@ -8,6 +8,11 @@
   let mounted = false;
   let activeRequest: AbortController | null = null;
 
+  const SWIPE_THRESHOLD_PX = 40;
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchTracking = false;
+
   function isModifiedClick(event: MouseEvent) {
     return event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0;
   }
@@ -312,15 +317,79 @@
       stepGalleryMedia(showcase, event.key === 'ArrowRight' ? 1 : -1);
     };
 
+    const handleTouchStart = (event: TouchEvent) => {
+      const target = event.target;
+
+      if (!(target instanceof Element) || event.touches.length !== 1) {
+        touchTracking = false;
+        return;
+      }
+
+      if (!target.closest('[data-gallery-main]')) {
+        touchTracking = false;
+        return;
+      }
+
+      touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
+      touchTracking = true;
+    };
+
+    const handleTouchEnd = (event: TouchEvent) => {
+      if (!touchTracking) {
+        return;
+      }
+
+      touchTracking = false;
+
+      const target = event.target;
+
+      if (!(target instanceof Element)) {
+        return;
+      }
+
+      const galleryMain = target.closest('[data-gallery-main]');
+
+      if (!galleryMain) {
+        return;
+      }
+
+      const touch = event.changedTouches[0];
+      const deltaX = touch.clientX - touchStartX;
+      const deltaY = touch.clientY - touchStartY;
+
+      if (Math.abs(deltaX) < SWIPE_THRESHOLD_PX || Math.abs(deltaX) < Math.abs(deltaY)) {
+        return;
+      }
+
+      const showcase = galleryMain.closest('.project-showcase');
+
+      if (!(showcase instanceof HTMLElement)) {
+        return;
+      }
+
+      stepGalleryMedia(showcase, deltaX < 0 ? 1 : -1);
+    };
+
+    const handleTouchCancel = () => {
+      touchTracking = false;
+    };
+
     root.addEventListener('click', handleClick);
     window.addEventListener('popstate', handlePopState);
     window.addEventListener('keydown', handleKeydown);
+    root.addEventListener('touchstart', handleTouchStart, { passive: true });
+    root.addEventListener('touchend', handleTouchEnd);
+    root.addEventListener('touchcancel', handleTouchCancel, { passive: true });
 
     return () => {
       activeRequest?.abort();
       root.removeEventListener('click', handleClick);
       window.removeEventListener('popstate', handlePopState);
       window.removeEventListener('keydown', handleKeydown);
+      root.removeEventListener('touchstart', handleTouchStart);
+      root.removeEventListener('touchend', handleTouchEnd);
+      root.removeEventListener('touchcancel', handleTouchCancel);
     };
   });
 </script>

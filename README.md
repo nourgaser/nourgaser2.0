@@ -2,7 +2,7 @@
 
 Source code for my personal website and portfolio, built with **Astro**, **Svelte**, and **TypeScript**.
 
-The site showcases my projects, experience, and experiments through **ngxOS** — a custom terminal-inspired interface that lets visitors explore the site using shell-like commands, themes, keyboard shortcuts, and interactive navigation.
+The site showcases my projects, experience, and experiments through **ngxos** — a custom terminal-inspired interface that lets visitors explore the site using shell-like commands, themes, keyboard shortcuts, and interactive navigation.
 
 ## Features
 

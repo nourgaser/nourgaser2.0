@@ -8,7 +8,7 @@ The site showcases my projects, experience, and experiments through **ngxos** �
 
 * 🚀 Astro for fast static generation
 * ⚡ Svelte islands for interactive components
-* 🖥️ **ngxOS** — a custom terminal-like UI framework
+* 🖥️ **ngxos** — a custom terminal-like UI framework
 * 📚 MDX-powered project and content collections
 * 🎨 Theme switching and animations
 * 📱 Responsive, modern design
@@ -48,7 +48,7 @@ src/
 └── styles/
 ```
 
-The `ngxOS` module is an experimental UI framework that powers the interactive terminal experience, including command handling, navigation, themes, persistence, and shell-like behaviour.
+The `ngxos` module is an experimental UI framework that powers the interactive terminal experience, including command handling, navigation, themes, persistence, and shell-like behaviour.
 
 ## License
 

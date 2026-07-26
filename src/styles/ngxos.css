@@ -115,6 +115,15 @@
   animation-duration: var(--ngx-frame-duration, 10s);
   animation-delay: var(--ngx-frame-delay, 0s);
 
+  /* Force the ring onto its own compositor layer. Registered-custom-      */
+  /* property animations that only feed a pseudo-element's gradient can    */
+  /* silently stop repainting in Chromium when the pseudo shares a layer   */
+  /* with static content (seen on the home site-map <a> tiles, where only  */
+  /* the filter-promoted sword tile kept animating). translateZ(0) +       */
+  /* will-change guarantee per-frame invalidation everywhere.              */
+  transform: translateZ(0);
+  will-change: transform;
+
   transition: opacity var(--duration-slow, 400ms) var(--ease-default, ease-in-out);
 }
 

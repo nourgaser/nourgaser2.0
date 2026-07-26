@@ -90,14 +90,22 @@ const homeSections = [
                   aria-current="page"
                   data-ngx-frame
                 >
-                  <span class="home-link-title">{section.title}</span>
-                  <span class="home-link-description">{section.description}</span>
+                  <span class="home-link-inner">
+                    <span class="home-link-title">{section.title}</span>
+                    <span class="home-link-description">{section.description}</span>
+                  </span>
                 </div>
               ) : (
-                <a href={section.href} class="home-link-card" data-ngx-frame>
-                  <span class="home-link-title">{section.title}</span>
-                  <span class="home-link-description">{section.description}</span>
-                </a>
+                /* Frame lives on the <div>, not the <a>: framed anchors hit a
+                   Chromium visited-link paint isolation that freezes animated
+                   pseudo-element backgrounds — every other framed element on
+                   the site is a non-anchor and animates fine. */
+                <div class="home-link-card" data-ngx-frame>
+                  <a href={section.href} class="home-link-inner">
+                    <span class="home-link-title">{section.title}</span>
+                    <span class="home-link-description">{section.description}</span>
+                  </a>
+                </div>
               )
             ))
           }
@@ -142,15 +150,21 @@ const homeSections = [
   .home-link-card {
     position: relative;
     display: grid;
-    gap: var(--space-1);
-    text-decoration: none;
     background: rgba(7, 12, 22, 0.72);
     border: 1px solid color-mix(in srgb, var(--text-accent) 28%, transparent);
-    padding: var(--space-3);
     min-height: 120px;
     transition:
       border-color 0.2s ease,
       background-color 0.2s ease;
+  }
+
+  .home-link-inner {
+    display: grid;
+    gap: var(--space-1);
+    align-content: start;
+    padding: var(--space-3);
+    text-decoration: none;
+    color: inherit;
   }
 
   .home-link-card:not(.home-link-card--home):hover {

@@ -23,9 +23,23 @@
     const slot = document.querySelector('[data-ngx-slot="theme-dock"]');
 
     if (slot && rootEl) {
+      // Belt-and-braces: the slot should be empty, but guard against any
+      // leftover dock from a prior mount anyway (e.g. a teardown that
+      // somehow didn't run) so power-toggling can never accumulate copies.
+      slot.querySelectorAll('.ngx-theme-dock').forEach((node) => node.remove());
       slot.appendChild(rootEl);
       slotted = true;
     }
+
+    // `appendChild` moves the root element out of the DOM position Svelte
+    // manages for it, so Svelte's own unmount (power-off tears this
+    // component down via NgxosRoot's `{#if ngx.poweredOn}`) never sees it
+    // to remove it — it would otherwise leak in the footer permanently,
+    // still fully functional while powered off. Explicit teardown fixes
+    // that regardless of where the node currently lives.
+    return () => {
+      rootEl?.remove();
+    };
   });
 </script>
 

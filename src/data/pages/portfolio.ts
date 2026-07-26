@@ -14,7 +14,7 @@ export const portfolioPageContent = {
     kicker: 'Selected work',
     title: 'Portfolio',
     description:
-      'A growing archive of games, software projects, prototypes, and technical experiments, rebuilt as crawlable content with room for broader professional work.',
+      'A growing archive of games, software projects, prototypes, and technical experiments.',
     image: heroImages.spaceship,
     sectionId: 'portfolio-hero',
     sectionLabel: 'Portfolio Hero',

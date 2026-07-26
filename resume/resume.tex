@@ -1,0 +1,230 @@
+%-------------------------
+% Resume in Latex
+% Author : Nour Gaser
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+%----------FONT OPTIONS----------
+% sans-serif
+\usepackage[sfdefault]{FiraSans}
+\usepackage[T1]{fontenc}
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Nour Gaser} \\ \vspace{1pt}
+    Software Engineer $|$ Game Designer $|$ Academic \\ \vspace{1pt}
+    \small +20 102 397 3866 $|$ \href{mailto:work@nourgaser.com}{\underline{work@nourgaser.com}} $|$ 
+    \href{https://nourgaser.com}{\underline{nourgaser.com}} $|$
+    \href{https://linkedin.com/in/nourgaser}{\underline{linkedin.com/in/nourgaser}} \\
+    \small Al Shorouk, Cairo, Egypt
+\end{center}
+
+
+%-----------SUMMARY-----------
+\section{Summary}
+  Software Engineer and Game Developer with a strong foundation in Computer Science, currently pursuing a Master's degree in Media Informatics. Experienced in full-stack SaaS development, real-time 3D visualization, and cloud infrastructure optimization. Passionate about Open Source software, Linux systems, and creating educational technologies. Proven track record of optimizing backend systems and leading technical teams.
+
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {German International University (GIU)}{Cairo, Egypt}
+      {Master of Science in Computer Science (Major: Media Informatics)}{Sep. 2025 -- Present}
+    \resumeSubheading
+      {Misr University for Science and Technology (MUST)}{6th of October, Egypt}
+      {Bachelor of Science in Computer Science}{Sep. 2019 -- July 2023}
+      \resumeItemListStart
+        \resumeItem{Grade: 3.9/4.0 (Ranked 6th in class)}
+        \resumeItem{Graduation Project: "Charged Learning" -- An educational puzzle game for learning electric circuits.}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Teaching Assistant}{Sep. 2025 -- Present}
+      {German International University (GIU)}{Cairo, Egypt}
+      \resumeItemListStart
+        \resumeItem{Instructional support for the "Electronic Business Development" course for Business Informatics students.}
+        \resumeItem{Conduct practical labs focusing on modern web technologies (MERN Stack: MongoDB, Express, React, Node.js).}
+        \resumeItem{Design and grade quizzes, assignments, and educational materials to reinforce theoretical concepts.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Software Engineer}{Jan. 2025 -- Aug. 2025}
+      {Hoopoe Digital}{Remote}
+      \resumeItemListStart
+        \resumeItem{Maintained and led the development of a bleeding-edge 3D indoor mapping solution.}
+        \resumeItem{Supported a multi-tenant SaaS Wi-Fi solution serving tens of B2B2C customers and 100k+ users.}
+        \resumeItem{Optimized real-time data handling for approximately 1,000 daily active users.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Co-Founder}{Mar. 2024 -- Present}
+      {ANY Solutions}{Remote}
+      \resumeItemListStart
+        \resumeItem{Founded a software house startup; led a successful hiring cycle to build the core engineering team.}
+        \resumeItem{Delivered a medium-sized travel platform comprising multiple mobile apps, web dashboards, and cloud infrastructure.}
+        \resumeItem{Architected the backend infrastructure to ensure scalability and cost-efficiency.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Software Engineer}{Oct. 2024 -- Jan. 2025}
+      {Genesis Creations S.A.E}{Maadi, Egypt}
+      \resumeItemListStart
+        \resumeItem{Led the development of a 3D asset store for internal and external use.}
+        \resumeItem{Refactored a critical daily database sync cronjob, reducing execution time from \textbf{8+ hours to 15 minutes}.}
+        \resumeItem{Proposed and implemented cloud infrastructure changes that significantly reduced operational costs.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Software Engineer}{Nov. 2023 -- Oct. 2024}
+      {Hoopoe Digital}{Remote}
+      \resumeItemListStart
+        \resumeItem{Developed features for multiple Wi-Fi enabled applications and configured Network Attached Storage (NAS) equipment.}
+        \resumeItem{Implemented a basic CI/CD workflow to accelerate development cycles and deployment.}
+        \resumeItem{Managed integration with FreeRADIUS and Linux system administration tasks.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Software Support Engineer}{Sep. 2023 -- Nov. 2023}
+      {Bosta}{Maadi, Egypt}
+      \resumeItemListStart
+        \resumeItem{Handled 4th-line engineering support tickets, including auditing logs and identifying root causes.}
+        \resumeItem{Developed minor patches and reported critical bugs to the core development team.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+
+%-----------PROJECTS-----------
+\section{Projects}
+    \resumeSubHeadingListStart
+      \resumeProjectHeading
+          {\textbf{Charged Learning} $|$ \emph{Unity, C\#, Educational Tech}}{Feb. 2022 -- Oct. 2022}
+          \resumeItemListStart
+            \resumeItem{Developed a 2D puzzle game designed to gamify the learning process of electric circuits.}
+            \resumeItem{Created as a graduation project, achieving top-of-class recognition.}
+            \resumeItem{Implemented custom physics interactions and circuit simulation logic within Unity.}
+          \resumeItemListEnd
+      \resumeProjectHeading
+          {\textbf{Open Amazing Brick} $|$ \emph{Unity, C\#, Open Source}}{Jan. 2022}
+          \resumeItemListStart
+            \resumeItem{Developed an open-source clone of a casual game, removing ads and improving UX.}
+            \resumeItem{Published on Google Play Store and self-hosted as a web app.}
+            \resumeItem{Completed the entire development cycle in under 48 hours during a game jam challenge.}
+          \resumeItemListEnd
+      \resumeProjectHeading
+          {\textbf{OmegaCare} $|$ \emph{Node.js, React, Full Stack}}{Jan. 2021 -- Mar. 2021}
+          \resumeItemListStart
+            \resumeItem{Built a dynamic landing page with a medical network database, newsfeed, and live chat.}
+            \resumeItem{Developed a CMS (Content Management System) for employees to manage website content.}
+          \resumeItemListEnd
+    \resumeSubHeadingListEnd
+
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: C\#, JavaScript/TypeScript, Python, C++, SQL, LaTeX, HTML/CSS} \\
+     \textbf{Game Development}{: Unity 3D/2D, Game Design, Physics Simulation, XR (AR/VR)} \\
+     \textbf{Web \& Backend}{: Node.js, React.js, Express, MongoDB (MERN Stack), REST APIs, Nginx} \\
+     \textbf{Infrastructure \& Tools}{: Docker, CI/CD, Git, Linux (Fedora/RHEL), FreeRADIUS, GCP, Self-hosting} \\
+    }}
+ \end{itemize}
+
+
+%-------------------------------------------
+\end{document}

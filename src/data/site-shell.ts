@@ -13,9 +13,7 @@ export const siteShellContent = {
   navLinks: [
     { href: '/', label: 'home' },
     { href: '/about', label: 'about' },
-    { href: '/blog', label: 'blog' },
     { href: '/portfolio', label: 'portfolio' },
-    { href: '/skills', label: 'skills' },
     { href: '/hobbies', label: 'hobbies' },
     { href: '/business', label: 'business' },
     { href: '/resume', label: 'resume' },

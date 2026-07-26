@@ -48,6 +48,9 @@ const liveLinks = [links?.live].filter((value): value is string => Boolean(value
     {
       media.length > 0 && (
         <figure class="showcase-hero" data-gallery-main>
+          {media.length > 1 && (
+            <button type="button" class="showcase-nav showcase-nav--prev" data-gallery-nav="prev" aria-label="Previous media">‹</button>
+          )}
           {media.map((item, index) => (
             <div data-gallery-media={index} hidden={index !== 0}>
               {item.isVideo ? (
@@ -60,28 +63,38 @@ const liveLinks = [links?.live].filter((value): value is string => Boolean(value
                   <source src={typeof item.path === 'string' ? item.path : undefined} type="video/mp4" />
                 </video>
               ) : typeof item.path === 'string' ? (
-                <img
-                  src={item.path}
-                  alt={item.alt ?? `${title} preview`}
-                  loading={index === 0 ? 'eager' : 'lazy'}
-                  decoding="async"
-                  fetchpriority={index === 0 ? 'high' : undefined}
-                />
+                <a href={item.path} target="_blank" rel="noreferrer" aria-label="Open full image in a new tab">
+                  <img
+                    src={item.path}
+                    alt={item.alt ?? `${title} preview`}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                    fetchpriority={index === 0 ? 'high' : undefined}
+                  />
+                </a>
               ) : (
-                <Picture
-                  src={item.path}
-                  alt={item.alt ?? `${title} preview`}
-                  formats={['avif', 'webp']}
-                  width={1400}
-                  height={875}
-                  sizes="(min-width: 1200px) 900px, 100vw"
-                  loading={index === 0 ? 'eager' : 'lazy'}
-                  decoding="async"
-                  fetchpriority={index === 0 ? 'high' : undefined}
-                />
+                <a href={item.path.src} target="_blank" rel="noreferrer" aria-label="Open full image in a new tab">
+                  <Picture
+                    src={item.path}
+                    alt={item.alt ?? `${title} preview`}
+                    formats={['avif', 'webp']}
+                    width={1400}
+                    fit="inside"
+                    sizes="(min-width: 1200px) 900px, 100vw"
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                    fetchpriority={index === 0 ? 'high' : undefined}
+                  />
+                </a>
               )}
             </div>
           ))}
+          {media.length > 1 && (
+            <button type="button" class="showcase-nav showcase-nav--next" data-gallery-nav="next" aria-label="Next media">›</button>
+          )}
+          {media.length > 1 && (
+            <span class="showcase-nav-hint">Use <kbd>&larr;</kbd> <kbd>&rarr;</kbd> to browse ({media.length} items)</span>
+          )}
         </figure>
       )
     }
@@ -164,6 +177,7 @@ const liveLinks = [links?.live].filter((value): value is string => Boolean(value
   .project-showcase {
     display: grid;
     gap: var(--space-3);
+    min-width: 0;
   }
 
   .showcase-tabs {
@@ -243,14 +257,94 @@ const liveLinks = [links?.live].filter((value): value is string => Boolean(value
   }
 
   .showcase-shell {
+    min-width: 0;
     background: var(--portfolio-gallery-bg);
     border: 2px solid var(--portfolio-gallery-border);
   }
 
   .showcase-hero {
+    position: relative;
     margin: 0;
+    height: min(65vh, 620px);
+    min-height: 320px;
     border-bottom: 2px solid var(--portfolio-gallery-border);
     background: color-mix(in srgb, var(--bg-nav) 86%, transparent);
+  }
+
+  .showcase-hero [data-gallery-media] {
+    width: 100%;
+    height: 100%;
+  }
+
+  .showcase-nav {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--portfolio-gallery-border);
+    background: color-mix(in srgb, var(--bg-nav) 70%, transparent);
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 120ms ease, opacity 120ms ease;
+    opacity: 0.72;
+  }
+
+  .showcase-nav:hover,
+  .showcase-nav:focus-visible {
+    opacity: 1;
+    background: color-mix(in srgb, var(--bg-nav) 92%, transparent);
+  }
+
+  .showcase-nav--prev {
+    left: var(--space-3);
+  }
+
+  .showcase-nav--next {
+    right: var(--space-3);
+  }
+
+  .showcase-nav-hint {
+    position: absolute;
+    right: var(--space-3);
+    bottom: var(--space-3);
+    z-index: 2;
+    padding: var(--space-1) var(--space-2);
+    background: color-mix(in srgb, var(--bg-nav) 78%, transparent);
+    border: 1px solid var(--portfolio-gallery-border);
+    font-size: var(--text-xs);
+    color: color-mix(in srgb, var(--text-primary) 84%, transparent);
+  }
+
+  .showcase-nav-hint kbd {
+    font-family: inherit;
+    padding: 0 4px;
+    border: 1px solid var(--portfolio-gallery-border);
+  }
+
+  @media (max-width: 600px) {
+    .showcase-nav-hint {
+      display: none;
+    }
+  }
+
+  .showcase-hero [data-gallery-media] > a,
+  .showcase-hero [data-gallery-media] > video {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .showcase-hero [data-gallery-media] > a {
+    cursor: zoom-in;
   }
 
   .showcase-hero :global(picture),
@@ -258,27 +352,48 @@ const liveLinks = [links?.live].filter((value): value is string => Boolean(value
   .showcase-hero video {
     display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
   }
 
   .showcase-hero :global(img),
   .showcase-hero video {
-    min-height: 240px;
-    max-height: 660px;
-    object-fit: cover;
+    object-fit: contain;
   }
 
   .showcase-strip {
     list-style: none;
     margin: 0;
     padding: var(--space-4);
-    display: grid;
-    gap: var(--space-4);
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    display: flex;
+    gap: var(--space-3);
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
     border-bottom: 2px solid var(--portfolio-gallery-border);
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--text-accent) 55%, transparent) transparent;
+  }
+
+  .showcase-strip::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .showcase-strip::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .showcase-strip::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--text-accent) 55%, transparent);
+    border-radius: 3px;
+  }
+
+  .showcase-strip::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--text-accent) 80%, transparent);
   }
 
   .showcase-thumb-item {
+    flex: 0 0 auto;
+    width: 120px;
+    scroll-snap-align: start;
     border: 1px solid var(--portfolio-gallery-border);
     background: color-mix(in srgb, var(--bg-nav) 82%, transparent);
   }

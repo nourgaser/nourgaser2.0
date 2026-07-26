@@ -10,10 +10,10 @@ export const resumePageContent = {
     sectionId: 'resume-hero',
     sectionLabel: 'Resume Hero',
   },
-  resumeFile: '/resume-nour-gaser-jan-2026.pdf',
+  resumeFile: '/resume.pdf',
   previewTitle: 'Resume PDF preview',
   actions: [
-    { href: '/resume-nour-gaser-jan-2026.pdf', label: 'Download PDF', download: true },
+    { href: '/resume.pdf', label: 'Download PDF', download: true },
     { href: '/business', label: 'Go to business profile' },
   ],
 };

@@ -18,20 +18,13 @@ export type EducationEntry = {
   details?: string;
 };
 
-export type FeaturedWork = {
-  title: string;
-  description: string;
-  category?: string;
-  url?: string;
-};
-
 export const professionalSummary = {
-  headline: 'Software Engineer | MSc Student',
+  headline: 'Software Engineer | Game Designer | Academic',
   blurb:
-    'Software engineer with a systems-first mindset across architecture, product platforms, and geospatial/3D map systems. Co-founder of an independent consultancy, currently pursuing an MSc in Computer Science and serving as a Teaching Assistant.',
-  businessName: 'Independent Technical Consultancy',
+    'Software engineer with a systems-first mindset across architecture, product platforms, and geospatial/3D map systems. Co-Founder of ANY Solutions, currently pursuing an MSc in Computer Science and serving as a Teaching Assistant at GIU.',
+  businessName: 'ANY Solutions',
   businessDescription:
-    'Egypt-based software house co-founded to provide end-to-end technical consultancy and development, delivering holistic A-Z solutions for business clients.',
+    'ANY Solutions is an Egypt-based software house I co-founded to provide end-to-end technical consultancy and development for business clients. Still early-stage — a small founding team handling a handful of client engagements directly, with big potential and room to grow.',
 };
 
 export const coreExpertise: ExpertiseArea[] = [
@@ -59,61 +52,43 @@ export const coreExpertise: ExpertiseArea[] = [
 
 export const experience: ExperienceEntry[] = [
   {
-    role: 'Teaching Assistant',
-    organization: 'University Computer Science Department',
-    period: 'Sep 2025 - Present',
-    location: 'Cairo, Egypt (On-site)',
-  },
-  {
     role: 'Co-Founder',
-    organization: 'Independent Technical Consultancy',
+    organization: 'ANY Solutions',
     period: 'Mar 2024 - Present',
-  },
-  {
-    role: 'Software Engineer',
-    organization: 'Digital Product Company',
-    period: 'Jan 2025 - Aug 2025',
-  },
-  {
-    role: 'Software Engineer',
-    organization: 'Enterprise Commerce Engineering Team',
-    period: 'Oct 2024 - Jan 2025',
-  },
-  {
-    role: 'Software Engineer',
-    organization: 'Digital Product Company',
-    period: 'Nov 2023 - Oct 2024',
-  },
-  {
-    role: 'Software Support Engineer',
-    organization: 'Logistics Technology Company',
-    period: 'Sep 2023 - Nov 2023',
-    location: 'Cairo, Egypt (Hybrid)',
-  },
-  {
-    role: 'Software Engineering Trainee',
-    organization: 'Engineering Training Program',
-    period: 'May 2023 - Jul 2023',
     notes:
-      'Self-paced interview-preparation training focused on algorithms, clean code, debugging, communication, and mentorship.',
+      'Co-founded and lead technical delivery — architecture, infrastructure, and hands-on development across client engagements, including Safaria (our first client) and outsourced work for Genesis Creations.',
   },
   {
-    role: 'Software Programming Instructor',
-    organization: 'STEM Education Platform',
-    period: 'May 2023 - Jun 2023',
+    role: 'Teaching Assistant',
+    organization: 'German International University (GIU)',
+    period: 'Sep 2025 - Present',
+    notes:
+      'Electronic Business Development, Python Programming, and other computer-science-related courses for the Business Informatics program.',
   },
   {
-    role: 'Software Development Intern',
-    organization: 'Digital Product Company',
-    period: 'Jul 2022 - Sep 2022',
+    role: 'Software Engineer',
+    organization: 'Genesis Creations S.A.E',
+    period: 'Oct 2024 - Jan 2025',
+    notes: "An on-off collaboration which started as a full-time software engineering position where I worked on web development projects, then moved on to outsourced projects that I handled for them externally."
+  },
+  {
+    role: 'Software Engineer',
+    organization: 'Hoopoe Digital',
+    period: 'Nov 2023 - Aug 2025',
+    notes: 'Two separate engineering roles, plus an earlier internship there in 2022. This is where I learned all my foundational software engineering skills; roles at Hoopoe Digital shaped my current wide range of skills and set me up for software engineering success.',
   },
 ];
 
+export const earlierCareerNote =
+  'Earlier: Software Support Engineer at Bosta, a software engineering training program with Manara, and STEM instruction with iSchool (2022-2023).';
+
 export const education: EducationEntry[] = [
   {
-    degree: 'Master of Science (MS), Computer Science',
+    degree: 'Master of Science (MS), Computer Science (Major: Media Informatics)',
     institution: 'German International University (GIU)',
     period: 'Sep 2025 - Present',
+    details:
+      'Research interests: media informatics, HCI, AI regulation and ethical use (augmentation vs. atrophy), and learning science. Thesis direction not yet finalized.',
   },
   {
     degree: 'Bachelor of Science (BS), Computer Science',
@@ -121,42 +96,4 @@ export const education: EducationEntry[] = [
     period: 'Sep 2019 - Jul 2023',
     details: 'Grade: 3.9/4.0, ranked 6th in class.',
   },
-];
-
-export const featuredProfessionalWork: FeaturedWork[] = [
-  {
-    title: 'Commerce Migration Ecosystem',
-    category: 'Professional Platform',
-    description:
-      'Commerce-focused migration and synchronization pipelines, product/catalog normalization, and operational job tooling at scale.',
-  },
-  {
-    title: 'Travel Platform Suite',
-    category: 'Professional Platform',
-    description:
-      'Multi-repo travel platform spanning API architecture, tenant bootstrap flows, and operator-facing admin surfaces on Bun-based workflows.',
-  },
-  {
-    title: 'Map Core SDK + 3D Map Platform',
-    category: 'Mapping / GIS / 3D',
-    description:
-      'Reusable Three.js map SDK and indoor mapping backend/editor stack with GeoJSON, style/group systems, and 3D model support.',
-  },
-  {
-    title: 'Healthcare Platform',
-    category: 'Professional Platform',
-    description:
-      'Healthcare-domain engineering delivered with confidentiality constraints, focused on maintainable architecture and operational robustness.',
-  },
-  {
-    title: 'Technical Consultancy Practice',
-    category: 'Consultancy',
-    description: 'End-to-end technical consultancy and custom software delivery for business clients across multiple domains.',
-  },
-];
-
-export const currentProjectNotes: string[] = [
-  'Expanding categorized portfolio coverage for client platforms, mapping systems, and architecture-heavy engagements.',
-  'Iterating on map-centric tooling and reusable geospatial workflows across backend and SDK boundaries.',
-  'Continuing parallel R&D in learning/productivity tooling and game systems as long-term personal tracks.',
 ];

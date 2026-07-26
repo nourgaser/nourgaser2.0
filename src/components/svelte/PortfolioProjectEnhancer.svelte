@@ -55,6 +55,38 @@
     });
   }
 
+  function getThumbButtons(showcase: HTMLElement) {
+    return Array.from(showcase.querySelectorAll('button[data-gallery-thumb="true"]')).filter(
+      (item): item is HTMLButtonElement => item instanceof HTMLButtonElement
+    );
+  }
+
+  function stepGalleryMedia(showcase: HTMLElement, direction: 1 | -1) {
+    const thumbButtons = getThumbButtons(showcase);
+
+    if (thumbButtons.length < 2) {
+      return;
+    }
+
+    const currentIndex = thumbButtons.findIndex((button) =>
+      button.classList.contains('showcase-thumb-button--selected')
+    );
+
+    const nextIndex = (currentIndex + direction + thumbButtons.length) % thumbButtons.length;
+    const nextButton = thumbButtons[nextIndex];
+
+    selectGalleryMedia(nextButton);
+    nextButton.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+  }
+
+  function isEditableTarget(target: EventTarget | null) {
+    if (!(target instanceof HTMLElement)) {
+      return false;
+    }
+
+    return target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName);
+  }
+
   function selectGalleryMedia(thumbButton: HTMLButtonElement) {
     const showcase = thumbButton.closest('.project-showcase');
 
@@ -222,6 +254,19 @@
         return;
       }
 
+      const galleryNav = target.closest('button[data-gallery-nav]');
+
+      if (galleryNav instanceof HTMLButtonElement) {
+        const showcase = galleryNav.closest('.project-showcase');
+
+        if (showcase instanceof HTMLElement) {
+          event.preventDefault();
+          stepGalleryMedia(showcase, galleryNav.dataset.galleryNav === 'next' ? 1 : -1);
+        }
+
+        return;
+      }
+
       const link = target.closest('a[data-project-switch="true"]');
 
       if (!(link instanceof HTMLAnchorElement)) {
@@ -248,13 +293,34 @@
       void navigateTo(currentUrl.toString(), 'replace');
     };
 
+    const handleKeydown = (event: KeyboardEvent) => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+        return;
+      }
+
+      if (isEditableTarget(event.target)) {
+        return;
+      }
+
+      const showcase = root.querySelector('.project-showcase');
+
+      if (!(showcase instanceof HTMLElement)) {
+        return;
+      }
+
+      event.preventDefault();
+      stepGalleryMedia(showcase, event.key === 'ArrowRight' ? 1 : -1);
+    };
+
     root.addEventListener('click', handleClick);
     window.addEventListener('popstate', handlePopState);
+    window.addEventListener('keydown', handleKeydown);
 
     return () => {
       activeRequest?.abort();
       root.removeEventListener('click', handleClick);
       window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('keydown', handleKeydown);
     };
   });
 </script>

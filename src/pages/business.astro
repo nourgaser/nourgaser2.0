@@ -3,13 +3,11 @@ import MainLayout from '../layouts/MainLayout.astro';
 import PageHero from '../components/astro/PageHero.astro';
 import {
   coreExpertise,
-  currentProjectNotes,
+  earlierCareerNote,
   education,
   experience,
-  featuredProfessionalWork,
   professionalSummary,
 } from '../data/professional';
-import { skillCategories } from '../data/skills';
 import { businessPageContent } from '../data/pages/business';
 ---
 
@@ -27,37 +25,21 @@ import { businessPageContent } from '../data/pages/business';
     />
 
     <section id="business-profile" class="business-shell" data-ngx-section="business-summary" data-ngx-label="Business Summary">
+      <h2 class="business-section-title">{businessPageContent.sections.summaryTitle}</h2>
       <article class="business-panel">
         <p class="business-headline">{professionalSummary.blurb}</p>
         <p>{professionalSummary.businessDescription}</p>
       </article>
     </section>
 
-    <section class="business-shell business-grid" data-ngx-section="core-expertise" data-ngx-label="Core Expertise">
-      {
-        coreExpertise.map((area) => (
-          <article class="business-panel">
-            <h2>{area.title}</h2>
-            <p>{area.description}</p>
-          </article>
-        ))
-      }
-    </section>
-
-    <section class="business-shell" data-ngx-section="featured-work" data-ngx-label="Featured Work">
-      <h2 class="business-section-title">{businessPageContent.sections.featuredWorkTitle}</h2>
-      <div class="business-list">
+    <section class="business-shell" data-ngx-section="core-expertise" data-ngx-label="Core Expertise">
+      <h2 class="business-section-title">{businessPageContent.sections.coreExpertiseTitle}</h2>
+      <div class="business-grid">
         {
-          featuredProfessionalWork.map((item) => (
+          coreExpertise.map((area) => (
             <article class="business-panel">
-              {item.category && <p class="business-meta">{item.category}</p>}
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
-              {item.url && (
-                <p>
-                  <a href={item.url} target="_blank" rel="noreferrer">{item.url}</a>
-                </p>
-              )}
+              <h3>{area.title}</h3>
+              <p>{area.description}</p>
             </article>
           ))
         }
@@ -80,6 +62,7 @@ import { businessPageContent } from '../data/pages/business';
             ))
           }
         </div>
+        <p class="business-note">{earlierCareerNote}</p>
       </article>
 
       <article>
@@ -99,28 +82,16 @@ import { businessPageContent } from '../data/pages/business';
       </article>
     </section>
 
-    <section class="business-shell" data-ngx-section="skills" data-ngx-label="Skills">
-      <h2 class="business-section-title">{businessPageContent.sections.skillsTitle}</h2>
-      <div class="business-list">
-        {
-          skillCategories.map((category) => (
-            <article class="business-panel">
-              <h3>{category.name}</h3>
-              <ul class="business-tags">
-                {category.items.map((item) => <li>{item}</li>)}
-              </ul>
-            </article>
-          ))
-        }
-      </div>
-    </section>
-
-    <section class="business-shell" data-ngx-section="current-project-notes" data-ngx-label="Current Project Notes">
-      <h2 class="business-section-title">{businessPageContent.sections.currentNotesTitle}</h2>
-      <article class="business-panel">
-        <ul class="business-notes">
-          {currentProjectNotes.map((note) => <li>{note}</li>)}
-        </ul>
+    <section class="business-shell" data-ngx-section="work-with-me" data-ngx-label="Work With Me">
+      <article class="business-panel business-cta">
+        <div>
+          <h2 class="business-section-title">{businessPageContent.sections.workWithMeTitle}</h2>
+          <p>{businessPageContent.workWithMe.description}</p>
+        </div>
+        <p class="business-cta-links">
+          <a href={`mailto:${businessPageContent.workWithMe.email}`}>{businessPageContent.workWithMe.email}</a>
+          <a href="/portfolio">See the portfolio</a>
+        </p>
       </article>
     </section>
   </main>
@@ -174,6 +145,12 @@ import { businessPageContent } from '../data/pages/business';
     gap: var(--space-5);
   }
 
+  .business-note {
+    margin: var(--space-4) 0 0;
+    font-size: var(--text-sm);
+    color: color-mix(in srgb, var(--text-primary) 72%, transparent);
+  }
+
   .business-panel {
     padding: var(--space-5);
     background: var(--surface-panel);
@@ -192,26 +169,27 @@ import { businessPageContent } from '../data/pages/business';
     color: var(--text-accent);
   }
 
-  .business-tags {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .business-cta {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-2);
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
   }
 
-  .business-tags li {
-    padding: var(--space-1) var(--space-3);
-    border: 1px solid color-mix(in srgb, var(--text-accent) 38%, transparent);
-    font-size: var(--text-sm);
-  }
-
-  .business-notes {
-    margin: 0;
-    padding-left: var(--space-5);
-    display: grid;
+  .business-cta-links {
+    display: flex;
+    flex-wrap: wrap;
     gap: var(--space-3);
+    margin: 0;
+  }
+
+  .business-cta-links a {
+    color: var(--text-accent);
+    text-decoration: none;
+    border: 1px solid color-mix(in srgb, var(--text-accent) 32%, transparent);
+    padding: var(--space-2) var(--space-4);
+    white-space: nowrap;
   }
 
   @media (max-width: 900px) {

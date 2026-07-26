@@ -1,0 +1,38 @@
+---
+title: "nourgaser.com"
+summary: "This site: a deliberately nerdy, old-school static portfolio with a hidden engine — ngxos — that powers it into a keyboard-driven terminal OS."
+description: "nourgaser.com is a two-layer build: a fully static, JS-optional Astro portfolio underneath, and ngxos — a client-side runtime — layered on top. Power ngxos on and the site turns into a terminal-driven shell with zsh-like tab completion, Vimium-style keyboard navigation, four live themes, and a traveling neon activation frame around every content card. The two layers only ever touch through one strict data-ngx-* hook contract, authored on the Astro side and read by ngxos, so the base site works with JavaScript disabled and the runtime stays portable."
+tags: ["astro", "svelte", "typescript", "bun", "css", "design-system", "keyboard-ux", "terminal-ui", "static-site", "solo-project"]
+category: "web-platforms"
+clientType: "personal"
+status: "complete"
+featured: true
+order: 6
+links:
+  live: "https://nourgaser.com"
+  source: "https://github.com/nourgaser/nourgaser2.0"
+media:
+  - path: "./media/site/media/homepage-sitemap-off-wide.webp"
+    alt: "Homepage 'website map' tiles with ngxos powered off — default theme, no terminal, no neon frames, just plain static HTML."
+  - path: "./media/site/media/homepage-sitemap-off-compact.webp"
+    alt: "The same homepage at a narrower viewport width. The base site is ordinary responsive HTML/CSS underneath everything else."
+  - path: "./media/site/media/hobbies-games-i-love-filters.webp"
+    alt: "Hobbies page — the filterable 'Games I Love' list, one of the base site's ordinary content pages, ngxos untouched."
+  - path: "./media/site/media/terminal-neofetch-portfolio-vgcolors.webp"
+    alt: "ngxos terminal open over the portfolio page in the vgcolors theme, running neofetch and help with the tab-completion menu open below."
+  - path: "./media/site/media/terminal-theme-ubuntu-business.webp"
+    alt: "Switching themes live from the terminal ('theme ubuntu') over the business page — the whole site repaints instantly in the new palette."
+  - path: "./media/site/media/diagram-two-layer-architecture.svg"
+    alt: "Diagram: the static Astro base site and the ngxos runtime as two layers, connected only through the data-ngx-* hook contract."
+  - path: "./media/site/media/diagram-ngxos-internals.svg"
+    alt: "Diagram: inside ngxos — kernel boot, the runes store and event bus, the four subsystems (shell, navigation, effects, persistence), and the Svelte components that consume the store."
+coverImage: "./media/site/media/terminal-neofetch-portfolio-vgcolors.webp"
+---
+
+This is the site you're reading right now, and it's built as two layers stacked on top of each other. The layer you're guaranteed to get is a deliberately old-school, nerdy static portfolio: Astro pages, typed MDX content collections, handwritten CSS with no UI framework underneath it. Turn JavaScript off entirely and nothing breaks — every page, nav link, and project write-up still works exactly the same.
+
+Layered on top is **ngxos** — a client-side runtime whose entire job is to haunt the base site once you power it on. Hit `Ctrl+\`` (or click the shield in the footer) and the site turns into a terminal-driven, keyboard-navigable shell: a zsh-flavored terminal with real tab-completion, command history, and its own small VFS of real routes; Vimium-style `j`/`k`/`gg`/`G` section navigation and `f` link-hints; four full themes you can switch live from the terminal or a swatch dock; and a traveling neon "activation frame" that quietly orbits every real content card, brightening on whichever section currently has keyboard focus.
+
+The two halves only ever talk through one deliberately narrow contract: a handful of `data-ngx-*` attributes (`section`/`label`/`route`, `frame`, `focused`) plus `data-ngxos` + `data-theme` on `<html>` and a single `content-swapped` event. Astro authors the hooks; ngxos only ever reads and reacts to them — no DOM guessing, no fragile selectors reaching into page internals. That boundary is strict on purpose: keep it clean, and ngxos stays portable to a future rebuild of this site, or someone else's, without a rewrite.
+
+Stack is Bun + Astro for the site, Svelte 5 (runes, not classic stores) for the runtime, TypeScript throughout. All ngxos state — power, theme, terminal position/size, history — persists across ordinary full-page navigations via localStorage and sessionStorage, with a pre-paint inline script so there's no flash of the wrong theme on reload. v1 is live and done. Next up: wiring a raw-input mode into the terminal so [CMD Hero Fights](/portfolio/cmd-hero-fights), my other project living on this site, can eventually run inside it as a hidden easter egg.

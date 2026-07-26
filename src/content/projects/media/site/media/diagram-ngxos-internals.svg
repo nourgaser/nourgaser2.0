@@ -1,0 +1,100 @@
+<svg width="1200" height="750" viewBox="0 0 1200 750" xmlns="http://www.w3.org/2000/svg" font-family="'Ubuntu Mono', monospace">
+  <defs>
+    <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <marker id="arrC" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#22d3e3"/>
+    </marker>
+    <marker id="arrM" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c4537c"/>
+    </marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a8f9a"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="750" fill="#0a0b12"/>
+
+  <text x="60" y="54" font-size="26" font-weight="700" fill="#f2f3f6">inside the ngxos runtime</text>
+  <text x="60" y="82" font-size="14" fill="#8a8f9a">Kernel boots once per page load; all state lives in one runes store; persistence rehydrates it on the next MPA navigation.</text>
+
+  <!-- Kernel -->
+  <rect x="420" y="118" width="360" height="64" rx="14" fill="#15132a" stroke="#22d3e3" stroke-width="2" filter="url(#glow2)"/>
+  <text x="600" y="144" font-size="16" font-weight="700" fill="#e7fbff" text-anchor="middle">kernel.ts — boot()</text>
+  <text x="600" y="164" font-size="13" fill="#a9b3c9" text-anchor="middle">registers commands, routes, sections</text>
+
+  <line x1="600" y1="182" x2="600" y2="216" stroke="#22d3e3" stroke-width="2" marker-end="url(#arrC)"/>
+
+  <!-- Core hub -->
+  <rect x="270" y="218" width="660" height="106" rx="16" fill="#141225" stroke="#7c5fd0" stroke-width="2" filter="url(#glow2)"/>
+  <text x="600" y="248" font-size="17" font-weight="700" fill="#22d3e3" text-anchor="middle">core — runes store · event bus · registry</text>
+  <text x="600" y="274" font-size="13" fill="#b9a8e0" text-anchor="middle">poweredOn · terminalOpen · currentTheme · focusedSection · currentRoute</text>
+  <text x="600" y="298" font-size="13" fill="#b9a8e0" text-anchor="middle">events: power-on/off · route-change · section-focus · theme-change</text>
+
+  <!-- connectors hub -> 4 subsystem boxes -->
+  <line x1="195" y1="324" x2="195" y2="356" stroke="#7c5fd0" stroke-width="2" marker-end="url(#arrC)"/>
+  <line x1="465" y1="324" x2="465" y2="356" stroke="#7c5fd0" stroke-width="2" marker-end="url(#arrC)"/>
+  <line x1="735" y1="324" x2="735" y2="356" stroke="#7c5fd0" stroke-width="2" marker-end="url(#arrC)"/>
+  <line x1="1005" y1="324" x2="1005" y2="356" stroke="#7c5fd0" stroke-width="2" marker-end="url(#arrC)"/>
+
+  <!-- Subsystem row -->
+  <!-- 1: Command registry + Shell -->
+  <rect x="70" y="358" width="250" height="150" rx="14" fill="#171531" stroke="#22d3e3" stroke-width="1.5"/>
+  <text x="90" y="388" font-size="14.5" font-weight="700" fill="#e7fbff">Commands + Shell</text>
+  <text x="90" y="414" font-size="13" fill="#a9b3c9">TerminalWindow.svelte</text>
+  <text x="90" y="436" font-size="13" fill="#a9b3c9">zsh-like Tab completion</text>
+  <text x="90" y="458" font-size="13" fill="#a9b3c9">TerminalIO program iface</text>
+  <text x="90" y="480" font-size="13" fill="#a9b3c9">help · ls · cd · theme …</text>
+
+  <!-- 2: Navigation -->
+  <rect x="340" y="358" width="250" height="150" rx="14" fill="#171531" stroke="#22d3e3" stroke-width="1.5"/>
+  <text x="360" y="388" font-size="14.5" font-weight="700" fill="#e7fbff">Navigation (Vimium)</text>
+  <text x="360" y="414" font-size="13" fill="#a9b3c9">keybinds.ts dispatcher</text>
+  <text x="360" y="436" font-size="13" fill="#a9b3c9">hints.ts + HintOverlay</text>
+  <text x="360" y="458" font-size="13" fill="#a9b3c9">j / k / gg / G traversal</text>
+  <text x="360" y="480" font-size="13" fill="#a9b3c9">→ data-ngx-focused</text>
+
+  <!-- 3: Effects -->
+  <rect x="610" y="358" width="250" height="150" rx="14" fill="#171531" stroke="#7c5fd0" stroke-width="1.5"/>
+  <text x="630" y="388" font-size="14.5" font-weight="700" fill="#e7fbff">Effects</text>
+  <text x="630" y="414" font-size="13" fill="#a9b3c9">theme.ts (4 themes)</text>
+  <text x="630" y="436" font-size="13" fill="#a9b3c9">power-state.ts</text>
+  <text x="630" y="458" font-size="13" fill="#a9b3c9">neon-outline.ts (frames)</text>
+  <text x="630" y="480" font-size="13" fill="#a9b3c9">reduced-motion guard</text>
+
+  <!-- 4: Persistence -->
+  <rect x="880" y="358" width="250" height="150" rx="14" fill="#171531" stroke="#c4537c" stroke-width="1.5"/>
+  <text x="900" y="388" font-size="14.5" font-weight="700" fill="#e7fbff">Persistence</text>
+  <text x="900" y="412" font-size="13" fill="#a9b3c9">localStorage:</text>
+  <text x="900" y="432" font-size="13" fill="#a9b3c9">power, theme, terminal,</text>
+  <text x="900" y="452" font-size="13" fill="#a9b3c9">and history</text>
+  <text x="900" y="472" font-size="13" fill="#a9b3c9">sessionStorage:</text>
+  <text x="900" y="492" font-size="13" fill="#a9b3c9">scrollback (200 cap)</text>
+
+  <!-- connectors subsystems -> components -->
+  <line x1="195" y1="508" x2="195" y2="538" stroke="#c4537c" stroke-width="2" marker-end="url(#arrM)"/>
+  <line x1="465" y1="508" x2="465" y2="538" stroke="#c4537c" stroke-width="2" marker-end="url(#arrM)"/>
+  <line x1="735" y1="508" x2="735" y2="538" stroke="#c4537c" stroke-width="2" marker-end="url(#arrM)"/>
+  <line x1="1005" y1="508" x2="1005" y2="538" stroke="#c4537c" stroke-width="2" marker-end="url(#arrM)"/>
+
+  <!-- Svelte components row -->
+  <rect x="70" y="540" width="1060" height="104" rx="16" fill="#15132a" stroke="#c4537c" stroke-width="2" filter="url(#glow2)"/>
+  <text x="600" y="568" font-size="16" font-weight="700" fill="#f0a9c4" text-anchor="middle">Svelte components — consume the store, render the overlay</text>
+  <text x="195" y="600" font-size="13.5" fill="#e7fbff" text-anchor="middle">TerminalWindow.svelte</text>
+  <text x="465" y="600" font-size="13.5" fill="#e7fbff" text-anchor="middle">HintOverlay.svelte</text>
+  <text x="735" y="600" font-size="13.5" fill="#e7fbff" text-anchor="middle">ThemeDock.svelte</text>
+  <text x="1005" y="600" font-size="13.5" fill="#e7fbff" text-anchor="middle">PowerEffects.svelte</text>
+  <text x="600" y="624" font-size="13" fill="#9aa0aa" text-anchor="middle">reactive on the runes store — re-render on any state change, no manual wiring</text>
+
+  <!-- persistence rehydrate loop-back, right margin -->
+  <path d="M 1130 400 C 1178 400, 1178 150, 800 150" fill="none" stroke="#8a8f9a" stroke-width="1.5" stroke-dasharray="5 5" marker-end="url(#arrG)"/>
+  <text x="1152" y="280" font-size="13" fill="#8a8f9a" text-anchor="middle" transform="rotate(-90 1172 280)">rehydrates kernel on next MPA reload</text>
+
+  <!-- footer -->
+  <text x="600" y="694" font-size="13" fill="#6a6f7a" text-anchor="middle">All boxes here are ngxos-side (client, Svelte 5 runes). The only DOM contact is the data-ngx-* hook contract — see diagram 1.</text>
+</svg>

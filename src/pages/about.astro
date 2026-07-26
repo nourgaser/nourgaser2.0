@@ -38,7 +38,7 @@ import { aboutPageContent } from '../data/pages/about';
 				>
 					<div class="about-section-inner">
 						<h2>{section.title}</h2>
-						<div class={`about-box ${section.boxClassName}`}>
+						<div class={`about-box ${section.boxClassName}`} data-ngx-frame>
 							<div class="about-box-content">
 								{section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
 								{

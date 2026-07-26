@@ -34,6 +34,7 @@ const initialGamesState = parseGamesListState(Astro.url.searchParams, games);
             data-ngx-section={card.sectionId}
             data-ngx-label={card.sectionLabel}
             data-ngx-focusable="true"
+            data-ngx-frame
           >
             <h2 id={card.headingId}>{card.title}</h2>
             <p>{card.description}</p>

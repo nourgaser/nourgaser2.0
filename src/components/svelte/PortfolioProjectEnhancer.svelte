@@ -214,6 +214,7 @@
         history.replaceState({ portfolioPath: targetUrl.pathname }, '', targetUrl.pathname);
       }
 
+      document.dispatchEvent(new CustomEvent('ngxos:content-swapped'));
     } catch (error) {
       if (!controller.signal.aborted) {
         window.location.assign(targetUrl.toString());
@@ -299,6 +300,10 @@
     };
 
     const handleKeydown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented) {
+        return;
+      }
+
       if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
         return;
       }

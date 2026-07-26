@@ -26,7 +26,7 @@ import { businessPageContent } from '../data/pages/business';
 
     <section id="business-profile" class="business-shell" data-ngx-section="business-summary" data-ngx-label="Business Summary">
       <h2 class="business-section-title">{businessPageContent.sections.summaryTitle}</h2>
-      <article class="business-panel">
+      <article class="business-panel" data-ngx-frame>
         <p class="business-headline">{professionalSummary.blurb}</p>
         <p>{professionalSummary.businessDescription}</p>
       </article>
@@ -37,7 +37,7 @@ import { businessPageContent } from '../data/pages/business';
       <div class="business-grid">
         {
           coreExpertise.map((area) => (
-            <article class="business-panel">
+            <article class="business-panel" data-ngx-frame>
               <h3>{area.title}</h3>
               <p>{area.description}</p>
             </article>
@@ -52,7 +52,7 @@ import { businessPageContent } from '../data/pages/business';
         <div class="business-list">
           {
             experience.map((entry) => (
-              <article class="business-panel">
+              <article class="business-panel" data-ngx-frame>
                 <h3>{entry.role}</h3>
                 <p>{entry.organization}</p>
                 <p class="business-meta">{entry.period}</p>
@@ -70,7 +70,7 @@ import { businessPageContent } from '../data/pages/business';
         <div class="business-list">
           {
             education.map((entry) => (
-              <article class="business-panel">
+              <article class="business-panel" data-ngx-frame>
                 <h3>{entry.degree}</h3>
                 <p>{entry.institution}</p>
                 <p class="business-meta">{entry.period}</p>
@@ -83,7 +83,7 @@ import { businessPageContent } from '../data/pages/business';
     </section>
 
     <section class="business-shell" data-ngx-section="work-with-me" data-ngx-label="Work With Me">
-      <article class="business-panel business-cta">
+      <article class="business-panel business-cta" data-ngx-frame>
         <div>
           <h2 class="business-section-title">{businessPageContent.sections.workWithMeTitle}</h2>
           <p>{businessPageContent.workWithMe.description}</p>

@@ -53,93 +53,198 @@
   /* Glow effects */
   --glow-accent:            none;
   --glow-focus:             none;
+
+  /* ngxos neofetch swatches — sampled from docs/design/terminals/default.png    */
+  /* (only 5 of 6 tiles are visually distinct; swatch-5 blends into bg-terminal) */
+  --swatch-0:               #fcdeb6;
+  --swatch-1:               #343434;
+  --swatch-2:               #292929;
+  --swatch-3:               #464646;
+  --swatch-4:               #ffffff;
+  --swatch-5:               #1e1e1e;
 }
 
 /* ------------------------------------------------------------------ */
-/* vgcolors theme — neon cyan + purple terminal                        */
-/* Confirmed from Figma Desktop-2 frame                                */
+/* default theme, powered ON — warm amber accents surface only once    */
+/* ngxos is active. Sampled from docs/design/terminals/default.png &   */
+/* docs/design/theme/default.png. Off-state (block above) is untouched */
+/* so the live production look never changes.                          */
+/* ------------------------------------------------------------------ */
+[data-ngxos="on"][data-theme="default"] {
+  --text-accent:            #fcdeb6;
+  --text-accent-2:          #d7be9c;
+
+  /* ngxos activation frame — warm amber, subtle/low intensity */
+  --ngx-frame-a:            #fcdeb6;
+  --ngx-frame-b:            #caa06a;
+  --ngx-frame-glow:         color-mix(in srgb, #fcdeb6 35%, transparent);
+}
+
+/* ------------------------------------------------------------------ */
+/* vgcolors theme — neon cyan + magenta terminal, dark violet body     */
+/* Sampled from docs/design/terminals/vgcolors.png & theme/vgcolors.png */
 /* ------------------------------------------------------------------ */
 [data-theme="vgcolors"] {
   /* Backgrounds */
   --bg-page:                #0a0b14;
   --bg-nav:                 rgba(0,0,0,0.35);
-  --bg-terminal:            #1e1e1e;
-  --bg-terminal-header:     #292929;
-  --bg-terminal-statusbar:  #292929;
-  --bg-button:              #343434;
+  --bg-terminal:            #1f1b36;
+  --bg-terminal-header:     #1b1638;
+  --bg-terminal-statusbar:  #1f1b36;
+  --bg-button:              #322d50;
+  --surface-panel:          rgba(18, 12, 32, 0.72);
 
   /* Borders */
-  --border-button:          #1b1b1b;
-  --border-terminal:        color-mix(in srgb, #9a9a9a 24%, transparent);
+  --border-button:          color-mix(in srgb, #ffffff 70%, transparent);
+  --border-terminal:        color-mix(in srgb, #22d3e3 40%, transparent);
+  --border-muted-strong:    rgba(90, 190, 210, 0.45);
+  --hero-edge-border:       rgba(52, 196, 215, 0.55);
+  --hero-strip-border:      rgba(52, 196, 215, 0.35);
 
   /* Text */
   --text-primary:           #ffffff;
-  --text-accent:            #a6a6a6;
-  --text-accent-2:          #8e8e8e;
-  --text-dimmed:            #464646;
+  --text-accent:            #22d3e3;
+  --text-accent-2:          #c4537c;
+  --text-dimmed:            #47435e;
+  --button-muted-bg:        #4a4570;
+  --button-muted-border:    #7a74a8;
+  --button-muted-hover:     #5c5688;
+
+  /* Portfolio showcase */
+  --portfolio-gallery-bg:         #14121f;
+  --portfolio-gallery-border:     #3a4a5c;
+  --portfolio-gallery-tab-active: #241f3f;
+  --portfolio-gallery-tab-muted:  #1f1b36;
 
   /* Shadows */
   --shadow-terminal:        0px 0px 15px 5px rgba(0, 0, 0, 0.25);
 
   /* Glow effects */
-  --glow-accent:            none;
-  --glow-focus:             none;
+  --glow-accent:            0 0 12px color-mix(in srgb, #22d3e3 45%, transparent);
+  --glow-focus:             0 0 8px color-mix(in srgb, #22d3e3 55%, transparent);
+
+  /* ngxos neofetch swatches — sampled from docs/design/terminals/vgcolors.png   */
+  /* (only 5 of 6 tiles are visually distinct; swatch-5 blends into bg-terminal) */
+  --swatch-0:               #ffffff;
+  --swatch-1:               #22d3e3;
+  --swatch-2:               #5f4fb4;
+  --swatch-3:               #c4537c;
+  --swatch-4:               #322d50;
+  --swatch-5:               #1f1b36;
+
+  /* ngxos activation frame — cyan / violet / magenta mixture */
+  --ngx-frame-a:            #22d3e3;
+  --ngx-frame-b:            #7c5fd0;
+  --ngx-frame-c:            #c4537c;
+  --ngx-frame-glow:         color-mix(in srgb, #22d3e3 40%, transparent);
 }
 
 /* ------------------------------------------------------------------ */
-/* ubuntu theme — ubuntu orange accent                                 */
-/* Reference: docs/design/theme/ubuntu.png                            */
+/* ubuntu theme — red terminal text + Ubuntu-orange highlight,         */
+/* aubergine window chrome. Sampled from docs/design/terminals/        */
+/* ubuntu.png (text/swatches are pure red; the orange comes from the   */
+/* "esc" indicator) & docs/design/theme/ubuntu.png (panel border).     */
 /* ------------------------------------------------------------------ */
 [data-theme="ubuntu"] {
   --bg-page:                #1a0f0a;
   --bg-nav:                 rgba(0,0,0,0.35);
-  --bg-terminal:            #1e1e1e;
+  --bg-terminal:            #310924;
   --bg-terminal-header:     #292929;
-  --bg-terminal-statusbar:  #292929;
+  --bg-terminal-statusbar:  #310924;
   --bg-button:              #343434;
+  --surface-panel:          rgba(24, 8, 20, 0.72);
 
   --border-button:          #1b1b1b;
-  --border-terminal:        color-mix(in srgb, #9a9a9a 24%, transparent);
+  --border-terminal:        #5e2750;
+  --border-muted-strong:    rgba(160, 100, 140, 0.5);
+  --hero-edge-border:       rgba(94, 39, 80, 0.55);
+  --hero-strip-border:      rgba(94, 39, 80, 0.35);
 
   --text-primary:           #ffffff;
-  --text-accent:            #a6a6a6;
-  --text-accent-2:          #8e8e8e;
-  --text-dimmed:            #464646;
+  --text-accent:            #d40000;
+  --text-accent-2:          #dd4814;
+  --text-dimmed:            #59314c;
+  --button-muted-bg:        #5a3f52;
+  --button-muted-border:    #8a6478;
+  --button-muted-hover:     #6c4a62;
+
+  --portfolio-gallery-bg:         #170a12;
+  --portfolio-gallery-border:     #5e2750;
+  --portfolio-gallery-tab-active: #292929;
+  --portfolio-gallery-tab-muted:  #310924;
 
   --shadow-terminal:        0px 0px 15px 5px rgba(0, 0, 0, 0.25);
-  --glow-accent:            none;
-  --glow-focus:             none;
+  --glow-accent:            0 0 10px color-mix(in srgb, #dd4814 32%, transparent);
+  --glow-focus:             0 0 6px color-mix(in srgb, #dd4814 45%, transparent);
+
+  /* ngxos neofetch swatches — sampled from docs/design/terminals/ubuntu.png */
+  /* (all 6 tiles are visually distinct here, unlike default/vgcolors)      */
+  --swatch-0:               #d40000;
+  --swatch-1:               #74a91f;
+  --swatch-2:               #6684c0;
+  --swatch-3:               #292929;
+  --swatch-4:               #464646;
+  --swatch-5:               #ffffff;
+
+  /* ngxos activation frame — orange with red */
+  --ngx-frame-a:            #dd4814;
+  --ngx-frame-b:            #d40000;
+  --ngx-frame-glow:         color-mix(in srgb, #dd4814 38%, transparent);
 }
 
 /* ------------------------------------------------------------------ */
-/* fedora theme — fedora blue accent                                   */
-/* Reference: docs/design/theme/fedora.png                            */
+/* fedora theme — fedora blue accent, otherwise as neutral/restrained  */
+/* as default. Sampled from docs/design/terminals/fedora.png &         */
+/* docs/design/theme/fedora.png (panel border stays plain gray, no     */
+/* colored glow was visible in the mockups).                           */
 /* ------------------------------------------------------------------ */
 [data-theme="fedora"] {
   --bg-page:                #0a0e1a;
   --bg-nav:                 rgba(0,0,0,0.35);
   --bg-terminal:            #1e1e1e;
   --bg-terminal-header:     #292929;
-  --bg-terminal-statusbar:  #292929;
+  --bg-terminal-statusbar:  #1e1e1e;
   --bg-button:              #343434;
+  --surface-panel:          rgba(8, 14, 26, 0.72);
 
   --border-button:          #1b1b1b;
-  --border-terminal:        color-mix(in srgb, #9a9a9a 24%, transparent);
+  --border-terminal:        color-mix(in srgb, #5a5a5a 50%, transparent);
+  --border-muted-strong:    rgba(130, 130, 130, 0.52);
+  --hero-edge-border:       rgba(146, 146, 146, 0.34);
+  --hero-strip-border:      rgba(146, 146, 146, 0.24);
 
   --text-primary:           #ffffff;
-  --text-accent:            #a6a6a6;
-  --text-accent-2:          #8e8e8e;
+  --text-accent:            #2a7adc;
+  --text-accent-2:          #12488b;
   --text-dimmed:            #464646;
+  --button-muted-bg:        #4c4c4c;
+  --button-muted-border:    #707070;
+  --button-muted-hover:     #5a5a5a;
+
+  --portfolio-gallery-bg:         #151714;
+  --portfolio-gallery-border:     #343434;
+  --portfolio-gallery-tab-active: #292929;
+  --portfolio-gallery-tab-muted:  #1e1e1e;
 
   --shadow-terminal:        0px 0px 15px 5px rgba(0, 0, 0, 0.25);
   --glow-accent:            none;
   --glow-focus:             none;
+
+  /* ngxos neofetch swatches — sampled from docs/design/terminals/fedora.png */
+  /* (all 6 tiles are visually distinct here, unlike default/vgcolors)      */
+  --swatch-0:               #2a7adc;
+  --swatch-1:               #12488b;
+  --swatch-2:               #343434;
+  --swatch-3:               #292929;
+  --swatch-4:               #464646;
+  --swatch-5:               #ffffff;
+
+  /* ngxos activation frame — blue */
+  --ngx-frame-a:            #2a7adc;
+  --ngx-frame-b:            #12488b;
+  --ngx-frame-glow:         color-mix(in srgb, #2a7adc 38%, transparent);
 }
 
 /* ------------------------------------------------------------------ */
-/* ngxos power state — CSS-driven activation effects                   */
+/* ngxos power state — activation-visual rules live in ngxos.css        */
 /* ------------------------------------------------------------------ */
-[data-ngxos="on"] [data-ngx-focusable="true"] {
-  outline: 1px solid color-mix(in srgb, var(--text-accent) 60%, transparent);
-  box-shadow: var(--glow-focus, none);
-}

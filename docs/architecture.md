@@ -317,17 +317,38 @@ Example:
 >
 ```
 
-Common attributes include:
-
-* `data-ngx-section`
-* `data-ngx-label`
-* `data-ngx-focusable`
-* `data-ngx-route`
-* `data-ngx-kind`
-* `data-ngx-command`
-* `data-ngx-theme-scope`
-
 These attributes allow ngxos to interact with SSR content without relying on fragile DOM inference.
+
+### Canonical hook contract
+
+| Attribute | Written by | Meaning |
+| --- | --- | --- |
+| `data-ngx-section` | Astro (authored) | Stable id for a section/panel; read by ngxos for navigation, focus, and the activation frame. |
+| `data-ngx-label` | Astro (authored) | Human-readable label for the section (terminal nav, `ls`, hints). |
+| `data-ngx-route` | Astro (authored) | Canonical route this section belongs to, for the terminal's route/nav commands. |
+| `data-ngx-focusable="false"` | Astro (authored) | Opt out of keyboard-navigation traversal. |
+| `data-ngx-frame` | Astro (authored) | Opt **in** to the animated neon activation frame (see `src/styles/ngxos.css`); presence = frame it. Authored directly on the exact leaf-level bordered content box (a hobby card, an about "box", a business panel, a portfolio card, a project header, a home site-map tile). Never on page-level `<main>` wrappers, `[data-ngx-section]` group containers, `PageHero`'s banner section, or the site header/footer. |
+| `data-ngx-hint="false"` | Astro (authored) | Opt out of hint-mode collection. |
+| `data-ngx-command="power"` | Astro (authored) | Marks the power toggle control (the footer shield button). |
+| `data-ngx-ui` | Svelte/ngxos (authored on ngxos's own chrome) | Identifies ngxos's own UI (e.g. the terminal), so hint collection and section registries skip it. |
+| `data-ngx-slot="theme-dock"` | Astro (authored) | Empty placeholder element a layout can include to receive an ngxos widget inline (the mobile theme dock relocates into it on mount via `appendChild`; if absent, the widget falls back to its standalone fixed position). |
+| `data-ngx-focused="true"` | ngxos (written at runtime) | Set on the currently focused section by the keyboard-navigation system; drives the brighter/faster activation frame. |
+| `data-ngxos` + `data-theme` on `<html>` | ngxos (written at runtime) | Power state (`"on"`) and active theme (`default`, `vgcolors`, `ubuntu`, `fedora`). |
+
+Any script that replaces page content in place (e.g. an SPA-style
+enhancer) must dispatch a `ngxos:content-swapped` document event afterward
+so ngxos can re-scan for hooks — the portfolio project-detail enhancer
+(`PortfolioProjectEnhancer.svelte`) does this today.
+
+Additional notes:
+
+* The terminal's nav tree only ever lists real routes (`data-ngx-route`
+  values from authored pages) — no synthetic/virtual entries.
+* Client-side runtime state is modeled with Svelte 5 runes (not classic
+  Svelte stores).
+* Activation visuals, in one line: every `[data-ngx-frame]` box gets a
+  subtle traveling neon frame; the focused panel's box(es) are brighter and faster;
+  under `prefers-reduced-motion` the frame is always static.
 
 ---
 
@@ -561,17 +582,22 @@ Includes:
 * neon/glow colors
 * panel colors
 
-Example:
+Example (shipped names, from `src/styles/themes.css`):
 
 ```css
-:root {
-  --bg-0: #0a0b14;
-  --bg-1: #101427;
-  --text-0: #f5f7ff;
-  --text-1: #b8c2ff;
-  --accent-0: #58e1ff;
-  --accent-1: #b06cff;
-  --glow-0: 0 0 24px color-mix(in srgb, var(--accent-0) 45%, transparent);
+[data-theme="vgcolors"] {
+  --bg-page:      #0a0b14;
+  --bg-terminal:  #1f1b36;
+  --text-primary: #ffffff;
+  --text-accent:  #22d3e3;
+  --glow-accent:  0 0 12px color-mix(in srgb, #22d3e3 45%, transparent);
+  --glow-focus:   0 0 8px color-mix(in srgb, #22d3e3 55%, transparent);
+
+  /* ngxos activation-frame stops (src/styles/ngxos.css) */
+  --ngx-frame-a:    #22d3e3;
+  --ngx-frame-b:    #7c5fd0;
+  --ngx-frame-c:    #c4537c;
+  --ngx-frame-glow: color-mix(in srgb, #22d3e3 40%, transparent);
 }
 ```
 
@@ -587,14 +613,65 @@ Example:
 <html data-ngxos="on">
 ```
 
-CSS reacts to activation:
+CSS reacts to activation. All powered-on visual rules live in
+`src/styles/ngxos.css` (imported once, after `themes.css`, in
+`MainLayout.astro`):
 
 ```css
-[data-ngxos="on"] [data-ngx-focusable="true"] {
-  outline: 1px solid color-mix(in srgb, var(--accent-0) 60%, transparent);
-  box-shadow: var(--glow-0);
+[data-ngxos="on"] [data-ngx-frame],
+[data-ngxos="on"] .ngxos-terminal {
+  position: relative;
+}
+
+[data-ngxos="on"] [data-ngx-frame] {
+  border-color: transparent; /* the ring replaces the static border */
+}
+
+[data-ngxos="on"] [data-ngx-frame]::after,
+[data-ngxos="on"] .ngxos-terminal::after {
+  background: conic-gradient(from var(--ngx-angle, 0deg), /* ... */);
+  animation: ngx-frame-spin var(--ngx-frame-duration, 10s) linear infinite;
+}
+
+[data-ngxos="on"] [data-ngx-focused="true"] [data-ngx-frame]::after,
+[data-ngxos="on"] [data-ngx-focused="true"][data-ngx-frame]::after {
+  --ngx-frame-opacity: 0.9;
+  --ngx-frame-duration: 5s;
 }
 ```
+
+`data-ngx-frame` is an **opt-in** hook (presence = frame it), authored
+directly on the exact leaf-level bordered content box — a hobby card, an
+about "box", a business panel, a portfolio card, a project header, a home
+site-map tile. It is never placed on semantic wrappers: page `<main>`s,
+`[data-ngx-section]` group/container elements, `PageHero`'s banner
+section, or the site header/footer. Where a section container happens to
+have several bordered children (e.g. business's "Core Expertise" grid,
+the portfolio category grid), the frame goes on each child card, not the
+enclosing section — one frame level only, the innermost bordered one.
+Framed boxes and the terminal window get a slow, animated "traveling neon
+border" — a bright segment orbiting a faint ring over the box's own
+former border line, built from a rotating `conic-gradient` masked down to
+a thin ring (`mask-composite: exclude`) sitting at the border's own
+position; the box's static `border-color` is dimmed to transparent so the
+ring **is** the border while powered on, not a second line next to it.
+All framed boxes stay subtly ringed to give the page a sense of life; the
+box(es) inside the currently `data-ngx-focused="true"` section are
+brighter and revolve faster, and the terminal sits in between. Frame
+colors come from per-theme `--ngx-frame-a/-b/-c` + `--ngx-frame-glow`
+variables. `@property --ngx-angle` is registered behind an
+`@supports at-rule(@property)` guard so the angle animates smoothly where
+supported and simply renders as a static faint ring everywhere else.
+Under `prefers-reduced-motion: reduce`, the rotation is disabled
+everywhere and only the static ring/glow remains — no exceptions.
+
+An earlier version of this rule applied a single outline/box-shadow to
+*every* `[data-ngx-focusable="true"]` element (later, every
+`[data-ngx-section]` unless opted out), including invisible full-width
+wrappers (page `<main>`s, hero strips) and non-bordered semantic section
+containers — both produced stray bare edges floating in empty space. The
+model was flipped to the current opt-in `[data-ngx-frame]` hook so the
+frame only ever lands exactly on real bordered content boxes.
 
 Visual effects should primarily rely on CSS rather than JavaScript mutation.
 
@@ -742,7 +819,7 @@ Naming conventions prioritize readability and semantics.
 
 ## Build Phases
 
-## Phase 1 — Foundation
+## Phase 1 — Foundation ✅ done
 
 * homepage
 * about page

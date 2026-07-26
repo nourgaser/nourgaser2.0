@@ -1,13 +1,16 @@
 ---
 import { getImage } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import type { ImageMetadata } from 'astro';
 
 import Logo from '../assets/icons/logo.svg';
 import NgxosShield from '../assets/icons/ngxos-shield.svg';
+import NgxosRoot from '../components/svelte/ngxos/NgxosRoot.svelte';
 
 import '../styles/reset.css';
 import '../styles/tokens.css';
 import '../styles/themes.css';
+import '../styles/ngxos.css';
 import '../styles/global.css';
 import '../styles/animations.css';
 import { heroImages } from '../data/image-assets';
@@ -33,6 +36,10 @@ const siteUrl = Astro.site ?? new URL(Astro.url.origin);
 const pageTitle = seoTitle ?? `${title} | nourgaser`;
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
 const robots = 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1';
+
+const currentPath = Astro.url.pathname;
+const isActiveNavLink = (href: string) =>
+  href === '/' ? currentPath === '/' : currentPath === href || currentPath.startsWith(`${href}/`);
 
 let ogImageUrl: string;
 
@@ -87,10 +94,22 @@ const structuredData = {
 };
 
 const currentYear = new Date().getFullYear();
+const projectSlugs = (await getCollection('projects')).map((project) => project.id);
 ---
 
 <html lang="en" data-theme="default">
   <head>
+    <script is:inline>
+      try {
+        const power = localStorage.getItem('ngx.power');
+        const theme = localStorage.getItem('ngx.theme');
+        const validThemes = ['default', 'vgcolors', 'ubuntu', 'fedora'];
+        if (power === 'on') {
+          document.documentElement.setAttribute('data-ngxos', 'on');
+          document.documentElement.setAttribute('data-theme', validThemes.includes(theme) ? theme : 'default');
+        }
+      } catch {}
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
@@ -151,7 +170,7 @@ const currentYear = new Date().getFullYear();
         <div class="site-nav-links site-nav-links-desktop">
           {
             siteShellContent.navLinks.map((link) => (
-              <a href={link.href}>{link.label}</a>
+              <a href={link.href} aria-current={isActiveNavLink(link.href) ? 'page' : undefined}>{link.label}</a>
             ))
           }
         </div>
@@ -164,7 +183,7 @@ const currentYear = new Date().getFullYear();
           <div class="site-nav-links site-nav-links-mobile" id="primary-nav-links-mobile">
             {
               siteShellContent.navLinks.map((link) => (
-                <a href={link.href}>{link.label}</a>
+                <a href={link.href} aria-current={isActiveNavLink(link.href) ? 'page' : undefined}>{link.label}</a>
               ))
             }
           </div>
@@ -178,9 +197,12 @@ const currentYear = new Date().getFullYear();
       <div class="site-footer-inner">
         <div class="site-footer-center">
           <p class="site-footer-powered">
-            <NgxosShield aria-hidden="true" focusable="false" />
+            <button type="button" data-ngx-command="power" aria-label="Toggle ngxos" class="ngx-power-button">
+              <NgxosShield aria-hidden="true" focusable="false" />
+            </button>
             <span>{siteShellContent.footer.poweredBy}</span>
           </p>
+          <div data-ngx-slot="theme-dock"></div>
           <p class="site-footer-credit">{siteShellContent.footer.credit}</p>
           <p class="site-footer-copyright">&#169; {currentYear} {siteShellContent.footer.copyrightOwner}. All rights reserved.</p>
         </div>
@@ -246,5 +268,7 @@ const currentYear = new Date().getFullYear();
         });
       }
     </script>
+
+    <NgxosRoot client:idle projectSlugs={projectSlugs} />
   </body>
 </html>

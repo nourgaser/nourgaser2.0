@@ -88,12 +88,13 @@ const homeSections = [
                   class="home-link-card home-link-card--home"
                   style={`--home-link-bg-image: url(${heroImages.sword.src});`}
                   aria-current="page"
+                  data-ngx-frame
                 >
                   <span class="home-link-title">{section.title}</span>
                   <span class="home-link-description">{section.description}</span>
                 </div>
               ) : (
-                <a href={section.href} class="home-link-card">
+                <a href={section.href} class="home-link-card" data-ngx-frame>
                   <span class="home-link-title">{section.title}</span>
                   <span class="home-link-description">{section.description}</span>
                 </a>

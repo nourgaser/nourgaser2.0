@@ -1,0 +1,249 @@
+/* ------------------------------------------------------------------ */
+/* ngxos activation visuals                                            */
+/*                                                                      */
+/* Every rule in this file is scoped under [data-ngxos="on"] and only   */
+/* ever renders once the client-side ngxos runtime has powered on the   */
+/* page (see src/lib/ngxos + src/components/svelte/ngxos). The base     */
+/* site must look and behave identically without this file.             */
+/*                                                                      */
+/* Contents:                                                            */
+/*   1. Traveling neon frame (opt-in [data-ngx-frame] boxes + terminal) */
+/*   1b. Desynchronized orbits (nth-child --ngx-frame-delay cycle)      */
+/*   2. @property angle registration with a static-ring fallback        */
+/*   3. Reduced-motion handling                                         */
+/*   4. Footer power-button shield activation                          */
+/*                                                                      */
+/* Theme-specific colors (--ngx-frame-a/-b/-c, --ngx-frame-glow) live    */
+/* in themes.css, one set per data-theme block.                         */
+/* ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------ */
+/* 1. Traveling neon frame                                             */
+/*                                                                      */
+/* Targets (opt-in only — nothing else ever matches):                   */
+/*   - [data-ngx-frame] — authored directly on the exact leaf-level      */
+/*     bordered content box (a hobby card, an about "box", a business    */
+/*     panel, a portfolio card, a project header, a home site-map        */
+/*     tile...). Never on semantic wrappers like page <main>s,           */
+/*     [data-ngx-section] group containers, PageHero's banner, or the    */
+/*     site header/footer — see the per-page audit in docs/architecture */
+/*     .md's hook-contract table for the full opt-in list.               */
+/*   - the floating terminal window (.ngxos-terminal)                    */
+/*                                                                      */
+/* Technique: an inset ::after ring built from a rotating conic-        */
+/* gradient, masked down to a thin band with mask-composite: exclude,   */
+/* plus a soft box-shadow glow. The ring sits right where the box's own  */
+/* static border used to read (inset ~= -border-width), and that static  */
+/* border is dimmed to transparent while framed, so the animated ring    */
+/* IS the border while powered on — not a second line next to it. Base   */
+/* panels keep their own (sharp, radius 0) corners via                   */
+/* border-radius: inherit; the terminal's rounded corners are picked up  */
+/* the same way.                                                        */
+/* ------------------------------------------------------------------ */
+[data-ngxos="on"] [data-ngx-frame],
+[data-ngxos="on"] .ngxos-terminal {
+  position: relative;
+}
+
+/* The framed box's own static border is replaced by the animated ring.  */
+/* !important: this must reliably win over each page's own scoped        */
+/* .foo-card { border-color: ... } regardless of Astro's CSS-injection    */
+/* order relative to this globally-imported stylesheet.                  */
+[data-ngxos="on"] [data-ngx-frame] {
+  border-color: transparent !important;
+}
+
+/* Special case: an <iframe> can't host ::before/::after (replaced       */
+/* element), so data-ngx-frame sits on its wrapping <section> instead    */
+/* (resume.astro's #resume-preview) — dim the iframe's own border too.   */
+[data-ngxos="on"] [data-ngx-frame] iframe {
+  border-color: transparent !important;
+}
+
+[data-ngxos="on"] [data-ngx-frame]::after,
+[data-ngxos="on"] .ngxos-terminal::after {
+  content: "";
+  position: absolute;
+  /* Ring is 3px thick, centered exactly on the box's original 1px       */
+  /* border line: outer edge at -1.5px (1.5px outside the border-box),   */
+  /* padding (ring thickness) of 3px brings the inner edge to +1.5px.    */
+  inset: -1.5px;
+  z-index: 1;
+  padding: 3px;
+  border-radius: inherit;
+  pointer-events: none;
+
+  /* Bright comet segment spans ~56deg (roughly double the width of the  */
+  /* original ~28deg segment), centered on the same 32deg point, over a   */
+  /* faint 14%-opacity base ring for the remainder of the circle.        */
+  background: conic-gradient(
+    from var(--ngx-angle, 0deg),
+    color-mix(in srgb, var(--ngx-frame-b, var(--ngx-frame-a, #999)) 14%, transparent) 0deg,
+    color-mix(in srgb, var(--ngx-frame-a, #999) 85%, transparent) 4deg,
+    var(--ngx-frame-a, #999) 32deg,
+    color-mix(in srgb, var(--ngx-frame-c, var(--ngx-frame-b, #999)) 80%, transparent) 60deg,
+    color-mix(in srgb, var(--ngx-frame-b, var(--ngx-frame-a, #999)) 14%, transparent) 84deg,
+    color-mix(in srgb, var(--ngx-frame-b, var(--ngx-frame-a, #999)) 14%, transparent) 360deg
+  );
+
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+
+  opacity: var(--ngx-frame-opacity, 0.55);
+  box-shadow: 0 0 8px var(--ngx-frame-glow, transparent);
+
+  /* animation-name is set only inside the @property @supports block      */
+  /* below — that's what actually gates the spin (see section 2). These   */
+  /* longhand duration/delay sit here unconditionally since declaring     */
+  /* them does nothing without an animation-name; keeping them out of the */
+  /* @supports block means it only has to add one line to turn the spin   */
+  /* on. Both are PLAIN var() substitutions on purpose — no calc() and no */
+  /* multiplying two custom properties together to derive a <time>. An   */
+  /* earlier version computed delay as                                    */
+  /* calc(var(--ngx-frame-duration) * var(--ngx-frame-phase)) so it would  */
+  /* self-scale with duration; that froze the animation outright (stuck   */
+  /* on the ring's resting frame) everywhere the multiplier was anything   */
+  /* other than the trivial 0/1 case — e.g. every home "Website map" tile  */
+  /* except the one with phase 0. Root cause not fully isolated, but the   */
+  /* nested-var calc() was the one exotic construct correlated with every  */
+  /* failure, so it's gone in favor of these two flat, independently-set   */
+  /* literals (see the desync cycle at the end of this section).          */
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: var(--ngx-frame-duration, 10s);
+  animation-delay: var(--ngx-frame-delay, 0s);
+
+  transition: opacity var(--duration-slow, 400ms) var(--ease-default, ease-in-out);
+}
+
+/* Terminal window: always visible, sits between unfocused and focused   */
+/* panel intensity, and revolves at a middling pace.                     */
+[data-ngxos="on"] .ngxos-terminal::after {
+  --ngx-frame-opacity: 0.72;
+  --ngx-frame-duration: 7s;
+  box-shadow: 0 0 11px var(--ngx-frame-glow, transparent);
+}
+
+/* Focused section: brighter ring, stronger glow, faster revolution.     */
+/* data-ngx-focused is written by the ngxos keyboard-navigation system   */
+/* on the currently-focused [data-ngx-section]; the frame itself is      */
+/* usually a descendant card of that section (rarely the section itself, */
+/* e.g. hobby cards / the project header double as both), so match both. */
+[data-ngxos="on"] [data-ngx-focused="true"] [data-ngx-frame]::after,
+[data-ngxos="on"] [data-ngx-focused="true"][data-ngx-frame]::after {
+  --ngx-frame-opacity: 0.9;
+  --ngx-frame-duration: 5s;
+  box-shadow: 0 0 15px var(--ngx-frame-glow, transparent), 0 0 3px var(--ngx-frame-glow, transparent);
+}
+
+/* ------------------------------------------------------------------ */
+/* 1b. Desynchronized orbits                                            */
+/*                                                                      */
+/* Every framed card otherwise shares one clock and spins in lockstep.  */
+/* --ngx-frame-delay is a flat, literal negative <time> (never computed  */
+/* via calc()/multiplication — see the note above the animation-delay    */
+/* declaration for why) cycled across 6 variants using :nth-child,       */
+/* which — because it counts position among an element's own siblings — */
+/* naturally re-starts the cycle inside each grid/list (business panels, */
+/* portfolio cards, home site-map tiles, hobby cards), so neighboring    */
+/* cards land on different offsets without any JS. A negative delay      */
+/* starts the animation as if it were already that far into its cycle,   */
+/* which is what actually staggers the orbits; duration is intentionally */
+/* left alone (same for every variant in a given state) since varying it  */
+/* isn't needed to avoid lockstep once delay differs, and it's one less   */
+/* moving part. Declared as a plain custom-property override, so the      */
+/* animation-delay: var(--ngx-frame-delay, 0s) declaration above just     */
+/* picks it up — no need to repeat the animation declaration itself.      */
+/* ------------------------------------------------------------------ */
+[data-ngxos="on"] [data-ngx-frame]:nth-child(6n+1) { --ngx-frame-delay: -0s;    }
+[data-ngxos="on"] [data-ngx-frame]:nth-child(6n+2) { --ngx-frame-delay: -1.7s;  }
+[data-ngxos="on"] [data-ngx-frame]:nth-child(6n+3) { --ngx-frame-delay: -3.3s;  }
+[data-ngxos="on"] [data-ngx-frame]:nth-child(6n+4) { --ngx-frame-delay: -5s;    }
+[data-ngxos="on"] [data-ngx-frame]:nth-child(6n+5) { --ngx-frame-delay: -6.7s;  }
+[data-ngxos="on"] [data-ngx-frame]:nth-child(6n)   { --ngx-frame-delay: -8.3s;  }
+
+/* .about-box is always its parent's 2nd child (h2, then the box), so    */
+/* every instance would land on the same :nth-child variant above —      */
+/* cycle on the ancestor .about-section's position among its siblings    */
+/* instead, which does vary from one about-page section to the next.    */
+[data-ngxos="on"] .about-section:nth-of-type(6n+1) .about-box[data-ngx-frame] { --ngx-frame-delay: -0s;   }
+[data-ngxos="on"] .about-section:nth-of-type(6n+2) .about-box[data-ngx-frame] { --ngx-frame-delay: -1.7s; }
+[data-ngxos="on"] .about-section:nth-of-type(6n+3) .about-box[data-ngx-frame] { --ngx-frame-delay: -3.3s; }
+[data-ngxos="on"] .about-section:nth-of-type(6n+4) .about-box[data-ngx-frame] { --ngx-frame-delay: -5s;   }
+[data-ngxos="on"] .about-section:nth-of-type(6n+5) .about-box[data-ngx-frame] { --ngx-frame-delay: -6.7s; }
+[data-ngxos="on"] .about-section:nth-of-type(6n)   .about-box[data-ngx-frame] { --ngx-frame-delay: -8.3s; }
+
+/* ------------------------------------------------------------------ */
+/* 2. Angle animation                                                   */
+/*                                                                      */
+/* --ngx-angle only *animates* smoothly where @property is supported    */
+/* (registered as an <angle> so the browser can interpolate it). Where   */
+/* @property (or the at-rule() feature query itself) is unsupported,    */
+/* the @supports block below never applies, animation-name is never     */
+/* set, and every ring simply renders at its 0deg resting frame — a      */
+/* faint static ring, exactly the required graceful fallback.           */
+/* ------------------------------------------------------------------ */
+@keyframes ngx-frame-spin {
+  to {
+    --ngx-angle: 360deg;
+  }
+}
+
+@supports at-rule(@property) {
+  @property --ngx-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+  }
+
+  /* Longhand only — animation-duration/-delay/-timing-function/          */
+  /* -iteration-count are already declared unconditionally above; the     */
+  /* shorthand would reset all of those (in particular zeroing out the    */
+  /* desync delay) every time this block applies.                        */
+  [data-ngxos="on"] [data-ngx-frame]::after,
+  [data-ngxos="on"] .ngxos-terminal::after {
+    animation-name: ngx-frame-spin;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. Reduced motion — static faint ring/glow only, never a spin        */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  [data-ngxos="on"] [data-ngx-frame]::after,
+  [data-ngxos="on"] .ngxos-terminal::after {
+    animation: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* 4. Footer power-button shield — lights up once powered on            */
+/*                                                                      */
+/* Off-state chrome/hover cue live in global.css (byte-identical plain  */
+/* icon look until hovered). The shield's paths/rect carry a hardcoded  */
+/* fill/stroke="#8F8A8F" presentation attribute (see                    */
+/* src/assets/icons/ngxos-shield.svg) — a plain CSS fill/stroke         */
+/* declaration overrides that attribute, so no markup changes needed.   */
+/* ------------------------------------------------------------------ */
+[data-ngxos="on"] .ngx-power-button svg path {
+  fill: var(--text-accent);
+  transition: fill var(--duration-base, 200ms) var(--ease-default, ease-in-out);
+}
+
+[data-ngxos="on"] .ngx-power-button svg rect {
+  stroke: var(--text-accent);
+  transition: stroke var(--duration-base, 200ms) var(--ease-default, ease-in-out);
+}
+
+[data-ngxos="on"] .ngx-power-button svg {
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--text-accent) 65%, transparent));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-ngxos="on"] .ngx-power-button svg path,
+  [data-ngxos="on"] .ngx-power-button svg rect {
+    transition: none;
+  }
+}

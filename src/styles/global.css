@@ -101,6 +101,20 @@ body {
   color: color-mix(in srgb, var(--text-accent) 60%, transparent);
 }
 
+/* Current-page indicator — static, base-site styling (no ngxos glow),   */
+/* works identically with JS disabled and with ngxos powered off.        */
+.site-nav-links a[aria-current="page"] {
+  color: var(--text-accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 1px;
+}
+
+.site-nav-links a[aria-current="page"]:hover {
+  color: var(--text-accent);
+}
+
 .site-logo {
   height: 32px;
   width: auto;
@@ -147,6 +161,35 @@ main {
   width: 21px;
   height: 21px;
   flex: 0 0 auto;
+}
+
+/* Reset to zero chrome — off-state must be byte-identical to a plain    */
+/* decorative icon. Sizing/spacing stays governed by .site-footer-powered */
+/* svg above; this only strips button-y-ness and adds a faint hover cue. */
+.ngx-power-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  font: inherit;
+  line-height: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: filter var(--duration-base) var(--ease-default), transform var(--duration-base) var(--ease-default);
+}
+
+.ngx-power-button svg {
+  display: block;
+}
+
+.ngx-power-button:hover,
+.ngx-power-button:focus-visible {
+  filter: brightness(1.4);
+  transform: scale(1.08);
 }
 
 .site-footer-credit {

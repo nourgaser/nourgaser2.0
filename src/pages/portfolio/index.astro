@@ -47,7 +47,7 @@ const groupedProjects = portfolioCategoryOrder
 
           <div class="portfolio-grid">
             {entry.projects.map((project) => (
-              <article class="portfolio-card">
+              <article class="portfolio-card" data-ngx-frame>
                 {project.data.coverImage && (
                   <a href={`/portfolio/${project.id}/`} class="portfolio-card-media">
                     <Picture

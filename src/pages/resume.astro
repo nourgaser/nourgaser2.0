@@ -16,7 +16,7 @@ import { resumePageContent } from '../data/pages/resume';
     />
 
     <section class="resume-shell" data-ngx-section="resume-links" data-ngx-label="Resume Links">
-      <p class="resume-actions">
+      <p class="resume-actions" data-ngx-frame>
         {
           resumePageContent.actions.map((action) => (
             <a href={action.href} download={action.download}>{action.label}</a>
@@ -25,7 +25,7 @@ import { resumePageContent } from '../data/pages/resume';
       </p>
     </section>
 
-    <section class="resume-shell resume-preview" data-ngx-section="resume-preview" data-ngx-label="Resume Preview">
+    <section class="resume-shell resume-preview" data-ngx-section="resume-preview" data-ngx-label="Resume Preview" data-ngx-frame>
       <iframe src={resumePageContent.resumeFile} title={resumePageContent.previewTitle}></iframe>
     </section>
   </main>

@@ -17,7 +17,7 @@ const projects = defineCollection({
       'experiments',
     ]).default('experiments'),
     clientType: z.enum(['internal', 'client', 'academic', 'personal']).optional(),
-    status: z.enum(['complete', 'wip', 'abandoned', 'demo']).default('complete'),
+    status: z.enum(['complete', 'wip', 'paused', 'abandoned', 'demo']).default('complete'),
     featured: z.boolean().default(false),
     order: z.number().optional(),
     links: z.object({

@@ -63,8 +63,8 @@
   <rect x="610" y="358" width="250" height="150" rx="14" fill="#171531" stroke="#7c5fd0" stroke-width="1.5"/>
   <text x="630" y="388" font-size="14.5" font-weight="700" fill="#e7fbff">Effects</text>
   <text x="630" y="414" font-size="13" fill="#a9b3c9">theme.ts (4 themes)</text>
-  <text x="630" y="436" font-size="13" fill="#a9b3c9">power-state.ts</text>
-  <text x="630" y="458" font-size="13" fill="#a9b3c9">neon-outline.ts (frames)</text>
+  <text x="630" y="436" font-size="13" fill="#a9b3c9">power.ts + motion.ts</text>
+  <text x="630" y="458" font-size="13" fill="#a9b3c9">ngxos.css (neon frames)</text>
   <text x="630" y="480" font-size="13" fill="#a9b3c9">reduced-motion guard</text>
 
   <!-- 4: Persistence -->
@@ -88,7 +88,7 @@
   <text x="195" y="600" font-size="13.5" fill="#e7fbff" text-anchor="middle">TerminalWindow.svelte</text>
   <text x="465" y="600" font-size="13.5" fill="#e7fbff" text-anchor="middle">HintOverlay.svelte</text>
   <text x="735" y="600" font-size="13.5" fill="#e7fbff" text-anchor="middle">ThemeDock.svelte</text>
-  <text x="1005" y="600" font-size="13.5" fill="#e7fbff" text-anchor="middle">PowerEffects.svelte</text>
+  <text x="1005" y="600" font-size="13.5" fill="#e7fbff" text-anchor="middle">HelpOverlay.svelte</text>
   <text x="600" y="624" font-size="13" fill="#9aa0aa" text-anchor="middle">reactive on the runes store — re-render on any state change, no manual wiring</text>
 
   <!-- persistence rehydrate loop-back, right margin -->

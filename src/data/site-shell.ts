@@ -6,7 +6,7 @@ export type SiteNavLink = {
 export type SiteSocialLink = {
   href: string;
   label: string;
-  icon: 'facebook' | 'github' | 'linkedin';
+  icon: 'github' | 'linkedin';
 };
 
 export const siteShellContent = {
@@ -23,8 +23,8 @@ export const siteShellContent = {
     credit: 'Made with \u2665 by Nour Gaser Algendi.',
     copyrightOwner: 'Nour Gaser',
     socialHandle: '/nourgaser',
+    email: 'me@nourgaser.com',
     socialLinks: [
-      { href: 'https://facebook.com/nourgaser', label: 'Facebook', icon: 'facebook' },
       { href: 'https://github.com/nourgaser', label: 'GitHub', icon: 'github' },
       { href: 'https://linkedin.com/in/nourgaser', label: 'LinkedIn', icon: 'linkedin' },
     ] as SiteSocialLink[],

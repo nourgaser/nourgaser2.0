@@ -14,7 +14,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       wget perl xz-utils ca-certificates fontconfig \
     && rm -rf /var/lib/apt/lists/*
 
-ARG CTAN_MIRROR=https://mirror.ctan.org/systems/texlive/tlnet
+# Pinned to a specific mirror rather than mirror.ctan.org's redirector: that
+# redirect is geo-sticky, and a mirror caught mid-sync serves an archive its
+# own texlive.tlpdb doesn't match, which install-tl rejects with
+# "check_file_and_remove failed". Override with --build-arg if this one lags.
+ARG CTAN_MIRROR=https://ftp.fau.de/ctan/systems/texlive/tlnet
 RUN wget -q "${CTAN_MIRROR}/install-tl-unx.tar.gz" -O /tmp/install-tl.tar.gz \
     && mkdir /tmp/install-tl \
     && tar -xzf /tmp/install-tl.tar.gz -C /tmp/install-tl --strip-components=1 \
